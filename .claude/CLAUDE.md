@@ -1,4 +1,4 @@
-# k1e1n04-ui
+# k-ui
 
 ## 概要
 
@@ -144,14 +144,14 @@ pnpm typecheck      # 型チェック
 
 ```bash
 # インストール
-pnpm add k1e1n04-ui@github:k1e1n04/k1e1n04-ui
+pnpm add k-ui@github:k1e1n04/k-ui
 ```
 
 ```css
 /* globals.css */
-@import "k1e1n04-ui/tokens.css";
+@import "k-ui/tokens.css";
 ```
 
 ```tsx
-import { Button, Dialog } from "k1e1n04-ui";
+import { Button, Dialog } from "k-ui";
 ```
