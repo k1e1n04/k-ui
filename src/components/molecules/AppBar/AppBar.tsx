@@ -1,11 +1,16 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 
 import { cn } from "../../../utils/cn";
 
 /** AppBarのポジション */
-export type AppBarPosition = "fixed" | "static" | "absolute" | "relative" | "sticky";
+export type AppBarPosition =
+  | "fixed"
+  | "static"
+  | "absolute"
+  | "relative"
+  | "sticky";
 
 /** AppBarのカラー */
 export type AppBarColor = "primary" | "secondary" | "success" | "transparent";
@@ -29,7 +34,8 @@ const positionStyles: Record<AppBarPosition, string> = {
 /** カラーに応じたクラス */
 const colorStyles: Record<AppBarColor, string> = {
   primary: "bg-primary-main text-white",
-  secondary: "bg-secondary-main text-primary-main dark:bg-gray-800 dark:text-white",
+  secondary:
+    "bg-secondary-main text-primary-main dark:bg-gray-800 dark:text-white",
   success: "bg-success-main text-white",
   transparent: "bg-transparent",
 };
@@ -50,7 +56,7 @@ export const AppBar: React.FC<AppBarProps> = ({
         "z-50 transition-all duration-200 ease-in-out w-full",
         positionStyles[position],
         colorStyles[color],
-        className
+        className,
       )}
       {...props}
     >

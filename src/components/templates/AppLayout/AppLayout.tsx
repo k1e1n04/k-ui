@@ -1,13 +1,14 @@
 "use client";
 
+import type React from "react";
 import type { ReactNode } from "react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { cn } from "../../../utils/cn";
 import { AppBar } from "../../molecules/AppBar";
 import {
-  NavigationDrawer,
   type DrawerSection,
+  NavigationDrawer,
   type RenderLinkProps,
 } from "../../molecules/NavigationDrawer";
 
@@ -124,7 +125,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       <main
         className={cn(
           "grow pt-16 px-4 mb-6 sm:px-[10%] bg-white dark:bg-gray-900 text-black dark:text-white transition-colors min-h-[calc(100vh-4rem)] pb-[env(safe-area-inset-bottom)]",
-          className
+          className,
         )}
       >
         {children}

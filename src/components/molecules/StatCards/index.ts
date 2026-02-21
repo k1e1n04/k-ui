@@ -1,2 +1,2 @@
+export type { StatCardColor, StatCardItem, StatCardsProps } from "./StatCards";
 export { StatCards } from "./StatCards";
-export type { StatCardsProps, StatCardItem, StatCardColor } from "./StatCards";

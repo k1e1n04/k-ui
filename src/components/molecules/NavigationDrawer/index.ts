@@ -1,7 +1,7 @@
-export { NavigationDrawer } from "./NavigationDrawer";
 export type {
-  NavigationDrawerProps,
   DrawerItem,
   DrawerSection,
+  NavigationDrawerProps,
   RenderLinkProps,
 } from "./NavigationDrawer";
+export { NavigationDrawer } from "./NavigationDrawer";

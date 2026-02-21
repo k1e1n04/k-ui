@@ -1,11 +1,17 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 
 import { cn } from "../../../utils/cn";
 
 /** カードの色テーマ */
-export type StatCardColor = "blue" | "green" | "purple" | "red" | "yellow" | "gray";
+export type StatCardColor =
+  | "blue"
+  | "green"
+  | "purple"
+  | "red"
+  | "yellow"
+  | "gray";
 
 /** 個々のカードデータ */
 export interface StatCardItem {
@@ -93,11 +99,7 @@ export const StatCards: React.FC<StatCardsProps> = ({
         return (
           <div
             key={card.label}
-            className={cn(
-              "border rounded-lg p-4",
-              styles.bg,
-              styles.border
-            )}
+            className={cn("border rounded-lg p-4", styles.bg, styles.border)}
           >
             <h3 className={cn("text-sm font-medium mb-1", styles.text)}>
               {card.label}

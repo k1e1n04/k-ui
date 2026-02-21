@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import React from "react";
 
 import { AppLayout } from "./AppLayout";
 
@@ -53,9 +52,7 @@ export const WithTitleSuffix: Story = {
     appTitle: "My App",
     drawerSections: sampleSections,
     titleSuffix: (
-      <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
-        STG
-      </span>
+      <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">STG</span>
     ),
     children: (
       <div className="p-4">
