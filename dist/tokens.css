@@ -1,0 +1,145 @@
+:root {
+  /* プライマリ */
+  --kui-color-primary: #525459;
+  --kui-color-primary-hover: #008db7;
+
+  /* セカンダリ */
+  --kui-color-secondary: #ffffff;
+  --kui-color-secondary-subtle: #f4f8f9;
+
+  /* アクセント */
+  --kui-color-accent: #e6856a;
+
+  /* セマンティック */
+  --kui-color-danger: #ef4444;
+  --kui-color-danger-subtle: #fef2f2;
+  --kui-color-success: #22c55e;
+  --kui-color-success-subtle: #f0fdf4;
+  --kui-color-info: #3b82f6;
+  --kui-color-info-subtle: #eff6ff;
+  --kui-color-warning: #f59e0b;
+  --kui-color-warning-subtle: #fffbeb;
+
+  /* サーフェス */
+  --kui-color-surface: #ffffff;
+  --kui-color-surface-raised: #f9fafb;
+
+  /* テキスト */
+  --kui-color-text: #171717;
+  --kui-color-text-muted: #6b7280;
+  --kui-color-text-inverse: #ffffff;
+
+  /* ボーダー */
+  --kui-color-border: #e5e7eb;
+  --kui-color-border-strong: #d1d5db;
+
+  /* オーバーレイ */
+  --kui-color-overlay: rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --kui-color-surface: #1f2937;
+    --kui-color-surface-raised: #111827;
+
+    --kui-color-text: #f3f4f6;
+    --kui-color-text-muted: #9ca3af;
+    --kui-color-text-inverse: #171717;
+
+    --kui-color-border: #374151;
+    --kui-color-border-strong: #4b5563;
+
+    --kui-color-danger-subtle: rgba(127, 29, 29, 0.3);
+    --kui-color-success-subtle: rgba(20, 83, 45, 0.3);
+    --kui-color-info-subtle: rgba(30, 58, 138, 0.3);
+    --kui-color-warning-subtle: rgba(120, 53, 15, 0.3);
+
+    --kui-color-overlay: rgba(0, 0, 0, 0.3);
+  }
+}
+
+:root {
+  /* スペーシング */
+  --kui-space-0: 0;
+  --kui-space-1: 0.25rem;
+  --kui-space-2: 0.5rem;
+  --kui-space-3: 0.75rem;
+  --kui-space-4: 1rem;
+  --kui-space-5: 1.25rem;
+  --kui-space-6: 1.5rem;
+  --kui-space-8: 2rem;
+  --kui-space-10: 2.5rem;
+  --kui-space-12: 3rem;
+  --kui-space-16: 4rem;
+
+  /* ボーダー半径 */
+  --kui-radius-sm: 0.25rem;
+  --kui-radius-md: 0.375rem;
+  --kui-radius-lg: 0.5rem;
+  --kui-radius-xl: 0.75rem;
+  --kui-radius-full: 9999px;
+}
+
+:root {
+  /* フォントサイズ */
+  --kui-font-size-xs: 0.75rem;
+  --kui-font-size-sm: 0.875rem;
+  --kui-font-size-base: 1rem;
+  --kui-font-size-lg: 1.125rem;
+  --kui-font-size-xl: 1.25rem;
+  --kui-font-size-2xl: 1.5rem;
+
+  /* フォントウェイト */
+  --kui-font-weight-normal: 400;
+  --kui-font-weight-medium: 500;
+  --kui-font-weight-semibold: 600;
+  --kui-font-weight-bold: 700;
+
+  /* 行間 */
+  --kui-line-height-tight: 1.25;
+  --kui-line-height-normal: 1.5;
+  --kui-line-height-relaxed: 1.75;
+}
+
+:root {
+  --kui-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --kui-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --kui-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --kui-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes kui-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes kui-slide-down {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes kui-slide-up {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes kui-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@theme {
+  /* カラー */
+  --color-primary-main: var(--kui-color-primary);
+  --color-primary-light: var(--kui-color-primary-hover);
+  --color-secondary-main: var(--kui-color-secondary);
+  --color-secondary-light: var(--kui-color-secondary-subtle);
+  --color-success-main: var(--kui-color-success);
+  --color-accent-main: var(--kui-color-accent);
+
+  /* アニメーション */
+  --animate-kui-fade-in: kui-fade-in 0.3s ease-in-out;
+  --animate-kui-slide-down: kui-slide-down 0.3s ease-in-out;
+  --animate-kui-slide-up: kui-slide-up 0.3s ease-in-out;
+  --animate-kui-spin: kui-spin 1s linear infinite;
+}
