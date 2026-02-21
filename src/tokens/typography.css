@@ -1,0 +1,20 @@
+:root {
+  /* フォントサイズ */
+  --kui-font-size-xs: 0.75rem;
+  --kui-font-size-sm: 0.875rem;
+  --kui-font-size-base: 1rem;
+  --kui-font-size-lg: 1.125rem;
+  --kui-font-size-xl: 1.25rem;
+  --kui-font-size-2xl: 1.5rem;
+
+  /* フォントウェイト */
+  --kui-font-weight-normal: 400;
+  --kui-font-weight-medium: 500;
+  --kui-font-weight-semibold: 600;
+  --kui-font-weight-bold: 700;
+
+  /* 行間 */
+  --kui-line-height-tight: 1.25;
+  --kui-line-height-normal: 1.5;
+  --kui-line-height-relaxed: 1.75;
+}

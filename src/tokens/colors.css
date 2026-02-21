@@ -1,0 +1,59 @@
+:root {
+  /* プライマリ */
+  --kui-color-primary: #525459;
+  --kui-color-primary-hover: #008db7;
+
+  /* セカンダリ */
+  --kui-color-secondary: #ffffff;
+  --kui-color-secondary-subtle: #f4f8f9;
+
+  /* アクセント */
+  --kui-color-accent: #e6856a;
+
+  /* セマンティック */
+  --kui-color-danger: #ef4444;
+  --kui-color-danger-subtle: #fef2f2;
+  --kui-color-success: #22c55e;
+  --kui-color-success-subtle: #f0fdf4;
+  --kui-color-info: #3b82f6;
+  --kui-color-info-subtle: #eff6ff;
+  --kui-color-warning: #f59e0b;
+  --kui-color-warning-subtle: #fffbeb;
+
+  /* サーフェス */
+  --kui-color-surface: #ffffff;
+  --kui-color-surface-raised: #f9fafb;
+
+  /* テキスト */
+  --kui-color-text: #171717;
+  --kui-color-text-muted: #6b7280;
+  --kui-color-text-inverse: #ffffff;
+
+  /* ボーダー */
+  --kui-color-border: #e5e7eb;
+  --kui-color-border-strong: #d1d5db;
+
+  /* オーバーレイ */
+  --kui-color-overlay: rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --kui-color-surface: #1f2937;
+    --kui-color-surface-raised: #111827;
+
+    --kui-color-text: #f3f4f6;
+    --kui-color-text-muted: #9ca3af;
+    --kui-color-text-inverse: #171717;
+
+    --kui-color-border: #374151;
+    --kui-color-border-strong: #4b5563;
+
+    --kui-color-danger-subtle: rgba(127, 29, 29, 0.3);
+    --kui-color-success-subtle: rgba(20, 83, 45, 0.3);
+    --kui-color-info-subtle: rgba(30, 58, 138, 0.3);
+    --kui-color-warning-subtle: rgba(120, 53, 15, 0.3);
+
+    --kui-color-overlay: rgba(0, 0, 0, 0.3);
+  }
+}
