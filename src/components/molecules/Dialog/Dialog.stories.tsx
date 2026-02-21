@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { Button } from "../../atoms/Button";
 import { Dialog } from "./Dialog";
@@ -24,7 +24,11 @@ export const Default: Story = {
     open: true,
     onClose: () => {},
     title: "Dialog Title",
-    children: <p className="text-gray-700 dark:text-gray-300">Dialog content goes here.</p>,
+    children: (
+      <p className="text-gray-700 dark:text-gray-300">
+        Dialog content goes here.
+      </p>
+    ),
   },
 };
 
@@ -32,7 +36,9 @@ export const WithoutTitle: Story = {
   args: {
     open: true,
     onClose: () => {},
-    children: <p className="text-gray-700 dark:text-gray-300">Content without title.</p>,
+    children: (
+      <p className="text-gray-700 dark:text-gray-300">Content without title.</p>
+    ),
   },
 };
 
@@ -42,7 +48,11 @@ export const Large: Story = {
     onClose: () => {},
     title: "Large Dialog",
     maxWidth: "lg",
-    children: <p className="text-gray-700 dark:text-gray-300">This is a large dialog.</p>,
+    children: (
+      <p className="text-gray-700 dark:text-gray-300">
+        This is a large dialog.
+      </p>
+    ),
   },
 };
 
@@ -59,7 +69,11 @@ export const Interactive: Story = {
     return (
       <>
         <Button onClick={() => setOpen(true)}>Open Dialog</Button>
-        <Dialog open={open} onClose={() => setOpen(false)} title="Interactive Dialog">
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          title="Interactive Dialog"
+        >
           <p className="text-gray-700 dark:text-gray-300">
             Press ESC or click outside to close.
           </p>

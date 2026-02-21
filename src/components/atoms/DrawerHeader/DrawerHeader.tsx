@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 
 import { cn } from "../../../utils/cn";
 
@@ -22,7 +22,7 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
     <div
       className={cn(
         "flex items-center justify-end min-h-[56px] sm:min-h-[64px]",
-        className
+        className,
       )}
       {...props}
     >

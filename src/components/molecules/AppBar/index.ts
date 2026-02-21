@@ -1,2 +1,2 @@
+export type { AppBarColor, AppBarPosition, AppBarProps } from "./AppBar";
 export { AppBar } from "./AppBar";
-export type { AppBarProps, AppBarPosition, AppBarColor } from "./AppBar";

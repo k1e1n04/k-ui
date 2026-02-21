@@ -1,7 +1,8 @@
 "use client";
 
+import type React from "react";
 import type { ReactNode } from "react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { cn } from "../../../utils/cn";
 
@@ -104,7 +105,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
           arrow:
             "absolute -top-2 right-4 w-4 h-4 bg-white dark:bg-gray-800 transform rotate-45 border-t border-l border-gray-200 dark:border-gray-700",
         };
-      case "center":
       default:
         return {
           tooltip:
@@ -133,7 +133,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         <div
           className={cn(
             tooltipClass,
-            "bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 animate-kui-fade-in"
+            "bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 animate-kui-fade-in",
           )}
         >
           <div className="p-3 text-sm text-gray-700 dark:text-gray-200">

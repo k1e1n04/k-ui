@@ -1,7 +1,7 @@
 "use client";
 
+import type React from "react";
 import type { ReactNode } from "react";
-import React from "react";
 
 import { cn } from "../../../utils/cn";
 import { Dialog } from "../Dialog";
@@ -106,14 +106,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     >
       <div className="flex items-center mb-4">
         <div
-          className={cn(
-            "rounded-full p-2 mr-3 flex-shrink-0",
-            styles.iconBg
-          )}
+          className={cn("rounded-full p-2 mr-3 flex-shrink-0", styles.iconBg)}
         >
-          {icon || (
-            <DefaultIcon className={cn("h-6 w-6", styles.iconColor)} />
-          )}
+          {icon || <DefaultIcon className={cn("h-6 w-6", styles.iconColor)} />}
         </div>
         <h3 className="text-lg font-medium text-gray-900 dark:text-white">
           {title}
@@ -143,7 +138,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           className={cn(
             "px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
             styles.buttonBg,
-            styles.buttonHover
+            styles.buttonHover,
           )}
         >
           {isProcessing ? processingLabel : confirmLabel}

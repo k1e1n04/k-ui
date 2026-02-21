@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 
 import { cn } from "../../../utils/cn";
 
@@ -79,7 +79,7 @@ export const Button: React.FC<ButtonProps> = ({
         iconOnly ? iconSizeStyles[size] : sizeStyles[size],
         fullWidth && "w-full",
         disabled && "opacity-50 cursor-not-allowed",
-        className
+        className,
       )}
       disabled={disabled}
       onClick={disabled ? undefined : props.onClick}
