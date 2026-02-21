@@ -1,0 +1,15 @@
+@theme {
+  /* カラー */
+  --color-primary-main: var(--kui-color-primary);
+  --color-primary-light: var(--kui-color-primary-hover);
+  --color-secondary-main: var(--kui-color-secondary);
+  --color-secondary-light: var(--kui-color-secondary-subtle);
+  --color-success-main: var(--kui-color-success);
+  --color-accent-main: var(--kui-color-accent);
+
+  /* アニメーション */
+  --animate-kui-fade-in: kui-fade-in 0.3s ease-in-out;
+  --animate-kui-slide-down: kui-slide-down 0.3s ease-in-out;
+  --animate-kui-slide-up: kui-slide-up 0.3s ease-in-out;
+  --animate-kui-spin: kui-spin 1s linear infinite;
+}
