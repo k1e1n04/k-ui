@@ -8,5 +8,7 @@ export type { InputProps, InputSize, InputType } from "./Input";
 export { Input } from "./Input";
 export type { SpinnerProps, SpinnerSize } from "./Spinner";
 export { Spinner } from "./Spinner";
+export type { TextareaProps, TextareaSize } from "./Textarea";
+export { Textarea } from "./Textarea";
 export type { ToggleSwitchProps, ToggleSwitchSize } from "./ToggleSwitch";
 export { ToggleSwitch } from "./ToggleSwitch";
