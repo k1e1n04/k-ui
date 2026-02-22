@@ -128,6 +128,9 @@ describe("Button", () => {
       </Button>,
     );
 
-    expect(screen.getByRole("button")).toHaveClass("bg-primary-main", "text-white");
+    expect(screen.getByRole("button")).toHaveClass(
+      "bg-primary-main",
+      "text-white",
+    );
   });
 });

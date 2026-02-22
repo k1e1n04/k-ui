@@ -40,8 +40,7 @@ const variantStyles: Record<ButtonVariant, string> = {
     "bg-primary-main hover:bg-primary-light text-white dark:bg-blue-700 dark:hover:bg-blue-800",
   secondary:
     "bg-secondary-light hover:bg-gray-200 text-primary-main dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200",
-  success:
-    "bg-[var(--kui-color-success)] hover:opacity-90 text-white",
+  success: "bg-[var(--kui-color-success)] hover:opacity-90 text-white",
   info: "bg-[var(--kui-color-info)] hover:opacity-90 text-white",
   outline:
     "bg-transparent border border-primary-main text-primary-main hover:bg-primary-main/5 dark:border-blue-500 dark:text-blue-400 dark:hover:bg-blue-900/20",
@@ -90,7 +89,9 @@ const semanticToneStyles: Record<
   },
 };
 
-const isSemanticVariant = (variant: ButtonVariant): variant is SemanticVariant => {
+const isSemanticVariant = (
+  variant: ButtonVariant,
+): variant is SemanticVariant => {
   return variant === "success" || variant === "info" || variant === "danger";
 };
 

@@ -151,10 +151,20 @@ const IconPlus = (
 export const IconOnlySemanticTones: Story = {
   render: () => (
     <div className="flex items-center gap-3">
-      <Button iconOnly variant="success" tone="plain" aria-label="success plain">
+      <Button
+        iconOnly
+        variant="success"
+        tone="plain"
+        aria-label="success plain"
+      >
         {IconPlus}
       </Button>
-      <Button iconOnly variant="success" tone="subtle" aria-label="success subtle">
+      <Button
+        iconOnly
+        variant="success"
+        tone="subtle"
+        aria-label="success subtle"
+      >
         {IconPlus}
       </Button>
       <Button iconOnly variant="info" tone="plain" aria-label="info plain">
@@ -166,7 +176,12 @@ export const IconOnlySemanticTones: Story = {
       <Button iconOnly variant="danger" tone="plain" aria-label="danger plain">
         {IconPlus}
       </Button>
-      <Button iconOnly variant="danger" tone="subtle" aria-label="danger subtle">
+      <Button
+        iconOnly
+        variant="danger"
+        tone="subtle"
+        aria-label="danger subtle"
+      >
         {IconPlus}
       </Button>
     </div>
