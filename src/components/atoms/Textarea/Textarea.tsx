@@ -8,13 +8,10 @@ import { cn } from "../../../utils/cn";
 /** テキストエリアのサイズ */
 export type TextareaSize = "small" | "medium" | "large";
 
-export interface TextareaProps {
+export interface TextareaProps
+  extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange"> {
   /** ラベルテキスト */
   label?: string;
-  /** 必須フラグ（ラベルに * を付与する） */
-  required?: boolean;
-  /** プレースホルダー */
-  placeholder?: string;
   /** エラーメッセージ（指定されるとエラー状態を表示する） */
   error?: string;
   /** 現在の値 */
@@ -60,18 +57,23 @@ const errorSizeStyles: Record<TextareaSize, string> = {
 export const Textarea: React.FC<TextareaProps> = ({
   label,
   required = false,
-  placeholder,
   error,
   value,
   onChange,
-  disabled = false,
   size = "medium",
   rows = 3,
   className,
+  id,
+  "aria-describedby": ariaDescribedBy,
+  ...textareaProps
 }) => {
   const baseId = useId();
-  const textareaId = `${baseId}-textarea`;
+  const textareaId = id ?? `${baseId}-textarea`;
   const errorId = `${baseId}-error`;
+  const mergedAriaDescribedBy = [ariaDescribedBy, error ? errorId : undefined]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
 
   return (
     <div className={cn("flex flex-col", className)}>
@@ -100,12 +102,11 @@ export const Textarea: React.FC<TextareaProps> = ({
         id={textareaId}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
-        disabled={disabled}
-        placeholder={placeholder}
         required={required}
         rows={rows}
+        {...textareaProps}
         aria-invalid={!!error}
-        aria-describedby={error ? errorId : undefined}
+        aria-describedby={mergedAriaDescribedBy || undefined}
         className={cn(
           "w-full rounded-md border bg-white transition-colors duration-150",
           "text-gray-900 placeholder:text-gray-400",
@@ -122,7 +123,7 @@ export const Textarea: React.FC<TextareaProps> = ({
                 "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
                 "dark:border-gray-600",
               ],
-          disabled && "cursor-not-allowed opacity-50",
+          textareaProps.disabled && "cursor-not-allowed opacity-50",
         )}
       />
       {/* エラーメッセージ */}

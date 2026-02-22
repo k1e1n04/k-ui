@@ -117,4 +117,55 @@ describe("Textarea", () => {
     const { container } = render(<Textarea className="mt-4" />);
     expect(container.firstChild).toHaveClass("mt-4");
   });
+
+  it("onKeyDown が呼ばれる", async () => {
+    const user = userEvent.setup();
+    const handleKeyDown = vi.fn();
+    render(<Textarea onKeyDown={handleKeyDown} />);
+
+    await user.type(screen.getByRole("textbox"), "{enter}");
+    expect(handleKeyDown).toHaveBeenCalled();
+  });
+
+  it("onFocus / onBlur が呼ばれる", async () => {
+    const user = userEvent.setup();
+    const handleFocus = vi.fn();
+    const handleBlur = vi.fn();
+    render(<Textarea onFocus={handleFocus} onBlur={handleBlur} />);
+
+    const textarea = screen.getByRole("textbox");
+    await user.click(textarea);
+    await user.tab();
+
+    expect(handleFocus).toHaveBeenCalled();
+    expect(handleBlur).toHaveBeenCalled();
+  });
+
+  it("name / id / aria-* が透過される", () => {
+    render(
+      <Textarea
+        id="custom-textarea-id"
+        name="message"
+        aria-label="Message"
+        aria-describedby="hint-id"
+      />,
+    );
+
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).toHaveAttribute("id", "custom-textarea-id");
+    expect(textarea).toHaveAttribute("name", "message");
+    expect(textarea).toHaveAttribute("aria-label", "Message");
+    expect(textarea).toHaveAttribute("aria-describedby", "hint-id");
+  });
+
+  it("error があるとき aria-describedby に既存値と error id の両方が入る", () => {
+    render(<Textarea error="Error" aria-describedby="hint-id" />);
+    const textarea = screen.getByRole("textbox");
+    const errorElement = screen.getByRole("alert");
+
+    expect(textarea).toHaveAttribute(
+      "aria-describedby",
+      `hint-id ${errorElement.id}`,
+    );
+  });
 });
