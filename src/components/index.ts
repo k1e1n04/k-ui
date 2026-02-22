@@ -1,5 +1,4 @@
 // Atoms
-
 export type {
   ButtonProps,
   ButtonSize,
@@ -7,8 +6,11 @@ export type {
   DrawerHeaderProps,
   SpinnerProps,
   SpinnerSize,
+  ToggleSwitchProps,
+  ToggleSwitchSize,
 } from "./atoms";
-export { Button, DrawerHeader, Spinner } from "./atoms";
+export { Button, DrawerHeader, Spinner, ToggleSwitch } from "./atoms";
+// Molecules
 export type {
   AppBarColor,
   AppBarPosition,
@@ -29,7 +31,6 @@ export type {
   StatCardsProps,
   TooltipProps,
 } from "./molecules";
-// Molecules
 export {
   AppBar,
   ConfirmDialog,
@@ -41,6 +42,6 @@ export {
   StatCards,
   Tooltip,
 } from "./molecules";
-export type { AppLayoutProps } from "./templates";
 // Templates
+export type { AppLayoutProps } from "./templates";
 export { AppLayout } from "./templates";
