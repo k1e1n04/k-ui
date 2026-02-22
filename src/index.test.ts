@@ -5,4 +5,8 @@ describe("public exports", () => {
   it("exports Card from package root", () => {
     expect(kui.Card).toBeTypeOf("function");
   });
+
+  it("exports DataTable from package root", () => {
+    expect(kui.DataTable).toBeTypeOf("function");
+  });
 });
