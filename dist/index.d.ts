@@ -20,6 +20,29 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  */
 declare const Button: React.FC<ButtonProps>;
 
+/** チェックボックスのサイズ */
+type CheckboxSize = "small" | "medium" | "large";
+interface CheckboxProps {
+    /** 現在のチェック状態 */
+    checked: boolean;
+    /** 変更ハンドラー */
+    onChange: (checked: boolean) => void;
+    /** 無効状態 */
+    disabled?: boolean;
+    /** 表示ラベル */
+    label?: string;
+    /** サイズ */
+    size?: CheckboxSize;
+    /** 追加のクラス名 */
+    className?: string;
+}
+/**
+ * チェックボックスコンポーネント
+ *
+ * ON/OFFの選択に使用するチェックボックスUI
+ */
+declare const Checkbox: React.FC<CheckboxProps>;
+
 interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
     /** 追加のクラス名 */
     className?: string;
@@ -418,4 +441,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Button, type ButtonProps, type ButtonSize, type ButtonVariant, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
