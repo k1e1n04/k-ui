@@ -29,6 +29,34 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 declare const Alert: React.FC<AlertProps>;
 
+/**
+ * Badgeコンポーネントのバリアント
+ */
+type BadgeVariant = "info" | "success" | "warning" | "danger" | "neutral";
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+    /**
+     * バッジの種別
+     * @default 'info'
+     */
+    variant?: BadgeVariant;
+    /**
+     * 表示内容
+     */
+    children: React.ReactNode;
+}
+/**
+ * Badge コンポーネント
+ *
+ * 小さなステータスラベルを表示するためのコンポーネント
+ *
+ * @example
+ * <Badge variant="info">Planned</Badge>
+ *
+ * @example
+ * <Badge variant="neutral">Archived</Badge>
+ */
+declare const Badge: React.FC<BadgeProps>;
+
 /** ボタンのバリアント */
 type ButtonVariant = "primary" | "secondary" | "success" | "outline" | "ghost" | "danger";
 /** ボタンのサイズ */
@@ -575,4 +603,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };

@@ -2,6 +2,8 @@
 export type {
   AlertProps,
   AlertVariant,
+  BadgeProps,
+  BadgeVariant,
   ButtonProps,
   ButtonSize,
   ButtonVariant,
@@ -23,6 +25,7 @@ export type {
 } from "./atoms";
 export {
   Alert,
+  Badge,
   Button,
   Checkbox,
   DrawerHeader,
