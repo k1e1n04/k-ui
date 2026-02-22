@@ -26,6 +26,20 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  argTypes: {
+    size: {
+      control: "select",
+      options: ["sm", "md", "lg"],
+    },
+    align: {
+      control: "select",
+      options: ["left", "center"],
+    },
+    actionPlacement: {
+      control: "select",
+      options: ["below", "inline"],
+    },
+  },
 } satisfies Meta<typeof EmptyState>;
 
 export default meta;
@@ -35,6 +49,9 @@ export const Default: Story = {
   args: {
     title: "No data available",
     description: "Add your first item to get started.",
+    size: "md",
+    align: "center",
+    actionPlacement: "below",
   },
 };
 
@@ -44,11 +61,42 @@ export const WithIconAndAction: Story = {
     title: "No trips found",
     description: "Create a trip and manage your travel schedule.",
     action: <Button variant="primary">Create trip</Button>,
+    size: "md",
+    align: "center",
+    actionPlacement: "below",
   },
 };
 
 export const TitleOnly: Story = {
   args: {
     title: "No messages",
+    size: "md",
+    align: "center",
+  },
+};
+
+export const ListEmptyState: Story = {
+  args: {
+    icon: <CalendarIcon />,
+    title: "表示できる案件がありません",
+    description: "条件に一致するデータがまだ登録されていません。",
+    action: <Button variant="secondary">新規作成</Button>,
+    size: "lg",
+    align: "left",
+    actionPlacement: "below",
+  },
+  parameters: {
+    layout: "padded",
+  },
+};
+
+export const NoSearchResults: Story = {
+  args: {
+    title: "検索結果が見つかりません",
+    description: "キーワードやフィルターを変更して再検索してください。",
+    action: <Button variant="ghost">条件をリセット</Button>,
+    size: "sm",
+    align: "center",
+    actionPlacement: "inline",
   },
 };
