@@ -1,8 +1,8 @@
 "use client";
 
 import type React from "react";
-
 import { cn } from "../../../utils/cn";
+import { Typography } from "../Typography";
 
 /**
  * Alertコンポーネントのバリアント
@@ -48,6 +48,16 @@ const variantStyles: Record<AlertVariant, React.CSSProperties> = {
   },
 };
 
+const variantToneMap: Record<
+  AlertVariant,
+  "danger" | "warning" | "info" | "success"
+> = {
+  error: "danger",
+  warning: "warning",
+  info: "info",
+  success: "success",
+};
+
 /**
  * Alert コンポーネント
  *
@@ -73,7 +83,9 @@ export const Alert: React.FC<AlertProps> = ({
       style={{ ...variantStyles[variant], ...style }}
       {...props}
     >
-      {message}
+      <Typography as="span" variant="body-sm" tone={variantToneMap[variant]}>
+        {message}
+      </Typography>
     </div>
   );
 };
