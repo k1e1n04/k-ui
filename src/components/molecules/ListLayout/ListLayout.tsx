@@ -239,7 +239,7 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
                 "p-2 rounded-full transition-colors",
                 showFilterOptions
                   ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-500 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800/70"
-                  : "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  : "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700",
               )}
               aria-label={filterButtonLabel}
             >
@@ -254,7 +254,7 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
                 "p-2 rounded-full transition-colors",
                 showAddForm
                   ? "bg-rose-100 dark:bg-rose-900/50 text-rose-500 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800/70"
-                  : "bg-rose-50 dark:bg-rose-900/30 text-rose-500 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-800/50"
+                  : "bg-rose-50 dark:bg-rose-900/30 text-rose-500 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-800/50",
               )}
               aria-label={showAddForm ? closeFormLabel : addButtonLabel}
             >
@@ -337,7 +337,6 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={searchPlaceholder}
               className="w-full pl-10 pr-10 py-2 border dark:border-gray-700 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-              autoFocus
             />
             {searchKeyword && (
               <button

@@ -1,7 +1,8 @@
 "use client";
 
+import type React from "react";
 import type { ReactNode } from "react";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { cn } from "../../../utils/cn";
 
@@ -106,7 +107,7 @@ export const Dialog: React.FC<DialogProps> = ({
         className={cn(
           "bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full transform transition-all duration-200 ease-out",
           maxWidthClasses[maxWidth],
-          className
+          className,
         )}
         onClick={(e) => e.stopPropagation()}
       >

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { ListItem } from "../ListItem";
 import { ListLayout } from "./ListLayout";
@@ -49,7 +49,7 @@ export const Loading: Story = {
   },
 };
 
-export const Error: Story = {
+export const ErrorState: Story = {
   args: {
     title: "Error List",
     searchKeyword: "",
@@ -101,7 +101,7 @@ export const Interactive: Story = {
 
     const items = ["Apple", "Banana", "Cherry", "Date", "Elderberry"];
     const filtered = items.filter((item) =>
-      item.toLowerCase().includes(searchKeyword.toLowerCase())
+      item.toLowerCase().includes(searchKeyword.toLowerCase()),
     );
 
     return (

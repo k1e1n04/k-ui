@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type RefObject } from "react";
+import { type RefObject, useEffect } from "react";
 
 /**
  * 指定された要素の外側がクリックされたときにコールバックを実行するフック
@@ -8,7 +8,7 @@ import { useEffect, type RefObject } from "react";
 export function useClickOutside(
   ref: RefObject<HTMLElement | null>,
   handler: () => void,
-  enabled: boolean = true
+  enabled: boolean = true,
 ): void {
   useEffect(() => {
     if (!enabled) return;

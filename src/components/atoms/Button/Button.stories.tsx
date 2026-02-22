@@ -9,7 +9,14 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "success", "outline", "ghost", "danger"],
+      options: [
+        "primary",
+        "secondary",
+        "success",
+        "outline",
+        "ghost",
+        "danger",
+      ],
     },
     size: {
       control: "select",
@@ -94,8 +101,18 @@ export const Disabled: Story = {
 export const IconOnly: Story = {
   args: {
     children: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M12 4v16m8-8H4"
+        />
       </svg>
     ),
     iconOnly: true,

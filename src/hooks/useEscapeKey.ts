@@ -7,7 +7,7 @@ import { useEffect } from "react";
  */
 export function useEscapeKey(
   handler: () => void,
-  enabled: boolean = true
+  enabled: boolean = true,
 ): void {
   useEffect(() => {
     if (!enabled) return;

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 
 import { cn } from "../../../utils/cn";
 
@@ -35,14 +35,14 @@ export const Spinner: React.FC<SpinnerProps> = ({
     <div
       className={cn(
         "flex items-center justify-center h-full min-h-[200px]",
-        className
+        className,
       )}
     >
       <div className="text-center">
         <div
           className={cn(
             "animate-spin rounded-full border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2",
-            sizeStyles[size]
+            sizeStyles[size],
           )}
         />
         {label && (

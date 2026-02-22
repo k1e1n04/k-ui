@@ -62,9 +62,35 @@ src/
 3. `ComponentName.stories.tsx` を作成
    - `tags: ["autodocs"]` を含める
    - 全バリアント・サイズのストーリーを定義
-4. `index.ts` を作成してバレルエクスポート
-5. 親の `index.ts` にエクスポートを追加
-6. `src/components/index.ts` にエクスポートを追加
+4. `ComponentName.test.tsx` を作成（後述「テスト」セクション参照）
+5. `index.ts` を作成してバレルエクスポート
+6. 親の `index.ts` にエクスポートを追加
+7. `src/components/index.ts` にエクスポートを追加
+
+## テスト
+
+### ツール・設定
+
+- テストランナー: Vitest（`happy-dom` 環境）
+- ライブラリ: `@testing-library/react` + `@testing-library/user-event`
+- 実行: `pnpm test`（単発）/ `pnpm test:watch`（watch モード）
+
+### テストファイル規約
+
+- ファイル名: `ComponentName.test.tsx`（コンポーネントと同じディレクトリに配置）
+- `describe` / `it` の説明文は日本語で記載
+- `import { describe, expect, it, vi } from "vitest";` を使用
+
+### テスト観点
+
+コンポーネントごとに以下を網羅する:
+
+1. **レンダリング**: デフォルト props で正常にレンダリングされること
+2. **イベント**: `onClick` / `onChange` 等のコールバックが正しく発火すること
+3. **disabled**: disabled 時にイベントが発火しないこと、disabled 属性がセットされること
+4. **Props 反映**: 各 prop（variant, size, fullWidth, iconOnly 等）が対応するクラス名やDOMに反映されること
+5. **className 透過**: 外部から渡した `className` がマージされること
+6. **バリアント・サイズ網羅**: `it.each` で全バリアント・全サイズのレンダリングを確認
 
 ## スタイリングパターン
 
@@ -138,7 +164,15 @@ pnpm build          # tsup でビルド
 pnpm dev            # watch モードでビルド
 pnpm storybook      # Storybook 開発サーバー起動
 pnpm typecheck      # 型チェック
+pnpm test           # テスト実行
+pnpm lint           # lint チェック
 ```
+
+### リリース・コミット時の注意
+
+- コミット前に `pnpm build` を実行し、`dist/` を更新すること
+- `dist/` はリポジトリに含まれる（消費側が GitHub から直接インストールするため）
+- コミットには `dist/` の変更も含めて push すること
 
 ## 消費側での使用方法
 

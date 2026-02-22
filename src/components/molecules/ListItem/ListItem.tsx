@@ -1,7 +1,7 @@
 "use client";
 
+import type React from "react";
 import type { ReactNode } from "react";
-import React from "react";
 
 import { cn } from "../../../utils/cn";
 
@@ -28,9 +28,10 @@ export const ListItem: React.FC<ListItemProps> = ({
     <div
       className={cn(
         "px-4 py-3 bg-white dark:bg-gray-800 rounded-lg",
-        hoverable && "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors",
+        hoverable &&
+          "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors",
         bordered && "border border-gray-200 dark:border-gray-700",
-        className
+        className,
       )}
       {...props}
     >

@@ -1,6 +1,62 @@
 import React, { ReactNode, RefObject } from 'react';
 import { ClassValue } from 'clsx';
 
+/**
+ * Alertコンポーネントのバリアント
+ */
+type AlertVariant = "success" | "info" | "warning" | "error";
+interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * アラートの種別
+     * @default 'info'
+     */
+    variant?: AlertVariant;
+    /**
+     * 表示するメッセージ
+     */
+    message: string;
+}
+/**
+ * Alert コンポーネント
+ *
+ * エラー、警告、情報、成功のメッセージを表示するインラインアラート
+ *
+ * @example
+ * <Alert variant="error" message="エラーが発生しました" />
+ *
+ * @example
+ * <Alert variant="success" message="保存しました" />
+ */
+declare const Alert: React.FC<AlertProps>;
+
+/**
+ * Badgeコンポーネントのバリアント
+ */
+type BadgeVariant = "info" | "success" | "warning" | "danger" | "neutral";
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+    /**
+     * バッジの種別
+     * @default 'info'
+     */
+    variant?: BadgeVariant;
+    /**
+     * 表示内容
+     */
+    children: React.ReactNode;
+}
+/**
+ * Badge コンポーネント
+ *
+ * 小さなステータスラベルを表示するためのコンポーネント
+ *
+ * @example
+ * <Badge variant="info">Planned</Badge>
+ *
+ * @example
+ * <Badge variant="neutral">Archived</Badge>
+ */
+declare const Badge: React.FC<BadgeProps>;
+
 /** ボタンのバリアント */
 type ButtonVariant = "primary" | "secondary" | "success" | "outline" | "ghost" | "danger";
 /** ボタンのサイズ */
@@ -20,6 +76,133 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  */
 declare const Button: React.FC<ButtonProps>;
 
+/** チェックボックスのサイズ */
+type CheckboxSize = "small" | "medium" | "large";
+interface CheckboxProps {
+    /** 現在のチェック状態 */
+    checked: boolean;
+    /** 変更ハンドラー */
+    onChange: (checked: boolean) => void;
+    /** 無効状態 */
+    disabled?: boolean;
+    /** 表示ラベル */
+    label?: string;
+    /** サイズ */
+    size?: CheckboxSize;
+    /** 追加のクラス名 */
+    className?: string;
+}
+/**
+ * チェックボックスコンポーネント
+ *
+ * ON/OFFの選択に使用するチェックボックスUI
+ */
+declare const Checkbox: React.FC<CheckboxProps>;
+
+interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+    /** 追加のクラス名 */
+    className?: string;
+}
+/**
+ * ドロワーのヘッダー部分のコンポーネント
+ */
+declare const DrawerHeader: React.FC<DrawerHeaderProps>;
+
+/** インプットのタイプ */
+type InputType = "text" | "number" | "date" | "time" | "url" | "month";
+/** インプットのサイズ */
+type InputSize = "small" | "medium" | "large";
+interface InputProps {
+    /** インプットのタイプ */
+    type?: InputType;
+    /** ラベルテキスト */
+    label?: string;
+    /** 必須フラグ（ラベルに * を付与する） */
+    required?: boolean;
+    /** プレースホルダー */
+    placeholder?: string;
+    /** エラーメッセージ（指定されるとエラー状態を表示する） */
+    error?: string;
+    /** 現在の値 */
+    value?: string;
+    /** 変更ハンドラー */
+    onChange?: (value: string) => void;
+    /** 無効状態 */
+    disabled?: boolean;
+    /** サイズ */
+    size?: InputSize;
+    /** 追加のクラス名（ルートラッパーに適用） */
+    className?: string;
+}
+/**
+ * インプットコンポーネント
+ *
+ * ラベル・バリデーションエラーをセットで管理するテキスト入力UI
+ */
+declare const Input: React.FC<InputProps>;
+
+/** プログレスバーのサイズ */
+type ProgressBarSize = "sm" | "md" | "lg";
+interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
+    /** 現在の進捗値 */
+    value: number;
+    /** 進捗の最大値 */
+    max?: number;
+    /** スクリーンリーダー向けのラベル */
+    label?: string;
+    /** プログレスバーのサイズ */
+    size?: ProgressBarSize;
+}
+/**
+ * ProgressBar コンポーネント
+ *
+ * 進捗率を視覚的に表現するバーUI。
+ * `role=progressbar` と ARIA 属性を自動付与する。
+ */
+declare const ProgressBar: React.FC<ProgressBarProps>;
+
+/** セレクトのサイズ */
+type SelectSize = "small" | "medium" | "large";
+/** セレクトの選択肢 */
+interface SelectOption {
+    /** 表示ラベル */
+    label: string;
+    /** 値 */
+    value: string;
+    /** 無効状態 */
+    disabled?: boolean;
+}
+interface SelectProps {
+    /** 選択肢リスト */
+    options: SelectOption[];
+    /** ラベルテキスト */
+    label?: string;
+    /** 必須フラグ（ラベルに * を付与する） */
+    required?: boolean;
+    /** プレースホルダー（未選択時に表示される） */
+    placeholder?: string;
+    /** エラーメッセージ（指定されるとエラー状態を表示する） */
+    error?: string;
+    /** 現在の値 */
+    value?: string;
+    /** 変更ハンドラー */
+    onChange?: (value: string) => void;
+    /** 無効状態 */
+    disabled?: boolean;
+    /** サイズ */
+    size?: SelectSize;
+    /** 追加のクラス名（ルートラッパーに適用） */
+    className?: string;
+    /** name 属性 */
+    name?: string;
+}
+/**
+ * セレクトコンポーネント
+ *
+ * ラベル・バリデーションエラーをセットで管理するドロップダウン選択UI
+ */
+declare const Select: React.FC<SelectProps>;
+
 /** スピナーのサイズ */
 type SpinnerSize = "small" | "medium" | "large";
 interface SpinnerProps {
@@ -35,14 +218,59 @@ interface SpinnerProps {
  */
 declare const Spinner: React.FC<SpinnerProps>;
 
-interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+/** テキストエリアのサイズ */
+type TextareaSize = "small" | "medium" | "large";
+interface TextareaProps {
+    /** ラベルテキスト */
+    label?: string;
+    /** 必須フラグ（ラベルに * を付与する） */
+    required?: boolean;
+    /** プレースホルダー */
+    placeholder?: string;
+    /** エラーメッセージ（指定されるとエラー状態を表示する） */
+    error?: string;
+    /** 現在の値 */
+    value?: string;
+    /** 変更ハンドラー */
+    onChange?: (value: string) => void;
+    /** 無効状態 */
+    disabled?: boolean;
+    /** サイズ */
+    size?: TextareaSize;
+    /** 行数 */
+    rows?: number;
+    /** 追加のクラス名（ルートラッパーに適用） */
+    className?: string;
+}
+/**
+ * テキストエリアコンポーネント
+ *
+ * ラベル・バリデーションエラーをセットで管理する複数行テキスト入力UI
+ */
+declare const Textarea: React.FC<TextareaProps>;
+
+/** トグルスイッチのサイズ */
+type ToggleSwitchSize = "small" | "medium" | "large";
+interface ToggleSwitchProps {
+    /** 現在の状態 */
+    checked: boolean;
+    /** 変更ハンドラー */
+    onChange: (checked: boolean) => void;
+    /** 無効状態 */
+    disabled?: boolean;
+    /** 表示ラベル */
+    label?: string;
+    /** サイズ */
+    size?: ToggleSwitchSize;
     /** 追加のクラス名 */
     className?: string;
 }
 /**
- * ドロワーのヘッダー部分のコンポーネント
+ * トグルスイッチコンポーネント
+ *
+ * ON/OFFの切り替えに使用するスイッチUI
  */
-declare const DrawerHeader: React.FC<DrawerHeaderProps>;
+declare const ToggleSwitch: React.FC<ToggleSwitchProps>;
 
 /** AppBarのポジション */
 type AppBarPosition = "fixed" | "static" | "absolute" | "relative" | "sticky";
@@ -58,38 +286,6 @@ interface AppBarProps extends React.HTMLAttributes<HTMLElement> {
  * アプリケーションバーコンポーネント
  */
 declare const AppBar: React.FC<AppBarProps>;
-
-/** ダイアログの最大幅 */
-type DialogMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl";
-interface DialogProps {
-    /** ダイアログの開閉状態 */
-    open: boolean;
-    /** ダイアログを閉じる関数 */
-    onClose: () => void;
-    /** ダイアログのタイトル */
-    title?: string;
-    /** ダイアログのコンテンツ */
-    children: ReactNode;
-    /** ダイアログの最大幅 */
-    maxWidth?: DialogMaxWidth;
-    /** 閉じるボタンを非表示にするかどうか */
-    hideCloseButton?: boolean;
-    /** 外クリックで閉じることを無効にするかどうか */
-    disableOutsideClick?: boolean;
-    /** 閉じるボタンのaria-label */
-    closeButtonLabel?: string;
-    /** 追加のクラス名 */
-    className?: string;
-}
-/**
- * 共通ダイアログコンポーネント
- *
- * - 背景をぼかして元のコンテンツが見える
- * - 外クリックでダイアログを閉じる
- * - ESCキーでダイアログを閉じる
- * - ダークモード対応
- */
-declare const Dialog: React.FC<DialogProps>;
 
 /** 確認ダイアログのバリアント */
 type ConfirmDialogVariant = "danger" | "warning" | "info";
@@ -123,6 +319,38 @@ interface ConfirmDialogProps {
  * 汎用確認ダイアログコンポーネント
  */
 declare const ConfirmDialog: React.FC<ConfirmDialogProps>;
+
+/** ダイアログの最大幅 */
+type DialogMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl";
+interface DialogProps {
+    /** ダイアログの開閉状態 */
+    open: boolean;
+    /** ダイアログを閉じる関数 */
+    onClose: () => void;
+    /** ダイアログのタイトル */
+    title?: string;
+    /** ダイアログのコンテンツ */
+    children: ReactNode;
+    /** ダイアログの最大幅 */
+    maxWidth?: DialogMaxWidth;
+    /** 閉じるボタンを非表示にするかどうか */
+    hideCloseButton?: boolean;
+    /** 外クリックで閉じることを無効にするかどうか */
+    disableOutsideClick?: boolean;
+    /** 閉じるボタンのaria-label */
+    closeButtonLabel?: string;
+    /** 追加のクラス名 */
+    className?: string;
+}
+/**
+ * 共通ダイアログコンポーネント
+ *
+ * - 背景をぼかして元のコンテンツが見える
+ * - 外クリックでダイアログを閉じる
+ * - ESCキーでダイアログを閉じる
+ * - ダークモード対応
+ */
+declare const Dialog: React.FC<DialogProps>;
 
 interface ListItemProps extends React.HTMLAttributes<HTMLDivElement> {
     /** リストアイテムの内容 */
@@ -373,6 +601,34 @@ interface AppLayoutProps {
  */
 declare const AppLayout: React.FC<AppLayoutProps>;
 
+interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * 空状態を表すアイコン
+     */
+    icon?: React.ReactNode;
+    /**
+     * 空状態のタイトル
+     */
+    title: string;
+    /**
+     * 補足説明テキスト
+     */
+    description?: string;
+    /**
+     * アクション要素（ボタン等）
+     */
+    action?: React.ReactNode;
+}
+/**
+ * EmptyState コンポーネント
+ *
+ * データが存在しない状態を統一した見た目で表示するテンプレート
+ *
+ * @example
+ * <EmptyState title="No data" description="Please add items." />
+ */
+declare const EmptyState: React.FC<EmptyStateProps>;
+
 /**
  * 指定された要素の外側がクリックされたときにコールバックを実行するフック
  */
@@ -395,4 +651,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Button, type ButtonProps, type ButtonSize, type ButtonVariant, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, EmptyState, type EmptyStateProps, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
