@@ -108,12 +108,6 @@ export const Interactive: Story = {
   },
   render: (args) => {
     const [checked, setChecked] = useState(args.checked);
-    return (
-      <ToggleSwitch
-        {...args}
-        checked={checked}
-        onChange={setChecked}
-      />
-    );
+    return <ToggleSwitch {...args} checked={checked} onChange={setChecked} />;
   },
 };
