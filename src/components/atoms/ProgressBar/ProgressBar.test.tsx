@@ -75,4 +75,30 @@ describe("ProgressBar", () => {
       "100",
     );
   });
+
+  it("トラックとフィルにテーマCSS変数の背景色が適用される", () => {
+    const { container } = render(<ProgressBar value={30} />);
+    const progressbar = screen.getByRole("progressbar");
+    const fill = container.querySelector('div[style="width: 30%;"]');
+
+    expect(progressbar).toHaveClass("bg-[var(--kui-color-info-subtle)]");
+    expect(fill).toHaveClass("bg-[var(--kui-color-info)]");
+  });
+
+  it("0 / 30 / 100 の値で幅が正しく計算される", () => {
+    const { container, rerender } = render(<ProgressBar value={0} />);
+    expect(
+      container.querySelector('div[style="width: 0%;"]'),
+    ).toBeInTheDocument();
+
+    rerender(<ProgressBar value={30} />);
+    expect(
+      container.querySelector('div[style="width: 30%;"]'),
+    ).toBeInTheDocument();
+
+    rerender(<ProgressBar value={100} />);
+    expect(
+      container.querySelector('div[style="width: 100%;"]'),
+    ).toBeInTheDocument();
+  });
 });
