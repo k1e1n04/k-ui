@@ -68,6 +68,26 @@ describe("Select", () => {
     expect(placeholderOption).toBeDisabled();
   });
 
+  it("clearable=true のとき placeholder の option が選択可能になる", () => {
+    render(
+      <Select
+        options={defaultOptions}
+        placeholder="Select a fruit"
+        value=""
+        clearable
+      />,
+    );
+    const placeholderOption = screen.getByRole("option", {
+      name: "Select a fruit",
+    });
+    expect(placeholderOption).not.toBeDisabled();
+  });
+
+  it("placeholder 指定時の未選択状態が安定し、初期値は空文字になる", () => {
+    render(<Select options={defaultOptions} placeholder="Select a fruit" />);
+    expect(screen.getByRole("combobox")).toHaveValue("");
+  });
+
   it("選択変更で onChange が呼ばれる", async () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
@@ -149,6 +169,72 @@ describe("Select", () => {
   it("name 属性がセットされる", () => {
     render(<Select options={defaultOptions} name="fruit" />);
     expect(screen.getByRole("combobox")).toHaveAttribute("name", "fruit");
+  });
+
+  it('clearable=true のとき選択解除で onChange("") が呼ばれる', async () => {
+    const user = userEvent.setup();
+    const handleChange = vi.fn();
+    render(
+      <Select
+        options={defaultOptions}
+        value="banana"
+        placeholder="Select a fruit"
+        clearable
+        onChange={handleChange}
+      />,
+    );
+
+    await user.selectOptions(screen.getByRole("combobox"), "");
+    expect(handleChange).toHaveBeenCalledWith("");
+  });
+
+  it("id / aria-* が透過される", () => {
+    render(
+      <Select
+        options={defaultOptions}
+        id="fruit-select"
+        aria-label="Fruit"
+        aria-describedby="hint-id"
+      />,
+    );
+    const select = screen.getByRole("combobox");
+    expect(select).toHaveAttribute("id", "fruit-select");
+    expect(select).toHaveAttribute("aria-label", "Fruit");
+    expect(select).toHaveAttribute("aria-describedby", "hint-id");
+  });
+
+  it("error があるとき aria-describedby に既存値と error id の両方が入る", () => {
+    render(
+      <Select
+        options={defaultOptions}
+        error="Error"
+        aria-describedby="hint-id"
+      />,
+    );
+    const select = screen.getByRole("combobox");
+    const errorElement = screen.getByRole("alert");
+    expect(select).toHaveAttribute(
+      "aria-describedby",
+      `hint-id ${errorElement.id}`,
+    );
+  });
+
+  it("onFocus / onBlur が呼ばれる", async () => {
+    const user = userEvent.setup();
+    const handleFocus = vi.fn();
+    const handleBlur = vi.fn();
+    render(
+      <Select
+        options={defaultOptions}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />,
+    );
+    const select = screen.getByRole("combobox");
+    await user.click(select);
+    await user.tab();
+    expect(handleFocus).toHaveBeenCalled();
+    expect(handleBlur).toHaveBeenCalled();
   });
 
   it("className がルートラッパーに渡される", () => {
