@@ -214,6 +214,40 @@ var Button = ({
 
 // src/components/atoms/Card/Card.tsx
 import { jsx as jsx5 } from "react/jsx-runtime";
+var paddingMap = {
+  none: "",
+  sm: "p-3",
+  md: "p-6",
+  lg: "p-8"
+};
+var shadowMap = {
+  none: "",
+  sm: "shadow-sm",
+  md: "shadow"
+};
+var Card = ({
+  padding = "md",
+  shadow = "md",
+  border = false,
+  className,
+  children,
+  ...props
+}) => {
+  return /* @__PURE__ */ jsx5(
+    "div",
+    {
+      className: cn(
+        "bg-white dark:bg-gray-800 rounded-lg",
+        paddingMap[padding],
+        shadowMap[shadow],
+        border && "border border-gray-200 dark:border-gray-700",
+        className
+      ),
+      ...props,
+      children
+    }
+  );
+};
 
 // src/components/atoms/Checkbox/Checkbox.tsx
 import { useId } from "react";
@@ -1975,6 +2009,7 @@ export {
   AppLayout,
   Badge,
   Button,
+  Card,
   Checkbox,
   ConfirmDialog,
   Dialog,

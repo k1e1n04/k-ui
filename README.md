@@ -54,6 +54,14 @@ import { Button } from "k-ui";
 import "k-ui/tokens.css";
 ```
 
+```tsx
+import { Card, Typography } from "k-ui";
+
+<Card padding="md" shadow="sm" border>
+  <Typography variant="body-md">Card content</Typography>
+</Card>;
+```
+
 Tailwind CSS プリセットも提供している。
 
 ```ts
