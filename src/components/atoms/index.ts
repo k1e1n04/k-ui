@@ -1,5 +1,7 @@
 export type { ButtonProps, ButtonSize, ButtonVariant } from "./Button";
 export { Button } from "./Button";
+export type { CardProps, PaddingSize, ShadowSize } from "./Card";
+export { Card } from "./Card";
 export type { CheckboxProps, CheckboxSize } from "./Checkbox";
 export { Checkbox } from "./Checkbox";
 export type { DrawerHeaderProps } from "./DrawerHeader";
