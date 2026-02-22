@@ -1713,6 +1713,41 @@ var AppLayout = ({
   ] });
 };
 
+// src/components/templates/EmptyState/EmptyState.tsx
+import { jsx as jsx23, jsxs as jsxs15 } from "react/jsx-runtime";
+var EmptyState = ({
+  icon,
+  title,
+  description,
+  action,
+  className,
+  ...props
+}) => {
+  return /* @__PURE__ */ jsxs15(
+    "div",
+    {
+      className: cn(
+        "flex w-full flex-col items-center justify-center gap-3 rounded-xl border border-[--kui-color-border] bg-[--kui-color-surface] px-6 py-10 text-center",
+        className
+      ),
+      ...props,
+      children: [
+        icon ? /* @__PURE__ */ jsx23(
+          "div",
+          {
+            className: "flex h-12 w-12 items-center justify-center text-[--kui-color-text-muted]",
+            "aria-hidden": "true",
+            children: icon
+          }
+        ) : null,
+        /* @__PURE__ */ jsx23("h2", { className: "text-lg font-semibold text-[--kui-color-text]", children: title }),
+        description ? /* @__PURE__ */ jsx23("p", { className: "max-w-md text-sm text-[--kui-color-text-muted]", children: description }) : null,
+        action ? /* @__PURE__ */ jsx23("div", { className: "pt-1", children: action }) : null
+      ]
+    }
+  );
+};
+
 // src/hooks/useClickOutside.ts
 import { useEffect as useEffect3 } from "react";
 function useClickOutside(ref, handler, enabled = true) {
@@ -1768,6 +1803,7 @@ export {
   ConfirmDialog,
   Dialog,
   DrawerHeader,
+  EmptyState,
   Input,
   ListItem,
   ListLayout,
