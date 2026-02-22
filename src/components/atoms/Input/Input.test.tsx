@@ -121,6 +121,33 @@ describe("Input", () => {
     expect(input).toHaveAttribute("type", type);
   });
 
+  describe("type=hidden", () => {
+    it("type=hidden のとき hidden input のみレンダリングされる", () => {
+      const { container } = render(<Input type="hidden" value="secret" />);
+      const input = container.querySelector("input");
+      expect(input).toHaveAttribute("type", "hidden");
+      expect(input).toHaveAttribute("value", "secret");
+    });
+
+    it("type=hidden のときラベルがレンダリングされない", () => {
+      render(<Input type="hidden" label="Hidden Field" value="secret" />);
+      expect(document.querySelector("label")).not.toBeInTheDocument();
+    });
+
+    it("type=hidden のときエラーメッセージがレンダリングされない", () => {
+      render(<Input type="hidden" error="Error" value="secret" />);
+      expect(document.querySelector("[role='alert']")).not.toBeInTheDocument();
+    });
+
+    it("type=hidden のとき name 属性がセットされる", () => {
+      const { container } = render(
+        <Input type="hidden" name="token" value="abc" />,
+      );
+      const input = container.querySelector("input");
+      expect(input).toHaveAttribute("name", "token");
+    });
+  });
+
   it("className がルートラッパーに渡される", () => {
     const { container } = render(<Input className="mt-4" />);
     expect(container.firstChild).toHaveClass("mt-4");

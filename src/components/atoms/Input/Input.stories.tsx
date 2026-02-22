@@ -10,7 +10,7 @@ const meta = {
   argTypes: {
     type: {
       control: "select",
-      options: ["text", "number", "date", "time", "url", "month"],
+      options: ["text", "number", "date", "time", "url", "month", "hidden"],
     },
     size: {
       control: "select",
@@ -144,6 +144,26 @@ export const TypeMonth: Story = {
     type: "month",
     label: "Month",
   },
+};
+
+/**
+ * type="hidden" はフォームライブラリ（react-hook-form 等）で内部値を保持する際に使用する。
+ * UI は一切レンダリングされず、name と value のみを持つ hidden input として機能する。
+ */
+export const TypeHidden: Story = {
+  args: {
+    type: "hidden",
+    name: "csrf_token",
+    value: "abc123",
+  },
+  render: (args) => (
+    <div>
+      <p className="text-sm text-gray-500 mb-2">
+        Hidden input（画面には何も表示されません）
+      </p>
+      <Input {...args} />
+    </div>
+  ),
 };
 
 /** インタラクティブなデモ */

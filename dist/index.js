@@ -395,6 +395,7 @@ var errorSizeStyles = {
 };
 var Input = ({
   type = "text",
+  name,
   label,
   required = false,
   placeholder,
@@ -408,6 +409,9 @@ var Input = ({
   const baseId = useId2();
   const inputId = `${baseId}-input`;
   const errorId = `${baseId}-error`;
+  if (type === "hidden") {
+    return /* @__PURE__ */ jsx9("input", { type: "hidden", name, value });
+  }
   return /* @__PURE__ */ jsxs2("div", { className: cn("flex flex-col", className), children: [
     label && /* @__PURE__ */ jsxs2(
       "label",
@@ -435,6 +439,7 @@ var Input = ({
       {
         id: inputId,
         type,
+        name,
         value,
         onChange: (e) => onChange?.(e.target.value),
         disabled,
@@ -714,18 +719,20 @@ var errorSizeStyles3 = {
 var Textarea = ({
   label,
   required = false,
-  placeholder,
   error,
   value,
   onChange,
-  disabled = false,
   size = "medium",
   rows = 3,
-  className
+  className,
+  id,
+  "aria-describedby": ariaDescribedBy,
+  ...textareaProps
 }) => {
   const baseId = useId4();
-  const textareaId = `${baseId}-textarea`;
+  const textareaId = id ?? `${baseId}-textarea`;
   const errorId = `${baseId}-error`;
+  const mergedAriaDescribedBy = [ariaDescribedBy, error ? errorId : void 0].filter(Boolean).join(" ").trim();
   return /* @__PURE__ */ jsxs5("div", { className: cn("flex flex-col", className), children: [
     label && /* @__PURE__ */ jsxs5(
       "label",
@@ -754,12 +761,11 @@ var Textarea = ({
         id: textareaId,
         value,
         onChange: (e) => onChange?.(e.target.value),
-        disabled,
-        placeholder,
         required,
         rows,
+        ...textareaProps,
         "aria-invalid": !!error,
-        "aria-describedby": error ? errorId : void 0,
+        "aria-describedby": mergedAriaDescribedBy || void 0,
         className: cn(
           "w-full rounded-md border bg-white transition-colors duration-150",
           "text-gray-900 placeholder:text-gray-400",
@@ -774,7 +780,7 @@ var Textarea = ({
             "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
             "dark:border-gray-600"
           ],
-          disabled && "cursor-not-allowed opacity-50"
+          textareaProps.disabled && "cursor-not-allowed opacity-50"
         )
       }
     ),

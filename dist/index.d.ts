@@ -127,12 +127,14 @@ interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
 declare const Heading: React.FC<HeadingProps>;
 
 /** インプットのタイプ */
-type InputType = "text" | "number" | "date" | "time" | "url" | "month";
+type InputType = "text" | "number" | "date" | "time" | "url" | "month" | "hidden";
 /** インプットのサイズ */
 type InputSize = "small" | "medium" | "large";
 interface InputProps {
     /** インプットのタイプ */
     type?: InputType;
+    /** フォーム送信時のフィールド名（type="hidden" で特に重要） */
+    name?: string;
     /** ラベルテキスト */
     label?: string;
     /** 必須フラグ（ラベルに * を付与する） */
@@ -238,13 +240,9 @@ declare const Spinner: React.FC<SpinnerProps>;
 
 /** テキストエリアのサイズ */
 type TextareaSize = "small" | "medium" | "large";
-interface TextareaProps {
+interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange"> {
     /** ラベルテキスト */
     label?: string;
-    /** 必須フラグ（ラベルに * を付与する） */
-    required?: boolean;
-    /** プレースホルダー */
-    placeholder?: string;
     /** エラーメッセージ（指定されるとエラー状態を表示する） */
     error?: string;
     /** 現在の値 */
