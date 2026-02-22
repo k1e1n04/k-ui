@@ -85,6 +85,48 @@ interface InputProps {
  */
 declare const Input: React.FC<InputProps>;
 
+/** セレクトのサイズ */
+type SelectSize = "small" | "medium" | "large";
+/** セレクトの選択肢 */
+interface SelectOption {
+    /** 表示ラベル */
+    label: string;
+    /** 値 */
+    value: string;
+    /** 無効状態 */
+    disabled?: boolean;
+}
+interface SelectProps {
+    /** 選択肢リスト */
+    options: SelectOption[];
+    /** ラベルテキスト */
+    label?: string;
+    /** 必須フラグ（ラベルに * を付与する） */
+    required?: boolean;
+    /** プレースホルダー（未選択時に表示される） */
+    placeholder?: string;
+    /** エラーメッセージ（指定されるとエラー状態を表示する） */
+    error?: string;
+    /** 現在の値 */
+    value?: string;
+    /** 変更ハンドラー */
+    onChange?: (value: string) => void;
+    /** 無効状態 */
+    disabled?: boolean;
+    /** サイズ */
+    size?: SelectSize;
+    /** 追加のクラス名（ルートラッパーに適用） */
+    className?: string;
+    /** name 属性 */
+    name?: string;
+}
+/**
+ * セレクトコンポーネント
+ *
+ * ラベル・バリデーションエラーをセットで管理するドロップダウン選択UI
+ */
+declare const Select: React.FC<SelectProps>;
+
 /** スピナーのサイズ */
 type SpinnerSize = "small" | "medium" | "large";
 interface SpinnerProps {
@@ -505,4 +547,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
