@@ -50,14 +50,14 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       aria-valuemax={safeMax}
       aria-label={label}
       className={cn(
-        "w-full overflow-hidden rounded-full bg-[--kui-color-surface-raised]",
+        "w-full overflow-hidden rounded-full bg-[var(--kui-color-info-subtle)]",
         sizeStyles[size],
         className,
       )}
       {...props}
     >
       <div
-        className="h-full rounded-full bg-[--kui-color-info] transition-all duration-500 ease-in-out"
+        className="h-full rounded-full bg-[var(--kui-color-info)] transition-all duration-500 ease-in-out"
         style={{ width: `${progressPercentage}%` }}
       />
     </div>

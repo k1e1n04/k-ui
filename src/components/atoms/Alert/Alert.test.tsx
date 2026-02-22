@@ -14,7 +14,16 @@ describe("Alert", () => {
   it("デフォルトで info バリアントのスタイルが適用される", () => {
     render(<Alert message="テスト" />);
     const alert = screen.getByRole("alert");
-    expect(alert).toHaveClass("bg-[--kui-color-info-subtle]/20");
+    expect(alert.getAttribute("style")).toContain(
+      "background-color: var(--kui-color-info-subtle);",
+    );
+    expect(alert.getAttribute("style")).toContain(
+      "border-color: var(--kui-color-info);",
+    );
+    expect(alert.getAttribute("style")).toContain(
+      "color: var(--kui-color-info);",
+    );
+    expect(alert).toHaveClass("border-l-4");
   });
 
   it.each([
@@ -29,22 +38,43 @@ describe("Alert", () => {
 
   it("variant=error のとき danger スタイルが適用される", () => {
     render(<Alert message="テスト" variant="error" />);
-    expect(screen.getByRole("alert")).toHaveClass(
-      "bg-[--kui-color-danger-subtle]",
+    const alert = screen.getByRole("alert");
+    expect(alert.getAttribute("style")).toContain(
+      "background-color: var(--kui-color-danger-subtle);",
+    );
+    expect(alert.getAttribute("style")).toContain(
+      "border-color: var(--kui-color-danger);",
+    );
+    expect(alert.getAttribute("style")).toContain(
+      "color: var(--kui-color-danger);",
     );
   });
 
   it("variant=success のとき success スタイルが適用される", () => {
     render(<Alert message="テスト" variant="success" />);
-    expect(screen.getByRole("alert")).toHaveClass(
-      "bg-[--kui-color-success-subtle]",
+    const alert = screen.getByRole("alert");
+    expect(alert.getAttribute("style")).toContain(
+      "background-color: var(--kui-color-success-subtle);",
+    );
+    expect(alert.getAttribute("style")).toContain(
+      "border-color: var(--kui-color-success);",
+    );
+    expect(alert.getAttribute("style")).toContain(
+      "color: var(--kui-color-success);",
     );
   });
 
   it("variant=warning のとき warning スタイルが適用される", () => {
     render(<Alert message="テスト" variant="warning" />);
-    expect(screen.getByRole("alert")).toHaveClass(
-      "bg-[--kui-color-warning-subtle]/30",
+    const alert = screen.getByRole("alert");
+    expect(alert.getAttribute("style")).toContain(
+      "background-color: var(--kui-color-warning-subtle);",
+    );
+    expect(alert.getAttribute("style")).toContain(
+      "border-color: var(--kui-color-warning);",
+    );
+    expect(alert.getAttribute("style")).toContain(
+      "color: var(--kui-color-warning);",
     );
   });
 

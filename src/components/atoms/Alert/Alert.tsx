@@ -1,8 +1,8 @@
 "use client";
 
 import type React from "react";
-
 import { cn } from "../../../utils/cn";
+import { Typography } from "../Typography";
 
 /**
  * Alertコンポーネントのバリアント
@@ -21,14 +21,41 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   message: string;
 }
 
-const variantStyles: Record<AlertVariant, string> = {
-  error:
-    "bg-[--kui-color-danger-subtle] border border-[--kui-color-danger-subtle] text-[--kui-color-danger]",
-  warning:
-    "bg-[--kui-color-warning-subtle]/30 border border-[--kui-color-warning-subtle] text-[--kui-color-warning]",
-  info: "bg-[--kui-color-info-subtle]/20 border border-[--kui-color-info-subtle] text-[--kui-color-info]",
-  success:
-    "bg-[--kui-color-success-subtle] border border-[--kui-color-success-subtle] text-[--kui-color-success]",
+const variantStyles: Record<AlertVariant, React.CSSProperties> = {
+  error: {
+    backgroundColor: "var(--kui-color-danger-subtle)",
+    borderColor: "var(--kui-color-danger)",
+    borderLeftColor: "var(--kui-color-danger)",
+    color: "var(--kui-color-danger)",
+  },
+  warning: {
+    backgroundColor: "var(--kui-color-warning-subtle)",
+    borderColor: "var(--kui-color-warning)",
+    borderLeftColor: "var(--kui-color-warning)",
+    color: "var(--kui-color-warning)",
+  },
+  info: {
+    backgroundColor: "var(--kui-color-info-subtle)",
+    borderColor: "var(--kui-color-info)",
+    borderLeftColor: "var(--kui-color-info)",
+    color: "var(--kui-color-info)",
+  },
+  success: {
+    backgroundColor: "var(--kui-color-success-subtle)",
+    borderColor: "var(--kui-color-success)",
+    borderLeftColor: "var(--kui-color-success)",
+    color: "var(--kui-color-success)",
+  },
+};
+
+const variantToneMap: Record<
+  AlertVariant,
+  "danger" | "warning" | "info" | "success"
+> = {
+  error: "danger",
+  warning: "warning",
+  info: "info",
+  success: "success",
 };
 
 /**
@@ -46,15 +73,19 @@ export const Alert: React.FC<AlertProps> = ({
   variant = "info",
   message,
   className,
+  style,
   ...props
 }) => {
   return (
     <div
       role="alert"
-      className={cn("px-4 py-3 rounded-md", variantStyles[variant], className)}
+      className={cn("rounded-md border border-l-4 px-4 py-3", className)}
+      style={{ ...variantStyles[variant], ...style }}
       {...props}
     >
-      {message}
+      <Typography as="span" variant="body-sm" tone={variantToneMap[variant]}>
+        {message}
+      </Typography>
     </div>
   );
 };

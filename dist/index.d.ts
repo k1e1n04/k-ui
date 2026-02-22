@@ -76,6 +76,45 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  */
 declare const Button: React.FC<ButtonProps>;
 
+type PaddingSize = "none" | "sm" | "md" | "lg";
+type ShadowSize = "none" | "sm" | "md";
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * パディングのサイズ
+     * @default 'md'
+     */
+    padding?: PaddingSize;
+    /**
+     * シャドウのサイズ
+     * @default 'md'
+     */
+    shadow?: ShadowSize;
+    /**
+     * ボーダーの表示
+     * @default false
+     */
+    border?: boolean;
+    children?: React.ReactNode;
+}
+/**
+ * Card コンポーネント
+ *
+ * コンテンツを囲むカードコンポーネント
+ *
+ * @example
+ * // 基本的な使用
+ * <Card>
+ *   <p>Content here</p>
+ * </Card>
+ *
+ * @example
+ * // カスタマイズ例
+ * <Card padding="lg" shadow="sm" border>
+ *   <p>Custom content</p>
+ * </Card>
+ */
+declare const Card: React.FC<CardProps>;
+
 /** チェックボックスのサイズ */
 type CheckboxSize = "small" | "medium" | "large";
 interface CheckboxProps {
@@ -108,13 +147,33 @@ interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 declare const DrawerHeader: React.FC<DrawerHeaderProps>;
 
+type HeadingAs = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+type HeadingSize = "xl" | "lg" | "md" | "sm";
+type HeadingTone = "default" | "muted" | "inverse";
+interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
+    /** レンダリングする見出しタグ */
+    as?: HeadingAs;
+    /** 見出しサイズ */
+    size?: HeadingSize;
+    /** 見出しカラー */
+    tone?: HeadingTone;
+}
+/**
+ * Heading コンポーネント
+ *
+ * ページ・セクション見出しの階層表現を統一するためのコンポーネント
+ */
+declare const Heading: React.FC<HeadingProps>;
+
 /** インプットのタイプ */
-type InputType = "text" | "number" | "date" | "time" | "url" | "month";
+type InputType = "text" | "number" | "date" | "time" | "url" | "month" | "hidden";
 /** インプットのサイズ */
 type InputSize = "small" | "medium" | "large";
 interface InputProps {
     /** インプットのタイプ */
     type?: InputType;
+    /** フォーム送信時のフィールド名（type="hidden" で特に重要） */
+    name?: string;
     /** ラベルテキスト */
     label?: string;
     /** 必須フラグ（ラベルに * を付与する） */
@@ -220,13 +279,9 @@ declare const Spinner: React.FC<SpinnerProps>;
 
 /** テキストエリアのサイズ */
 type TextareaSize = "small" | "medium" | "large";
-interface TextareaProps {
+interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange"> {
     /** ラベルテキスト */
     label?: string;
-    /** 必須フラグ（ラベルに * を付与する） */
-    required?: boolean;
-    /** プレースホルダー */
-    placeholder?: string;
     /** エラーメッセージ（指定されるとエラー状態を表示する） */
     error?: string;
     /** 現在の値 */
@@ -271,6 +326,29 @@ interface ToggleSwitchProps {
  * ON/OFFの切り替えに使用するスイッチUI
  */
 declare const ToggleSwitch: React.FC<ToggleSwitchProps>;
+
+type TypographyAs = "p" | "span" | "div" | "label" | "small";
+type TypographyVariant = "body-sm" | "body-md" | "body-lg" | "caption" | "label";
+type TypographyTone = "default" | "muted" | "inverse" | "danger" | "success" | "info" | "warning";
+type TypographyWeight = "normal" | "medium" | "semibold" | "bold";
+interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
+    /** レンダリングするHTML要素 */
+    as?: TypographyAs;
+    /** タイポグラフィの種別 */
+    variant?: TypographyVariant;
+    /** テキストのトーン */
+    tone?: TypographyTone;
+    /** 文字の太さ */
+    weight?: TypographyWeight;
+    /** 1行省略表示 */
+    truncate?: boolean;
+}
+/**
+ * Typography コンポーネント
+ *
+ * 本文・補助テキスト・ラベルなどの文字スタイルを統一するための基本コンポーネント
+ */
+declare const Typography: React.FC<TypographyProps>;
 
 /** AppBarのポジション */
 type AppBarPosition = "fixed" | "static" | "absolute" | "relative" | "sticky";
@@ -651,4 +729,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, EmptyState, type EmptyStateProps, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Card, type CardProps, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, EmptyState, type EmptyStateProps, Heading, type HeadingAs, type HeadingProps, type HeadingSize, type HeadingTone, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type PaddingSize, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, type ShadowSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, Typography, type TypographyAs, type TypographyProps, type TypographyTone, type TypographyVariant, type TypographyWeight, cn, useClickOutside, useEscapeKey, useMediaQuery };

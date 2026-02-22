@@ -59,3 +59,13 @@ export const CustomMax: Story = {
     label: "Progress 32/40",
   },
 };
+
+export const VisibilityStates: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <ProgressBar value={0} max={100} label="Progress 0/100" />
+      <ProgressBar value={30} max={100} label="Progress 30/100" />
+      <ProgressBar value={100} max={100} label="Progress 100/100" />
+    </div>
+  ),
+};

@@ -25,6 +25,9 @@ const meta = {
     required: {
       control: "boolean",
     },
+    clearable: {
+      control: "boolean",
+    },
   },
   args: {
     options: sampleOptions,
@@ -132,6 +135,18 @@ export const WithDisabledOption: Story = {
       { label: "Banana (sold out)", value: "banana", disabled: true },
       { label: "Cherry", value: "cherry" },
     ],
+  },
+};
+
+export const Clearable: Story = {
+  args: {
+    label: "Fruit",
+    placeholder: "Select a fruit",
+    clearable: true,
+  },
+  render: (args) => {
+    const [value, setValue] = useState("banana");
+    return <Select {...args} value={value} onChange={setValue} />;
   },
 };
 

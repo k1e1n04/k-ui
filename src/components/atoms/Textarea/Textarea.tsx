@@ -4,19 +4,19 @@ import type React from "react";
 import { useId } from "react";
 
 import { cn } from "../../../utils/cn";
+import { FormField } from "../FormField";
 
 /** テキストエリアのサイズ */
 export type TextareaSize = "small" | "medium" | "large";
 
-export interface TextareaProps {
+export interface TextareaProps
+  extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange"> {
   /** ラベルテキスト */
   label?: string;
-  /** 必須フラグ（ラベルに * を付与する） */
-  required?: boolean;
-  /** プレースホルダー */
-  placeholder?: string;
   /** エラーメッセージ（指定されるとエラー状態を表示する） */
   error?: string;
+  /** 補助説明 */
+  description?: string;
   /** 現在の値 */
   value?: string;
   /** 変更ハンドラー */
@@ -31,25 +31,11 @@ export interface TextareaProps {
   className?: string;
 }
 
-/** ラベルのサイズスタイル */
-const labelSizeStyles: Record<TextareaSize, string> = {
-  small: "text-xs mb-1",
-  medium: "text-sm mb-1",
-  large: "text-base mb-1.5",
-};
-
 /** テキストエリアのサイズスタイル */
 const textareaSizeStyles: Record<TextareaSize, string> = {
   small: "text-xs px-2 py-1",
   medium: "text-sm px-3 py-2",
   large: "text-base px-4 py-2.5",
-};
-
-/** エラーテキストのサイズスタイル */
-const errorSizeStyles: Record<TextareaSize, string> = {
-  small: "text-xs mt-1",
-  medium: "text-xs mt-1",
-  large: "text-sm mt-1.5",
 };
 
 /**
@@ -60,84 +46,61 @@ const errorSizeStyles: Record<TextareaSize, string> = {
 export const Textarea: React.FC<TextareaProps> = ({
   label,
   required = false,
-  placeholder,
   error,
+  description,
   value,
   onChange,
-  disabled = false,
   size = "medium",
   rows = 3,
   className,
+  id,
+  "aria-describedby": ariaDescribedBy,
+  ...textareaProps
 }) => {
   const baseId = useId();
-  const textareaId = `${baseId}-textarea`;
-  const errorId = `${baseId}-error`;
+  const textareaId = id ?? `${baseId}-textarea`;
 
   return (
-    <div className={cn("flex flex-col", className)}>
-      {/* ラベル */}
-      {label && (
-        <label
-          htmlFor={textareaId}
+    <FormField
+      label={label}
+      description={description}
+      required={required}
+      error={error}
+      size={size}
+      className={className}
+      htmlFor={textareaId}
+      aria-describedby={ariaDescribedBy}
+    >
+      {({ describedBy }) => (
+        <textarea
+          id={textareaId}
+          value={value}
+          onChange={(e) => onChange?.(e.target.value)}
+          required={required}
+          rows={rows}
+          {...textareaProps}
+          aria-invalid={!!error}
+          aria-describedby={describedBy}
           className={cn(
-            "font-medium text-gray-700 dark:text-gray-300",
-            labelSizeStyles[size],
+            "w-full rounded-md border bg-white transition-colors duration-150",
+            "text-gray-900 placeholder:text-gray-400",
+            "dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500",
+            "resize-y",
+            textareaSizeStyles[size],
+            error
+              ? [
+                  "border-[var(--kui-color-danger)]",
+                  "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1",
+                ]
+              : [
+                  "border-[var(--kui-color-border-strong)]",
+                  "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
+                  "dark:border-gray-600",
+                ],
+            textareaProps.disabled && "cursor-not-allowed opacity-50",
           )}
-        >
-          {label}
-          {required && (
-            <span
-              aria-hidden="true"
-              className="ml-0.5 text-[var(--kui-color-danger)]"
-            >
-              {" *"}
-            </span>
-          )}
-        </label>
+        />
       )}
-      {/* テキストエリア */}
-      <textarea
-        id={textareaId}
-        value={value}
-        onChange={(e) => onChange?.(e.target.value)}
-        disabled={disabled}
-        placeholder={placeholder}
-        required={required}
-        rows={rows}
-        aria-invalid={!!error}
-        aria-describedby={error ? errorId : undefined}
-        className={cn(
-          "w-full rounded-md border bg-white transition-colors duration-150",
-          "text-gray-900 placeholder:text-gray-400",
-          "dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500",
-          "resize-y",
-          textareaSizeStyles[size],
-          error
-            ? [
-                "border-[var(--kui-color-danger)]",
-                "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1",
-              ]
-            : [
-                "border-[var(--kui-color-border-strong)]",
-                "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
-                "dark:border-gray-600",
-              ],
-          disabled && "cursor-not-allowed opacity-50",
-        )}
-      />
-      {/* エラーメッセージ */}
-      {error && (
-        <p
-          id={errorId}
-          role="alert"
-          className={cn(
-            "text-[var(--kui-color-danger)]",
-            errorSizeStyles[size],
-          )}
-        >
-          {error}
-        </p>
-      )}
-    </div>
+    </FormField>
   );
 };

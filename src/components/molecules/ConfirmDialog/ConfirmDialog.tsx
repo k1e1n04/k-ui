@@ -2,8 +2,8 @@
 
 import type React from "react";
 import type { ReactNode } from "react";
-
 import { cn } from "../../../utils/cn";
+import { Heading, Typography } from "../../atoms";
 import { Dialog } from "../Dialog";
 
 /** 確認ダイアログのバリアント */
@@ -110,17 +110,21 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         >
           {icon || <DefaultIcon className={cn("h-6 w-6", styles.iconColor)} />}
         </div>
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+        <Heading
+          as="h3"
+          size="md"
+          style={{ fontWeight: "var(--kui-font-weight-medium)" }}
+        >
           {title}
-        </h3>
+        </Heading>
       </div>
 
       <div className="mb-6">
-        <div className="text-gray-700 dark:text-gray-300">{message}</div>
+        <Typography as="div">{message}</Typography>
         {description && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          <Typography className="mt-2" variant="body-sm" tone="muted">
             {description}
-          </p>
+          </Typography>
         )}
       </div>
 

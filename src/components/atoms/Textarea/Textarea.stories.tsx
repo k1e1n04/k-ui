@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Textarea } from "./Textarea";
 
@@ -125,5 +125,57 @@ export const Interactive: Story = {
   render: (args) => {
     const [value, setValue] = useState("");
     return <Textarea {...args} value={value} onChange={setValue} />;
+  },
+};
+
+/** キーボードイベント利用例（Enter送信 / Shift+Enter改行 / IME変換中は送信しない） */
+export const KeyboardEvents: Story = {
+  args: {
+    label: "Composer",
+    placeholder: "Type a message",
+  },
+  render: (args) => {
+    const [value, setValue] = useState("");
+    const [isComposing, setIsComposing] = useState(false);
+    const [submitted, setSubmitted] = useState<{ id: number; text: string }[]>(
+      [],
+    );
+    const messageIdRef = useRef(0);
+
+    return (
+      <div className="space-y-3">
+        <Textarea
+          {...args}
+          value={value}
+          onChange={setValue}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
+          onKeyDown={(e) => {
+            if (e.key !== "Enter") return;
+            if (e.shiftKey) return;
+            if (isComposing || e.nativeEvent.isComposing) return;
+
+            e.preventDefault();
+            const trimmed = value.trim();
+            if (!trimmed) return;
+
+            messageIdRef.current += 1;
+            setSubmitted((prev) => [
+              ...prev,
+              { id: messageIdRef.current, text: trimmed },
+            ]);
+            setValue("");
+          }}
+        />
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          Enter: submit / Shift+Enter: newline / IME composing Enter: ignored
+        </p>
+        <ul className="list-disc space-y-1 pl-5 text-sm">
+          {submitted.map((item) => (
+            <li key={item.id}>{item.text}</li>
+          ))}
+        </ul>
+      </div>
+    );
   },
 };
