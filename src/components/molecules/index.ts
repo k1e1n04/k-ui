@@ -2,6 +2,14 @@ export type { AppBarColor, AppBarPosition, AppBarProps } from "./AppBar";
 export { AppBar } from "./AppBar";
 export type { ConfirmDialogProps, ConfirmDialogVariant } from "./ConfirmDialog";
 export { ConfirmDialog } from "./ConfirmDialog";
+export type {
+  DataTableAction,
+  DataTableActions,
+  DataTableColumn,
+  DataTableMobileMode,
+  DataTableProps,
+} from "./DataTable";
+export { DataTable } from "./DataTable";
 export type { DialogMaxWidth, DialogProps } from "./Dialog";
 export { Dialog } from "./Dialog";
 export type { ListItemProps } from "./ListItem";
