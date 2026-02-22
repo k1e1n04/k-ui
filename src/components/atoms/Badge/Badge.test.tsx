@@ -11,16 +11,21 @@ describe("Badge", () => {
 
   it("デフォルトで info バリアントのスタイルが適用される", () => {
     render(<Badge>Info</Badge>);
-    expect(screen.getByText("Info")).toHaveClass("bg-[--kui-color-info-subtle]");
+    expect(screen.getByText("Info")).toHaveClass(
+      "bg-[--kui-color-info-subtle]",
+    );
   });
 
-  it.each(["info", "success", "warning", "danger", "neutral"] as const)(
-    "variant=%s でレンダリングされる",
-    (variant) => {
-      render(<Badge variant={variant}>Label</Badge>);
-      expect(screen.getByText("Label")).toBeInTheDocument();
-    },
-  );
+  it.each([
+    "info",
+    "success",
+    "warning",
+    "danger",
+    "neutral",
+  ] as const)("variant=%s でレンダリングされる", (variant) => {
+    render(<Badge variant={variant}>Label</Badge>);
+    expect(screen.getByText("Label")).toBeInTheDocument();
+  });
 
   it("variant=success のとき success スタイルが適用される", () => {
     render(<Badge variant="success">Success</Badge>);

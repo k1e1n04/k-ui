@@ -7,7 +7,12 @@ import { cn } from "../../../utils/cn";
 /**
  * Badgeコンポーネントのバリアント
  */
-export type BadgeVariant = "info" | "success" | "warning" | "danger" | "neutral";
+export type BadgeVariant =
+  | "info"
+  | "success"
+  | "warning"
+  | "danger"
+  | "neutral";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
