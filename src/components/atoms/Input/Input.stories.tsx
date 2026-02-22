@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { FormEvent } from "react";
 import { useState } from "react";
 
 import { Input } from "./Input";
@@ -124,6 +125,20 @@ export const TypeNumber: Story = {
   },
 };
 
+export const NumberWithConstraints: Story = {
+  args: {
+    type: "number",
+    label: "Amount",
+    name: "amount",
+    min: 0,
+    max: 100,
+    step: 5,
+    inputMode: "numeric",
+    autoComplete: "off",
+    placeholder: "0",
+  },
+};
+
 export const TypeTime: Story = {
   args: {
     type: "time",
@@ -175,5 +190,59 @@ export const Interactive: Story = {
   render: (args) => {
     const [value, setValue] = useState("");
     return <Input {...args} value={value} onChange={setValue} />;
+  },
+};
+
+/** フォーム送信時に name/value が連携される例 */
+export const FormIntegration: Story = {
+  render: () => {
+    const [name, setName] = useState("");
+    const [age, setAge] = useState("");
+    const [submitted, setSubmitted] = useState<Record<string, string> | null>(
+      null,
+    );
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      setSubmitted({
+        displayName: String(formData.get("displayName") ?? ""),
+        age: String(formData.get("age") ?? ""),
+      });
+    };
+
+    return (
+      <form onSubmit={handleSubmit} className="space-y-3 max-w-sm">
+        <Input
+          label="Display Name"
+          name="displayName"
+          value={name}
+          onChange={setName}
+          autoComplete="nickname"
+        />
+        <Input
+          type="number"
+          label="Age"
+          name="age"
+          value={age}
+          onChange={setAge}
+          min={0}
+          max={120}
+          step={1}
+          inputMode="numeric"
+        />
+        <button
+          type="submit"
+          className="px-3 py-2 rounded-md bg-[var(--kui-color-info)] text-white text-sm"
+        >
+          Submit
+        </button>
+        {submitted && (
+          <pre className="text-xs bg-gray-100 p-2 rounded-md">
+            {JSON.stringify(submitted, null, 2)}
+          </pre>
+        )}
+      </form>
+    );
   },
 };
