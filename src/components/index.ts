@@ -11,6 +11,8 @@ export type {
   InputType,
   SpinnerProps,
   SpinnerSize,
+  TextareaProps,
+  TextareaSize,
   ToggleSwitchProps,
   ToggleSwitchSize,
 } from "./atoms";
@@ -20,6 +22,7 @@ export {
   DrawerHeader,
   Input,
   Spinner,
+  Textarea,
   ToggleSwitch,
 } from "./atoms";
 // Molecules
