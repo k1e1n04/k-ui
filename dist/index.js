@@ -214,6 +214,40 @@ var Button = ({
 
 // src/components/atoms/Card/Card.tsx
 import { jsx as jsx5 } from "react/jsx-runtime";
+var paddingMap = {
+  none: "",
+  sm: "p-3",
+  md: "p-6",
+  lg: "p-8"
+};
+var shadowMap = {
+  none: "",
+  sm: "shadow-sm",
+  md: "shadow"
+};
+var Card = ({
+  padding = "md",
+  shadow = "md",
+  border = false,
+  className,
+  children,
+  ...props
+}) => {
+  return /* @__PURE__ */ jsx5(
+    "div",
+    {
+      className: cn(
+        "bg-white dark:bg-gray-800 rounded-lg",
+        paddingMap[padding],
+        shadowMap[shadow],
+        border && "border border-gray-200 dark:border-gray-700",
+        className
+      ),
+      ...props,
+      children
+    }
+  );
+};
 
 // src/components/atoms/Checkbox/Checkbox.tsx
 import { useId } from "react";
@@ -714,18 +748,20 @@ var errorSizeStyles3 = {
 var Textarea = ({
   label,
   required = false,
-  placeholder,
   error,
   value,
   onChange,
-  disabled = false,
   size = "medium",
   rows = 3,
-  className
+  className,
+  id,
+  "aria-describedby": ariaDescribedBy,
+  ...textareaProps
 }) => {
   const baseId = useId4();
-  const textareaId = `${baseId}-textarea`;
+  const textareaId = id ?? `${baseId}-textarea`;
   const errorId = `${baseId}-error`;
+  const mergedAriaDescribedBy = [ariaDescribedBy, error ? errorId : void 0].filter(Boolean).join(" ").trim();
   return /* @__PURE__ */ jsxs5("div", { className: cn("flex flex-col", className), children: [
     label && /* @__PURE__ */ jsxs5(
       "label",
@@ -754,12 +790,11 @@ var Textarea = ({
         id: textareaId,
         value,
         onChange: (e) => onChange?.(e.target.value),
-        disabled,
-        placeholder,
         required,
         rows,
+        ...textareaProps,
         "aria-invalid": !!error,
-        "aria-describedby": error ? errorId : void 0,
+        "aria-describedby": mergedAriaDescribedBy || void 0,
         className: cn(
           "w-full rounded-md border bg-white transition-colors duration-150",
           "text-gray-900 placeholder:text-gray-400",
@@ -774,7 +809,7 @@ var Textarea = ({
             "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
             "dark:border-gray-600"
           ],
-          disabled && "cursor-not-allowed opacity-50"
+          textareaProps.disabled && "cursor-not-allowed opacity-50"
         )
       }
     ),
@@ -1969,6 +2004,7 @@ export {
   AppLayout,
   Badge,
   Button,
+  Card,
   Checkbox,
   ConfirmDialog,
   Dialog,
