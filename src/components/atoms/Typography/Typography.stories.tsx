@@ -89,10 +89,10 @@ export const LightDarkComparison: Story = {
         className="rounded-md border p-4"
         style={
           {
-            "--kui-color-surface": "#1f2937",
-            "--kui-color-border": "#374151",
             "--kui-color-text": "#f3f4f6",
             "--kui-color-text-muted": "#9ca3af",
+            backgroundColor: "#111827",
+            borderColor: "#374151",
           } as React.CSSProperties
         }
       >
