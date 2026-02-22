@@ -9,4 +9,8 @@ describe("public exports", () => {
   it("exports DataTable from package root", () => {
     expect(kui.DataTable).toBeTypeOf("function");
   });
+
+  it("exports FormField from package root", () => {
+    expect(kui.FormField).toBeTypeOf("function");
+  });
 });

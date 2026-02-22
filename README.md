@@ -63,22 +63,31 @@ import { Card, Typography } from "k-ui";
 ```
 
 ```tsx
-import { Select } from "k-ui";
+import { FormField, Select } from "k-ui";
 
-<Select
+<FormField
   label="Fruit"
-  name="fruit"
-  placeholder="Select a fruit"
-  clearable
-  options={[
-    { label: "Apple", value: "apple" },
-    { label: "Banana", value: "banana" },
-  ]}
-  onChange={(value) => console.log(value)}
-/>;
+  description="お気に入りの果物を選択してください。"
+  required
+>
+  {({ describedBy }) => (
+    <Select
+      name="fruit"
+      placeholder="Select a fruit"
+      clearable
+      options={[
+        { label: "Apple", value: "apple" },
+        { label: "Banana", value: "banana" },
+      ]}
+      aria-describedby={describedBy}
+      onChange={(value) => console.log(value)}
+    />
+  )}
+</FormField>;
 ```
 
-`Select` は `name / id / onBlur / onFocus / aria-*` など標準の `select` 属性を透過できる。
+フォーム入力要素は `FormField` と組み合わせる構成を推奨。
+`label / description / required / error` と `aria-describedby` の連携を統一できる。
 
 Tailwind CSS プリセットも提供している。
 
