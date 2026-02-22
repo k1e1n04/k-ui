@@ -54,3 +54,14 @@ export const ErrorVariant: Story = {
     message: "An error has occurred.",
   },
 };
+
+export const AllVariants: Story = {
+  render: () => (
+    <div className="space-y-3">
+      <Alert variant="success" message="Your operation was successful." />
+      <Alert variant="info" message="Here is some information for you." />
+      <Alert variant="warning" message="This is a warning message." />
+      <Alert variant="error" message="An error has occurred." />
+    </div>
+  ),
+};

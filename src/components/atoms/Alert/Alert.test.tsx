@@ -14,7 +14,9 @@ describe("Alert", () => {
   it("デフォルトで info バリアントのスタイルが適用される", () => {
     render(<Alert message="テスト" />);
     const alert = screen.getByRole("alert");
-    expect(alert).toHaveClass("bg-[--kui-color-info-subtle]/20");
+    expect(alert).toHaveClass("bg-[--kui-color-info-subtle]");
+    expect(alert).toHaveClass("border-[--kui-color-info]");
+    expect(alert).toHaveClass("border-l-4");
   });
 
   it.each([
@@ -44,7 +46,7 @@ describe("Alert", () => {
   it("variant=warning のとき warning スタイルが適用される", () => {
     render(<Alert message="テスト" variant="warning" />);
     expect(screen.getByRole("alert")).toHaveClass(
-      "bg-[--kui-color-warning-subtle]/30",
+      "bg-[--kui-color-warning-subtle]",
     );
   });
 

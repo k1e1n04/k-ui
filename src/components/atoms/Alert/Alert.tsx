@@ -23,12 +23,12 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const variantStyles: Record<AlertVariant, string> = {
   error:
-    "bg-[--kui-color-danger-subtle] border border-[--kui-color-danger-subtle] text-[--kui-color-danger]",
+    "bg-[--kui-color-danger-subtle] border border-[--kui-color-danger] border-l-4 text-[--kui-color-danger]",
   warning:
-    "bg-[--kui-color-warning-subtle]/30 border border-[--kui-color-warning-subtle] text-[--kui-color-warning]",
-  info: "bg-[--kui-color-info-subtle]/20 border border-[--kui-color-info-subtle] text-[--kui-color-info]",
+    "bg-[--kui-color-warning-subtle] border border-[--kui-color-warning] border-l-4 text-[--kui-color-warning]",
+  info: "bg-[--kui-color-info-subtle] border border-[--kui-color-info] border-l-4 text-[--kui-color-info]",
   success:
-    "bg-[--kui-color-success-subtle] border border-[--kui-color-success-subtle] text-[--kui-color-success]",
+    "bg-[--kui-color-success-subtle] border border-[--kui-color-success] border-l-4 text-[--kui-color-success]",
 };
 
 /**
