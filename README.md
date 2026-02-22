@@ -62,6 +62,24 @@ import { Card, Typography } from "k-ui";
 </Card>;
 ```
 
+```tsx
+import { Select } from "k-ui";
+
+<Select
+  label="Fruit"
+  name="fruit"
+  placeholder="Select a fruit"
+  clearable
+  options={[
+    { label: "Apple", value: "apple" },
+    { label: "Banana", value: "banana" },
+  ]}
+  onChange={(value) => console.log(value)}
+/>;
+```
+
+`Select` は `name / id / onBlur / onFocus / aria-*` など標準の `select` 属性を透過できる。
+
 Tailwind CSS プリセットも提供している。
 
 ```ts

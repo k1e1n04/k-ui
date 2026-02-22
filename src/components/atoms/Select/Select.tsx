@@ -18,7 +18,11 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
-export interface SelectProps {
+export interface SelectProps
+  extends Omit<
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    "onChange" | "size" | "value"
+  > {
   /** 選択肢リスト */
   options: SelectOption[];
   /** ラベルテキスト */
@@ -39,8 +43,8 @@ export interface SelectProps {
   size?: SelectSize;
   /** 追加のクラス名（ルートラッパーに適用） */
   className?: string;
-  /** name 属性 */
-  name?: string;
+  /** clear 可能か（placeholder を再選択できる） */
+  clearable?: boolean;
 }
 
 /** ラベルのサイズスタイル */
@@ -84,14 +88,22 @@ export const Select: React.FC<SelectProps> = ({
   error,
   value,
   onChange,
-  disabled = false,
   size = "medium",
   className,
-  name,
+  clearable = false,
+  id,
+  "aria-describedby": ariaDescribedBy,
+  ...selectProps
 }) => {
   const baseId = useId();
-  const selectId = `${baseId}-select`;
+  const selectId = id ?? `${baseId}-select`;
   const errorId = `${baseId}-error`;
+  const mergedAriaDescribedBy = [ariaDescribedBy, error ? errorId : undefined]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+  const selectValueProps =
+    value !== undefined ? { value } : placeholder ? { defaultValue: "" } : {};
 
   return (
     <div className={cn("flex flex-col", className)}>
@@ -119,13 +131,12 @@ export const Select: React.FC<SelectProps> = ({
       <div className="relative">
         <select
           id={selectId}
-          name={name}
-          value={value}
+          {...selectValueProps}
           onChange={(e) => onChange?.(e.target.value)}
-          disabled={disabled}
           required={required}
+          {...selectProps}
           aria-invalid={!!error}
-          aria-describedby={error ? errorId : undefined}
+          aria-describedby={mergedAriaDescribedBy || undefined}
           className={cn(
             "w-full appearance-none rounded-md border bg-white transition-colors duration-150",
             "text-gray-900",
@@ -141,11 +152,11 @@ export const Select: React.FC<SelectProps> = ({
                   "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
                   "dark:border-gray-600",
                 ],
-            disabled && "cursor-not-allowed opacity-50",
+            selectProps.disabled && "cursor-not-allowed opacity-50",
           )}
         >
           {placeholder && (
-            <option value="" disabled>
+            <option value="" disabled={!clearable}>
               {placeholder}
             </option>
           )}
@@ -164,7 +175,7 @@ export const Select: React.FC<SelectProps> = ({
           className={cn(
             "pointer-events-none absolute top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400",
             chevronSizeStyles[size],
-            disabled && "opacity-50",
+            selectProps.disabled && "opacity-50",
           )}
           fill="none"
           stroke="currentColor"
