@@ -6,7 +6,14 @@ import { useId } from "react";
 import { cn } from "../../../utils/cn";
 
 /** インプットのタイプ */
-export type InputType = "text" | "number" | "date" | "time" | "url" | "month";
+export type InputType =
+  | "text"
+  | "number"
+  | "date"
+  | "time"
+  | "url"
+  | "month"
+  | "hidden";
 
 /** インプットのサイズ */
 export type InputSize = "small" | "medium" | "large";
@@ -14,6 +21,8 @@ export type InputSize = "small" | "medium" | "large";
 export interface InputProps {
   /** インプットのタイプ */
   type?: InputType;
+  /** フォーム送信時のフィールド名（type="hidden" で特に重要） */
+  name?: string;
   /** ラベルテキスト */
   label?: string;
   /** 必須フラグ（ラベルに * を付与する） */
@@ -62,6 +71,7 @@ const errorSizeStyles: Record<InputSize, string> = {
  */
 export const Input: React.FC<InputProps> = ({
   type = "text",
+  name,
   label,
   required = false,
   placeholder,
@@ -75,6 +85,11 @@ export const Input: React.FC<InputProps> = ({
   const baseId = useId();
   const inputId = `${baseId}-input`;
   const errorId = `${baseId}-error`;
+
+  // type="hidden" の場合は UI を持たない単純な hidden input を返す
+  if (type === "hidden") {
+    return <input type="hidden" name={name} value={value} />;
+  }
 
   return (
     <div className={cn("flex flex-col", className)}>
@@ -102,6 +117,7 @@ export const Input: React.FC<InputProps> = ({
       <input
         id={inputId}
         type={type}
+        name={name}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         disabled={disabled}

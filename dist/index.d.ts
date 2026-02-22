@@ -166,12 +166,14 @@ interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
 declare const Heading: React.FC<HeadingProps>;
 
 /** インプットのタイプ */
-type InputType = "text" | "number" | "date" | "time" | "url" | "month";
+type InputType = "text" | "number" | "date" | "time" | "url" | "month" | "hidden";
 /** インプットのサイズ */
 type InputSize = "small" | "medium" | "large";
 interface InputProps {
     /** インプットのタイプ */
     type?: InputType;
+    /** フォーム送信時のフィールド名（type="hidden" で特に重要） */
+    name?: string;
     /** ラベルテキスト */
     label?: string;
     /** 必須フラグ（ラベルに * を付与する） */

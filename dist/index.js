@@ -429,6 +429,7 @@ var errorSizeStyles = {
 };
 var Input = ({
   type = "text",
+  name,
   label,
   required = false,
   placeholder,
@@ -442,6 +443,9 @@ var Input = ({
   const baseId = useId2();
   const inputId = `${baseId}-input`;
   const errorId = `${baseId}-error`;
+  if (type === "hidden") {
+    return /* @__PURE__ */ jsx9("input", { type: "hidden", name, value });
+  }
   return /* @__PURE__ */ jsxs2("div", { className: cn("flex flex-col", className), children: [
     label && /* @__PURE__ */ jsxs2(
       "label",
@@ -469,6 +473,7 @@ var Input = ({
       {
         id: inputId,
         type,
+        name,
         value,
         onChange: (e) => onChange?.(e.target.value),
         disabled,
