@@ -1,5 +1,7 @@
 // Atoms
 export type {
+  AlertProps,
+  AlertVariant,
   ButtonProps,
   ButtonSize,
   ButtonVariant,
@@ -20,6 +22,7 @@ export type {
   ToggleSwitchSize,
 } from "./atoms";
 export {
+  Alert,
   Button,
   Checkbox,
   DrawerHeader,
