@@ -6,6 +6,8 @@ export type { DrawerHeaderProps } from "./DrawerHeader";
 export { DrawerHeader } from "./DrawerHeader";
 export type { InputProps, InputSize, InputType } from "./Input";
 export { Input } from "./Input";
+export type { SelectOption, SelectProps, SelectSize } from "./Select";
+export { Select } from "./Select";
 export type { SpinnerProps, SpinnerSize } from "./Spinner";
 export { Spinner } from "./Spinner";
 export type { TextareaProps, TextareaSize } from "./Textarea";
