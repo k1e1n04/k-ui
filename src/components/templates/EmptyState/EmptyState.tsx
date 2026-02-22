@@ -1,8 +1,8 @@
 "use client";
 
 import type React from "react";
-
 import { cn } from "../../../utils/cn";
+import { Heading, Typography } from "../../atoms";
 
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -55,11 +55,13 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           {icon}
         </div>
       ) : null}
-      <h2 className="text-lg font-semibold text-[--kui-color-text]">{title}</h2>
+      <Heading as="h2" size="md">
+        {title}
+      </Heading>
       {description ? (
-        <p className="max-w-md text-sm text-[--kui-color-text-muted]">
+        <Typography className="max-w-md" variant="body-sm" tone="muted">
           {description}
-        </p>
+        </Typography>
       ) : null}
       {action ? <div className="pt-1">{action}</div> : null}
     </div>

@@ -59,3 +59,28 @@ Tailwind CSS プリセットも提供している。
 ```ts
 import kuiPreset from "k-ui/tailwind-preset";
 ```
+
+## Typography 運用ガイド
+
+テキスト表現は `text-*` クラスの直書きではなく `Typography` / `Heading` を優先する。
+
+```tsx
+import { Heading, Typography } from "k-ui";
+
+<Heading as="h1" size="xl">
+  ページ見出し
+</Heading>;
+<Heading as="h2" size="lg">
+  セクション見出し
+</Heading>;
+<Typography variant="body-md">本文テキスト</Typography>;
+<Typography variant="body-sm" tone="muted">
+  補足テキスト
+</Typography>;
+```
+
+### 基本ルール
+
+- 原則: 文字色は `tone` で指定する
+- 例外: ブランド装飾など限定ケースのみ `className` で上書きする
+- 推奨: 見出しは `Heading`、本文と補足は `Typography` を使い分ける

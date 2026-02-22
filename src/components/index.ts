@@ -10,6 +10,10 @@ export type {
   CheckboxProps,
   CheckboxSize,
   DrawerHeaderProps,
+  HeadingAs,
+  HeadingProps,
+  HeadingSize,
+  HeadingTone,
   InputProps,
   InputSize,
   InputType,
@@ -24,6 +28,11 @@ export type {
   TextareaSize,
   ToggleSwitchProps,
   ToggleSwitchSize,
+  TypographyAs,
+  TypographyProps,
+  TypographyTone,
+  TypographyVariant,
+  TypographyWeight,
 } from "./atoms";
 export {
   Alert,
@@ -31,12 +40,14 @@ export {
   Button,
   Checkbox,
   DrawerHeader,
+  Heading,
   Input,
   ProgressBar,
   Select,
   Spinner,
   Textarea,
   ToggleSwitch,
+  Typography,
 } from "./atoms";
 // Molecules
 export type {

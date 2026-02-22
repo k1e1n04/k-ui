@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import React from "react";
-
 import { cn } from "../../../utils/cn";
+import { Heading, Typography } from "../../atoms";
 
 export interface ListLayoutProps {
   /** リストのタイトル */
@@ -216,9 +216,13 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
     <div className={cn("max-w-3xl mx-auto p-4", className)}>
       {/* ヘッダー部分 */}
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+        <Heading
+          as="h1"
+          size="xl"
+          style={{ fontWeight: "var(--kui-font-weight-bold)" }}
+        >
           {title}
-        </h1>
+        </Heading>
 
         <div className="flex gap-2">
           {customActions}
@@ -277,7 +281,9 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
       {/* エラーメッセージ */}
       {errorMessage && onClearError && (
         <div className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 p-3 rounded-lg mb-4 flex justify-between items-center animate-kui-slide-down shadow-sm">
-          <p>{errorMessage}</p>
+          <Typography as="p" tone="danger">
+            {errorMessage}
+          </Typography>
           <button
             onClick={onClearError}
             className="text-red-500 dark:text-red-300 p-1 hover:bg-red-100 dark:hover:bg-red-800/50 rounded-full transition-colors"
@@ -291,9 +297,16 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
       {enableIncompleteFilter && showFilterOptions && (
         <div className="mb-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg shadow-sm p-3 animate-kui-slide-down">
           <div className="flex justify-between items-center">
-            <h3 className="font-medium text-indigo-700 dark:text-indigo-300">
+            <Heading
+              as="h3"
+              size="sm"
+              style={{
+                color: "var(--kui-color-info)",
+                fontWeight: "var(--kui-font-weight-medium)",
+              }}
+            >
               {filterTitle}
-            </h3>
+            </Heading>
             <button
               onClick={() => onToggleFilter(false)}
               className="text-indigo-500 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-800/50 p-1 rounded-full transition-colors"
@@ -312,11 +325,8 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
                   onChange={(e) => onToggleIncomplete(e.target.checked)}
                   className="h-5 w-5 text-indigo-600 dark:text-indigo-500 rounded focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700 dark:border-gray-600"
                 />
-                <label
-                  htmlFor="showOnlyIncomplete"
-                  className="ml-2 text-gray-700 dark:text-gray-200"
-                >
-                  {incompleteFilterLabel}
+                <label htmlFor="showOnlyIncomplete" className="ml-2">
+                  <Typography as="span">{incompleteFilterLabel}</Typography>
                 </label>
               </div>
             </div>
@@ -353,7 +363,9 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
               onClick={() => onToggleSearch(false)}
               className="text-sm text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-3 py-1 hover:bg-blue-50 dark:hover:bg-blue-800/50 rounded-md transition-colors"
             >
-              {closeSearchLabel}
+              <Typography as="span" variant="body-sm" tone="info">
+                {closeSearchLabel}
+              </Typography>
             </button>
           </div>
         </div>
@@ -381,12 +393,16 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
       {/* エラー状態 */}
       {isError && onReload && (
         <div className="text-center py-8 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30 rounded-lg">
-          <p>{errorFetchMessage}</p>
+          <Typography as="p" tone="danger">
+            {errorFetchMessage}
+          </Typography>
           <button
             onClick={onReload}
             className="mt-2 px-4 py-2 bg-red-100 dark:bg-red-800/50 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-700/50 transition-colors"
           >
-            {reloadLabel}
+            <Typography as="span" variant="body-sm" tone="danger">
+              {reloadLabel}
+            </Typography>
           </button>
         </div>
       )}
@@ -399,11 +415,17 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
           ) : (
             <div className="text-center py-8 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg animate-kui-fade-in">
               {searchKeyword ? (
-                <p>{noSearchResultsMessage}</p>
+                <Typography as="p" tone="muted">
+                  {noSearchResultsMessage}
+                </Typography>
               ) : showOnlyIncomplete ? (
-                <p>{noIncompleteMessage}</p>
+                <Typography as="p" tone="muted">
+                  {noIncompleteMessage}
+                </Typography>
               ) : (
-                <p>{emptyMessage}</p>
+                <Typography as="p" tone="muted">
+                  {emptyMessage}
+                </Typography>
               )}
             </div>
           )}
