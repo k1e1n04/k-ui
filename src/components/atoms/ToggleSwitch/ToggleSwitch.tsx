@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 
 import { cn } from "../../../utils/cn";
 
@@ -63,21 +63,6 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   size = "medium",
   className,
 }) => {
-  const handleClick = () => {
-    if (!disabled) {
-      onChange(!checked);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === " " || e.key === "Enter") {
-      e.preventDefault();
-      if (!disabled) {
-        onChange(!checked);
-      }
-    }
-  };
-
   return (
     <label
       className={cn(
@@ -86,15 +71,20 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
         className,
       )}
     >
+      {/* 隠しチェックボックス（アクセシビリティ対応） */}
+      <input
+        type="checkbox"
+        role="switch"
+        checked={checked}
+        aria-checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        disabled={disabled}
+        className="sr-only peer"
+        aria-label={label}
+      />
       {/* トラック */}
       <div
-        role="switch"
-        aria-checked={checked}
-        aria-disabled={disabled}
-        aria-label={label}
-        tabIndex={disabled ? -1 : 0}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
+        aria-hidden="true"
         className={cn(
           "relative inline-flex items-center rounded-full transition-colors duration-200",
           trackSizeStyles[size],

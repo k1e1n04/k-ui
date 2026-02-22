@@ -10,14 +10,14 @@ describe("ToggleSwitch", () => {
     expect(screen.getByRole("switch")).toBeInTheDocument();
   });
 
-  it("checked=false のとき aria-checked が false", () => {
+  it("checked=false のときチェックされていない", () => {
     render(<ToggleSwitch checked={false} onChange={() => {}} />);
-    expect(screen.getByRole("switch")).toHaveAttribute("aria-checked", "false");
+    expect(screen.getByRole("switch")).not.toBeChecked();
   });
 
-  it("checked=true のとき aria-checked が true", () => {
+  it("checked=true のときチェックされている", () => {
     render(<ToggleSwitch checked={true} onChange={() => {}} />);
-    expect(screen.getByRole("switch")).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByRole("switch")).toBeChecked();
   });
 
   it("クリックで onChange が呼ばれる", async () => {
@@ -48,16 +48,6 @@ describe("ToggleSwitch", () => {
     expect(onChange).toHaveBeenCalledWith(true);
   });
 
-  it("Enter キーで onChange が呼ばれる", async () => {
-    const user = userEvent.setup();
-    const onChange = vi.fn();
-    render(<ToggleSwitch checked={false} onChange={onChange} />);
-
-    screen.getByRole("switch").focus();
-    await user.keyboard("{Enter}");
-    expect(onChange).toHaveBeenCalledWith(true);
-  });
-
   it("disabled のときクリックしても onChange が呼ばれない", async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
@@ -67,14 +57,18 @@ describe("ToggleSwitch", () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  it("disabled のとき tabIndex が -1", () => {
+  it("disabled のとき disabled 属性がセットされる", () => {
     render(<ToggleSwitch checked={false} onChange={() => {}} disabled />);
-    expect(screen.getByRole("switch")).toHaveAttribute("tabindex", "-1");
+    expect(screen.getByRole("switch")).toBeDisabled();
   });
 
   it("label が表示される", () => {
     render(
-      <ToggleSwitch checked={false} onChange={() => {}} label="Notifications" />,
+      <ToggleSwitch
+        checked={false}
+        onChange={() => {}}
+        label="Notifications"
+      />,
     );
     expect(screen.getByText("Notifications")).toBeInTheDocument();
   });
