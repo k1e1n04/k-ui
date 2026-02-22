@@ -20,6 +20,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  */
 declare const Button: React.FC<ButtonProps>;
 
+interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+    /** 追加のクラス名 */
+    className?: string;
+}
+/**
+ * ドロワーのヘッダー部分のコンポーネント
+ */
+declare const DrawerHeader: React.FC<DrawerHeaderProps>;
+
 /** スピナーのサイズ */
 type SpinnerSize = "small" | "medium" | "large";
 interface SpinnerProps {
@@ -35,14 +44,28 @@ interface SpinnerProps {
  */
 declare const Spinner: React.FC<SpinnerProps>;
 
-interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+/** トグルスイッチのサイズ */
+type ToggleSwitchSize = "small" | "medium" | "large";
+interface ToggleSwitchProps {
+    /** 現在の状態 */
+    checked: boolean;
+    /** 変更ハンドラー */
+    onChange: (checked: boolean) => void;
+    /** 無効状態 */
+    disabled?: boolean;
+    /** 表示ラベル */
+    label?: string;
+    /** サイズ */
+    size?: ToggleSwitchSize;
     /** 追加のクラス名 */
     className?: string;
 }
 /**
- * ドロワーのヘッダー部分のコンポーネント
+ * トグルスイッチコンポーネント
+ *
+ * ON/OFFの切り替えに使用するスイッチUI
  */
-declare const DrawerHeader: React.FC<DrawerHeaderProps>;
+declare const ToggleSwitch: React.FC<ToggleSwitchProps>;
 
 /** AppBarのポジション */
 type AppBarPosition = "fixed" | "static" | "absolute" | "relative" | "sticky";
@@ -58,38 +81,6 @@ interface AppBarProps extends React.HTMLAttributes<HTMLElement> {
  * アプリケーションバーコンポーネント
  */
 declare const AppBar: React.FC<AppBarProps>;
-
-/** ダイアログの最大幅 */
-type DialogMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl";
-interface DialogProps {
-    /** ダイアログの開閉状態 */
-    open: boolean;
-    /** ダイアログを閉じる関数 */
-    onClose: () => void;
-    /** ダイアログのタイトル */
-    title?: string;
-    /** ダイアログのコンテンツ */
-    children: ReactNode;
-    /** ダイアログの最大幅 */
-    maxWidth?: DialogMaxWidth;
-    /** 閉じるボタンを非表示にするかどうか */
-    hideCloseButton?: boolean;
-    /** 外クリックで閉じることを無効にするかどうか */
-    disableOutsideClick?: boolean;
-    /** 閉じるボタンのaria-label */
-    closeButtonLabel?: string;
-    /** 追加のクラス名 */
-    className?: string;
-}
-/**
- * 共通ダイアログコンポーネント
- *
- * - 背景をぼかして元のコンテンツが見える
- * - 外クリックでダイアログを閉じる
- * - ESCキーでダイアログを閉じる
- * - ダークモード対応
- */
-declare const Dialog: React.FC<DialogProps>;
 
 /** 確認ダイアログのバリアント */
 type ConfirmDialogVariant = "danger" | "warning" | "info";
@@ -123,6 +114,38 @@ interface ConfirmDialogProps {
  * 汎用確認ダイアログコンポーネント
  */
 declare const ConfirmDialog: React.FC<ConfirmDialogProps>;
+
+/** ダイアログの最大幅 */
+type DialogMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl";
+interface DialogProps {
+    /** ダイアログの開閉状態 */
+    open: boolean;
+    /** ダイアログを閉じる関数 */
+    onClose: () => void;
+    /** ダイアログのタイトル */
+    title?: string;
+    /** ダイアログのコンテンツ */
+    children: ReactNode;
+    /** ダイアログの最大幅 */
+    maxWidth?: DialogMaxWidth;
+    /** 閉じるボタンを非表示にするかどうか */
+    hideCloseButton?: boolean;
+    /** 外クリックで閉じることを無効にするかどうか */
+    disableOutsideClick?: boolean;
+    /** 閉じるボタンのaria-label */
+    closeButtonLabel?: string;
+    /** 追加のクラス名 */
+    className?: string;
+}
+/**
+ * 共通ダイアログコンポーネント
+ *
+ * - 背景をぼかして元のコンテンツが見える
+ * - 外クリックでダイアログを閉じる
+ * - ESCキーでダイアログを閉じる
+ * - ダークモード対応
+ */
+declare const Dialog: React.FC<DialogProps>;
 
 interface ListItemProps extends React.HTMLAttributes<HTMLDivElement> {
     /** リストアイテムの内容 */
@@ -395,4 +418,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Button, type ButtonProps, type ButtonSize, type ButtonVariant, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Button, type ButtonProps, type ButtonSize, type ButtonVariant, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type RenderLinkProps, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
