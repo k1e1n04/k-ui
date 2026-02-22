@@ -83,11 +83,51 @@ describe("Button", () => {
     "primary",
     "secondary",
     "success",
+    "info",
     "outline",
     "ghost",
     "danger",
   ] as const)("variant=%s でレンダリングされる", (variant) => {
     render(<Button variant={variant}>Click</Button>);
     expect(screen.getByRole("button")).toBeInTheDocument();
+  });
+
+  it("semantic variant で tone=plain のスタイルが適用される", () => {
+    render(
+      <Button iconOnly variant="danger" tone="plain">
+        X
+      </Button>,
+    );
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass(
+      "bg-transparent",
+      "text-[var(--kui-color-danger)]",
+      "hover:bg-[var(--kui-color-danger-subtle)]",
+    );
+  });
+
+  it("semantic variant で tone=subtle のスタイルが適用される", () => {
+    render(
+      <Button iconOnly variant="info" tone="subtle">
+        X
+      </Button>,
+    );
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass(
+      "bg-[var(--kui-color-info-subtle)]",
+      "text-[var(--kui-color-info)]",
+    );
+  });
+
+  it("non-semantic variant では tone を指定しても既存スタイルが維持される", () => {
+    render(
+      <Button variant="primary" tone="plain">
+        Click
+      </Button>,
+    );
+
+    expect(screen.getByRole("button")).toHaveClass("bg-primary-main", "text-white");
   });
 });

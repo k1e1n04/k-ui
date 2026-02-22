@@ -13,10 +13,15 @@ const meta = {
         "primary",
         "secondary",
         "success",
+        "info",
         "outline",
         "ghost",
         "danger",
       ],
+    },
+    tone: {
+      control: "select",
+      options: ["solid", "plain", "subtle"],
     },
     size: {
       control: "select",
@@ -53,6 +58,13 @@ export const Outline: Story = {
   args: {
     children: "Outline Button",
     variant: "outline",
+  },
+};
+
+export const Info: Story = {
+  args: {
+    children: "Info Button",
+    variant: "info",
   },
 };
 
@@ -118,4 +130,45 @@ export const IconOnly: Story = {
     iconOnly: true,
     variant: "ghost",
   },
+};
+
+const IconPlus = (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 4v16m8-8H4"
+    />
+  </svg>
+);
+
+export const IconOnlySemanticTones: Story = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      <Button iconOnly variant="success" tone="plain" aria-label="success plain">
+        {IconPlus}
+      </Button>
+      <Button iconOnly variant="success" tone="subtle" aria-label="success subtle">
+        {IconPlus}
+      </Button>
+      <Button iconOnly variant="info" tone="plain" aria-label="info plain">
+        {IconPlus}
+      </Button>
+      <Button iconOnly variant="info" tone="subtle" aria-label="info subtle">
+        {IconPlus}
+      </Button>
+      <Button iconOnly variant="danger" tone="plain" aria-label="danger plain">
+        {IconPlus}
+      </Button>
+      <Button iconOnly variant="danger" tone="subtle" aria-label="danger subtle">
+        {IconPlus}
+      </Button>
+    </div>
+  ),
 };
