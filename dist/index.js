@@ -7,9 +7,34 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-// src/components/atoms/Button/Button.tsx
+// src/components/atoms/Alert/Alert.tsx
 import { jsx } from "react/jsx-runtime";
 var variantStyles = {
+  error: "bg-[--kui-color-danger-subtle] border border-[--kui-color-danger-subtle] text-[--kui-color-danger]",
+  warning: "bg-[--kui-color-warning-subtle]/30 border border-[--kui-color-warning-subtle] text-[--kui-color-warning]",
+  info: "bg-[--kui-color-info-subtle]/20 border border-[--kui-color-info-subtle] text-[--kui-color-info]",
+  success: "bg-[--kui-color-success-subtle] border border-[--kui-color-success-subtle] text-[--kui-color-success]"
+};
+var Alert = ({
+  variant = "info",
+  message,
+  className,
+  ...props
+}) => {
+  return /* @__PURE__ */ jsx(
+    "div",
+    {
+      role: "alert",
+      className: cn("px-4 py-3 rounded-md", variantStyles[variant], className),
+      ...props,
+      children: message
+    }
+  );
+};
+
+// src/components/atoms/Button/Button.tsx
+import { jsx as jsx2 } from "react/jsx-runtime";
+var variantStyles2 = {
   primary: "bg-primary-main hover:bg-primary-light text-white dark:bg-blue-700 dark:hover:bg-blue-800",
   secondary: "bg-secondary-light hover:bg-gray-200 text-primary-main dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200",
   success: "bg-success-main hover:opacity-90 text-white dark:bg-green-700 dark:hover:bg-green-800",
@@ -37,13 +62,13 @@ var Button = ({
   children,
   ...props
 }) => {
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsx2(
     "button",
     {
       className: cn(
         "font-medium transition-colors",
         iconOnly ? "rounded-full" : "rounded-md",
-        variantStyles[variant],
+        variantStyles2[variant],
         iconOnly ? iconSizeStyles[size] : sizeStyles[size],
         fullWidth && "w-full",
         disabled && "opacity-50 cursor-not-allowed",
@@ -58,11 +83,11 @@ var Button = ({
 };
 
 // src/components/atoms/Card/Card.tsx
-import { jsx as jsx2 } from "react/jsx-runtime";
+import { jsx as jsx3 } from "react/jsx-runtime";
 
 // src/components/atoms/Checkbox/Checkbox.tsx
 import { useId } from "react";
-import { jsx as jsx3, jsxs } from "react/jsx-runtime";
+import { jsx as jsx4, jsxs } from "react/jsx-runtime";
 var boxSizeStyles = {
   small: "w-4 h-4",
   medium: "w-5 h-5",
@@ -97,7 +122,7 @@ var Checkbox = ({
         className
       ),
       children: [
-        /* @__PURE__ */ jsx3(
+        /* @__PURE__ */ jsx4(
           "input",
           {
             id,
@@ -110,7 +135,7 @@ var Checkbox = ({
             "aria-label": label
           }
         ),
-        /* @__PURE__ */ jsx3(
+        /* @__PURE__ */ jsx4(
           "span",
           {
             "aria-hidden": "true",
@@ -120,7 +145,7 @@ var Checkbox = ({
               boxSizeStyles[size],
               checked ? "bg-primary-main border-primary-main dark:bg-blue-600 dark:border-blue-600" : "bg-white border-gray-400 dark:bg-gray-800 dark:border-gray-500"
             ),
-            children: checked && /* @__PURE__ */ jsx3(
+            children: checked && /* @__PURE__ */ jsx4(
               "svg",
               {
                 viewBox: "0 0 12 12",
@@ -131,12 +156,12 @@ var Checkbox = ({
                 strokeLinejoin: "round",
                 "aria-hidden": "true",
                 className: cn("text-white", checkmarkSizeStyles[size]),
-                children: /* @__PURE__ */ jsx3("polyline", { points: "2,6 5,9 10,3" })
+                children: /* @__PURE__ */ jsx4("polyline", { points: "2,6 5,9 10,3" })
               }
             )
           }
         ),
-        label && /* @__PURE__ */ jsx3(
+        label && /* @__PURE__ */ jsx4(
           "span",
           {
             className: cn(
@@ -152,13 +177,13 @@ var Checkbox = ({
 };
 
 // src/components/atoms/DrawerHeader/DrawerHeader.tsx
-import { jsx as jsx4 } from "react/jsx-runtime";
+import { jsx as jsx5 } from "react/jsx-runtime";
 var DrawerHeader = ({
   children,
   className,
   ...props
 }) => {
-  return /* @__PURE__ */ jsx4(
+  return /* @__PURE__ */ jsx5(
     "div",
     {
       className: cn(
@@ -173,7 +198,7 @@ var DrawerHeader = ({
 
 // src/components/atoms/Input/Input.tsx
 import { useId as useId2 } from "react";
-import { jsx as jsx5, jsxs as jsxs2 } from "react/jsx-runtime";
+import { jsx as jsx6, jsxs as jsxs2 } from "react/jsx-runtime";
 var labelSizeStyles2 = {
   small: "text-xs mb-1",
   medium: "text-sm mb-1",
@@ -215,7 +240,7 @@ var Input = ({
         ),
         children: [
           label,
-          required && /* @__PURE__ */ jsx5(
+          required && /* @__PURE__ */ jsx6(
             "span",
             {
               "aria-hidden": "true",
@@ -226,7 +251,7 @@ var Input = ({
         ]
       }
     ),
-    /* @__PURE__ */ jsx5(
+    /* @__PURE__ */ jsx6(
       "input",
       {
         id: inputId,
@@ -255,7 +280,7 @@ var Input = ({
         )
       }
     ),
-    error && /* @__PURE__ */ jsx5(
+    error && /* @__PURE__ */ jsx6(
       "p",
       {
         id: errorId,
@@ -272,7 +297,7 @@ var Input = ({
 
 // src/components/atoms/Select/Select.tsx
 import { useId as useId3 } from "react";
-import { jsx as jsx6, jsxs as jsxs3 } from "react/jsx-runtime";
+import { jsx as jsx7, jsxs as jsxs3 } from "react/jsx-runtime";
 var labelSizeStyles3 = {
   small: "text-xs mb-1",
   medium: "text-sm mb-1",
@@ -320,7 +345,7 @@ var Select = ({
         ),
         children: [
           label,
-          required && /* @__PURE__ */ jsx6(
+          required && /* @__PURE__ */ jsx7(
             "span",
             {
               "aria-hidden": "true",
@@ -359,8 +384,8 @@ var Select = ({
             disabled && "cursor-not-allowed opacity-50"
           ),
           children: [
-            placeholder && /* @__PURE__ */ jsx6("option", { value: "", disabled: true, children: placeholder }),
-            options.map((option) => /* @__PURE__ */ jsx6(
+            placeholder && /* @__PURE__ */ jsx7("option", { value: "", disabled: true, children: placeholder }),
+            options.map((option) => /* @__PURE__ */ jsx7(
               "option",
               {
                 value: option.value,
@@ -372,7 +397,7 @@ var Select = ({
           ]
         }
       ),
-      /* @__PURE__ */ jsx6(
+      /* @__PURE__ */ jsx7(
         "svg",
         {
           className: cn(
@@ -385,7 +410,7 @@ var Select = ({
           strokeWidth: "2",
           viewBox: "0 0 24 24",
           "aria-hidden": "true",
-          children: /* @__PURE__ */ jsx6(
+          children: /* @__PURE__ */ jsx7(
             "path",
             {
               strokeLinecap: "round",
@@ -396,7 +421,7 @@ var Select = ({
         }
       )
     ] }),
-    error && /* @__PURE__ */ jsx6(
+    error && /* @__PURE__ */ jsx7(
       "p",
       {
         id: errorId,
@@ -412,7 +437,7 @@ var Select = ({
 };
 
 // src/components/atoms/Spinner/Spinner.tsx
-import { jsx as jsx7, jsxs as jsxs4 } from "react/jsx-runtime";
+import { jsx as jsx8, jsxs as jsxs4 } from "react/jsx-runtime";
 var sizeStyles2 = {
   small: "h-5 w-5",
   medium: "h-8 w-8",
@@ -423,7 +448,7 @@ var Spinner = ({
   label,
   className
 }) => {
-  return /* @__PURE__ */ jsx7(
+  return /* @__PURE__ */ jsx8(
     "div",
     {
       className: cn(
@@ -431,7 +456,7 @@ var Spinner = ({
         className
       ),
       children: /* @__PURE__ */ jsxs4("div", { className: "text-center", children: [
-        /* @__PURE__ */ jsx7(
+        /* @__PURE__ */ jsx8(
           "div",
           {
             className: cn(
@@ -440,7 +465,7 @@ var Spinner = ({
             )
           }
         ),
-        label && /* @__PURE__ */ jsx7("p", { className: "text-gray-600 dark:text-gray-300 text-sm", children: label })
+        label && /* @__PURE__ */ jsx8("p", { className: "text-gray-600 dark:text-gray-300 text-sm", children: label })
       ] })
     }
   );
@@ -448,7 +473,7 @@ var Spinner = ({
 
 // src/components/atoms/Textarea/Textarea.tsx
 import { useId as useId4 } from "react";
-import { jsx as jsx8, jsxs as jsxs5 } from "react/jsx-runtime";
+import { jsx as jsx9, jsxs as jsxs5 } from "react/jsx-runtime";
 var labelSizeStyles4 = {
   small: "text-xs mb-1",
   medium: "text-sm mb-1",
@@ -490,7 +515,7 @@ var Textarea = ({
         ),
         children: [
           label,
-          required && /* @__PURE__ */ jsx8(
+          required && /* @__PURE__ */ jsx9(
             "span",
             {
               "aria-hidden": "true",
@@ -501,7 +526,7 @@ var Textarea = ({
         ]
       }
     ),
-    /* @__PURE__ */ jsx8(
+    /* @__PURE__ */ jsx9(
       "textarea",
       {
         id: textareaId,
@@ -531,7 +556,7 @@ var Textarea = ({
         )
       }
     ),
-    error && /* @__PURE__ */ jsx8(
+    error && /* @__PURE__ */ jsx9(
       "p",
       {
         id: errorId,
@@ -547,7 +572,7 @@ var Textarea = ({
 };
 
 // src/components/atoms/ToggleSwitch/ToggleSwitch.tsx
-import { jsx as jsx9, jsxs as jsxs6 } from "react/jsx-runtime";
+import { jsx as jsx10, jsxs as jsxs6 } from "react/jsx-runtime";
 var trackSizeStyles = {
   small: "w-8 h-4",
   medium: "w-11 h-6",
@@ -585,7 +610,7 @@ var ToggleSwitch = ({
         className
       ),
       children: [
-        /* @__PURE__ */ jsx9(
+        /* @__PURE__ */ jsx10(
           "input",
           {
             type: "checkbox",
@@ -598,7 +623,7 @@ var ToggleSwitch = ({
             "aria-label": label
           }
         ),
-        /* @__PURE__ */ jsx9(
+        /* @__PURE__ */ jsx10(
           "div",
           {
             "aria-hidden": "true",
@@ -607,7 +632,7 @@ var ToggleSwitch = ({
               trackSizeStyles[size],
               checked ? "bg-primary-main dark:bg-blue-600" : "bg-gray-300 dark:bg-gray-600"
             ),
-            children: /* @__PURE__ */ jsx9(
+            children: /* @__PURE__ */ jsx10(
               "span",
               {
                 className: cn(
@@ -619,7 +644,7 @@ var ToggleSwitch = ({
             )
           }
         ),
-        label && /* @__PURE__ */ jsx9(
+        label && /* @__PURE__ */ jsx10(
           "span",
           {
             className: cn(
@@ -635,7 +660,7 @@ var ToggleSwitch = ({
 };
 
 // src/components/molecules/AppBar/AppBar.tsx
-import { jsx as jsx10 } from "react/jsx-runtime";
+import { jsx as jsx11 } from "react/jsx-runtime";
 var positionStyles = {
   fixed: "fixed top-0 left-0 right-0",
   static: "static",
@@ -656,7 +681,7 @@ var AppBar = ({
   children,
   ...props
 }) => {
-  return /* @__PURE__ */ jsx10(
+  return /* @__PURE__ */ jsx11(
     "header",
     {
       className: cn(
@@ -673,7 +698,7 @@ var AppBar = ({
 
 // src/components/molecules/Dialog/Dialog.tsx
 import { useEffect, useRef } from "react";
-import { jsx as jsx11, jsxs as jsxs7 } from "react/jsx-runtime";
+import { jsx as jsx12, jsxs as jsxs7 } from "react/jsx-runtime";
 var maxWidthClasses = {
   sm: "max-w-sm",
   md: "max-w-md",
@@ -714,7 +739,7 @@ var Dialog = ({
     }
   };
   if (!open) return null;
-  return /* @__PURE__ */ jsx11(
+  return /* @__PURE__ */ jsx12(
     "div",
     {
       className: "fixed inset-0 z-50 overflow-y-auto flex items-start sm:items-center justify-center p-4 pt-12 sm:pt-4",
@@ -736,14 +761,14 @@ var Dialog = ({
           onClick: (e) => e.stopPropagation(),
           children: [
             (title || !hideCloseButton) && /* @__PURE__ */ jsxs7("div", { className: "flex justify-between items-center p-6 pb-4", children: [
-              title && /* @__PURE__ */ jsx11("h3", { className: "text-lg font-semibold text-gray-900 dark:text-white", children: title }),
-              !hideCloseButton && /* @__PURE__ */ jsx11(
+              title && /* @__PURE__ */ jsx12("h3", { className: "text-lg font-semibold text-gray-900 dark:text-white", children: title }),
+              !hideCloseButton && /* @__PURE__ */ jsx12(
                 "button",
                 {
                   onClick: onClose,
                   className: "text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-400 transition-colors p-1",
                   "aria-label": closeButtonLabel,
-                  children: /* @__PURE__ */ jsx11(
+                  children: /* @__PURE__ */ jsx12(
                     "svg",
                     {
                       className: "h-6 w-6",
@@ -751,7 +776,7 @@ var Dialog = ({
                       viewBox: "0 0 24 24",
                       strokeWidth: 1.5,
                       stroke: "currentColor",
-                      children: /* @__PURE__ */ jsx11(
+                      children: /* @__PURE__ */ jsx12(
                         "path",
                         {
                           strokeLinecap: "round",
@@ -764,7 +789,7 @@ var Dialog = ({
                 }
               )
             ] }),
-            /* @__PURE__ */ jsx11("div", { className: title || !hideCloseButton ? "px-6 pb-6" : "p-6", children })
+            /* @__PURE__ */ jsx12("div", { className: title || !hideCloseButton ? "px-6 pb-6" : "p-6", children })
           ]
         }
       )
@@ -773,8 +798,8 @@ var Dialog = ({
 };
 
 // src/components/molecules/ConfirmDialog/ConfirmDialog.tsx
-import { jsx as jsx12, jsxs as jsxs8 } from "react/jsx-runtime";
-var variantStyles2 = {
+import { jsx as jsx13, jsxs as jsxs8 } from "react/jsx-runtime";
+var variantStyles3 = {
   danger: {
     iconBg: "bg-red-100 dark:bg-red-900/30",
     iconColor: "text-red-600 dark:text-red-400",
@@ -794,7 +819,7 @@ var variantStyles2 = {
     buttonHover: "hover:bg-blue-700 dark:hover:bg-blue-800"
   }
 };
-var DefaultIcon = ({ className }) => /* @__PURE__ */ jsx12(
+var DefaultIcon = ({ className }) => /* @__PURE__ */ jsx13(
   "svg",
   {
     className,
@@ -802,7 +827,7 @@ var DefaultIcon = ({ className }) => /* @__PURE__ */ jsx12(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx12(
+    children: /* @__PURE__ */ jsx13(
       "path",
       {
         strokeLinecap: "round",
@@ -826,7 +851,7 @@ var ConfirmDialog = ({
   processingLabel = "Processing...",
   icon
 }) => {
-  const styles = variantStyles2[variant];
+  const styles = variantStyles3[variant];
   return /* @__PURE__ */ jsxs8(
     Dialog,
     {
@@ -836,21 +861,21 @@ var ConfirmDialog = ({
       disableOutsideClick: isProcessing,
       children: [
         /* @__PURE__ */ jsxs8("div", { className: "flex items-center mb-4", children: [
-          /* @__PURE__ */ jsx12(
+          /* @__PURE__ */ jsx13(
             "div",
             {
               className: cn("rounded-full p-2 mr-3 flex-shrink-0", styles.iconBg),
-              children: icon || /* @__PURE__ */ jsx12(DefaultIcon, { className: cn("h-6 w-6", styles.iconColor) })
+              children: icon || /* @__PURE__ */ jsx13(DefaultIcon, { className: cn("h-6 w-6", styles.iconColor) })
             }
           ),
-          /* @__PURE__ */ jsx12("h3", { className: "text-lg font-medium text-gray-900 dark:text-white", children: title })
+          /* @__PURE__ */ jsx13("h3", { className: "text-lg font-medium text-gray-900 dark:text-white", children: title })
         ] }),
         /* @__PURE__ */ jsxs8("div", { className: "mb-6", children: [
-          /* @__PURE__ */ jsx12("div", { className: "text-gray-700 dark:text-gray-300", children: message }),
-          description && /* @__PURE__ */ jsx12("p", { className: "text-sm text-gray-500 dark:text-gray-400 mt-2", children: description })
+          /* @__PURE__ */ jsx13("div", { className: "text-gray-700 dark:text-gray-300", children: message }),
+          description && /* @__PURE__ */ jsx13("p", { className: "text-sm text-gray-500 dark:text-gray-400 mt-2", children: description })
         ] }),
         /* @__PURE__ */ jsxs8("div", { className: "flex justify-end space-x-3", children: [
-          /* @__PURE__ */ jsx12(
+          /* @__PURE__ */ jsx13(
             "button",
             {
               onClick: onClose,
@@ -859,7 +884,7 @@ var ConfirmDialog = ({
               children: cancelLabel
             }
           ),
-          /* @__PURE__ */ jsx12(
+          /* @__PURE__ */ jsx13(
             "button",
             {
               onClick: onConfirm,
@@ -879,7 +904,7 @@ var ConfirmDialog = ({
 };
 
 // src/components/molecules/ListItem/ListItem.tsx
-import { jsx as jsx13 } from "react/jsx-runtime";
+import { jsx as jsx14 } from "react/jsx-runtime";
 var ListItem = ({
   children,
   hoverable = true,
@@ -887,7 +912,7 @@ var ListItem = ({
   className,
   ...props
 }) => {
-  return /* @__PURE__ */ jsx13(
+  return /* @__PURE__ */ jsx14(
     "div",
     {
       className: cn(
@@ -904,8 +929,8 @@ var ListItem = ({
 
 // src/components/molecules/ListLayout/ListLayout.tsx
 import React from "react";
-import { jsx as jsx14, jsxs as jsxs9 } from "react/jsx-runtime";
-var DefaultCloseIcon = () => /* @__PURE__ */ jsx14(
+import { jsx as jsx15, jsxs as jsxs9 } from "react/jsx-runtime";
+var DefaultCloseIcon = () => /* @__PURE__ */ jsx15(
   "svg",
   {
     className: "w-5 h-5",
@@ -913,7 +938,7 @@ var DefaultCloseIcon = () => /* @__PURE__ */ jsx14(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx14(
+    children: /* @__PURE__ */ jsx15(
       "path",
       {
         strokeLinecap: "round",
@@ -923,7 +948,7 @@ var DefaultCloseIcon = () => /* @__PURE__ */ jsx14(
     )
   }
 );
-var DefaultSearchIcon = () => /* @__PURE__ */ jsx14(
+var DefaultSearchIcon = () => /* @__PURE__ */ jsx15(
   "svg",
   {
     className: "w-5 h-5",
@@ -931,7 +956,7 @@ var DefaultSearchIcon = () => /* @__PURE__ */ jsx14(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx14(
+    children: /* @__PURE__ */ jsx15(
       "path",
       {
         strokeLinecap: "round",
@@ -941,7 +966,7 @@ var DefaultSearchIcon = () => /* @__PURE__ */ jsx14(
     )
   }
 );
-var DefaultFilterIcon = () => /* @__PURE__ */ jsx14(
+var DefaultFilterIcon = () => /* @__PURE__ */ jsx15(
   "svg",
   {
     className: "w-5 h-5",
@@ -949,7 +974,7 @@ var DefaultFilterIcon = () => /* @__PURE__ */ jsx14(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx14(
+    children: /* @__PURE__ */ jsx15(
       "path",
       {
         strokeLinecap: "round",
@@ -959,7 +984,7 @@ var DefaultFilterIcon = () => /* @__PURE__ */ jsx14(
     )
   }
 );
-var DefaultAddIcon = () => /* @__PURE__ */ jsx14(
+var DefaultAddIcon = () => /* @__PURE__ */ jsx15(
   "svg",
   {
     className: "w-5 h-5",
@@ -967,7 +992,7 @@ var DefaultAddIcon = () => /* @__PURE__ */ jsx14(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx14(
+    children: /* @__PURE__ */ jsx15(
       "path",
       {
         strokeLinecap: "round",
@@ -1020,16 +1045,16 @@ var ListLayout = ({
   closeFormLabel = "Close form"
 }) => {
   const hasItems = React.Children.count(children) > 0;
-  const SearchIconComponent = searchIcon || /* @__PURE__ */ jsx14(DefaultSearchIcon, {});
-  const FilterIconComponent = filterIcon || /* @__PURE__ */ jsx14(DefaultFilterIcon, {});
-  const AddIconComponent = addIcon || /* @__PURE__ */ jsx14(DefaultAddIcon, {});
-  const CloseIconComponent = closeIcon || /* @__PURE__ */ jsx14(DefaultCloseIcon, {});
+  const SearchIconComponent = searchIcon || /* @__PURE__ */ jsx15(DefaultSearchIcon, {});
+  const FilterIconComponent = filterIcon || /* @__PURE__ */ jsx15(DefaultFilterIcon, {});
+  const AddIconComponent = addIcon || /* @__PURE__ */ jsx15(DefaultAddIcon, {});
+  const CloseIconComponent = closeIcon || /* @__PURE__ */ jsx15(DefaultCloseIcon, {});
   return /* @__PURE__ */ jsxs9("div", { className: cn("max-w-3xl mx-auto p-4", className), children: [
     /* @__PURE__ */ jsxs9("div", { className: "flex justify-between items-center mb-4", children: [
-      /* @__PURE__ */ jsx14("h1", { className: "text-2xl font-bold text-gray-800 dark:text-white", children: title }),
+      /* @__PURE__ */ jsx15("h1", { className: "text-2xl font-bold text-gray-800 dark:text-white", children: title }),
       /* @__PURE__ */ jsxs9("div", { className: "flex gap-2", children: [
         customActions,
-        !showSearchForm && /* @__PURE__ */ jsx14(
+        !showSearchForm && /* @__PURE__ */ jsx15(
           "button",
           {
             onClick: () => onToggleSearch(true),
@@ -1038,7 +1063,7 @@ var ListLayout = ({
             children: SearchIconComponent
           }
         ),
-        enableIncompleteFilter && /* @__PURE__ */ jsx14(
+        enableIncompleteFilter && /* @__PURE__ */ jsx15(
           "button",
           {
             onClick: () => onToggleFilter(!showFilterOptions),
@@ -1050,7 +1075,7 @@ var ListLayout = ({
             children: FilterIconComponent
           }
         ),
-        onToggleAddForm ? /* @__PURE__ */ jsx14(
+        onToggleAddForm ? /* @__PURE__ */ jsx15(
           "button",
           {
             onClick: () => onToggleAddForm(!showAddForm),
@@ -1061,7 +1086,7 @@ var ListLayout = ({
             "aria-label": showAddForm ? closeFormLabel : addButtonLabel,
             children: showAddForm ? CloseIconComponent : AddIconComponent
           }
-        ) : onAddClick && /* @__PURE__ */ jsx14(
+        ) : onAddClick && /* @__PURE__ */ jsx15(
           "button",
           {
             onClick: onAddClick,
@@ -1073,8 +1098,8 @@ var ListLayout = ({
       ] })
     ] }),
     errorMessage && onClearError && /* @__PURE__ */ jsxs9("div", { className: "bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 p-3 rounded-lg mb-4 flex justify-between items-center animate-kui-slide-down shadow-sm", children: [
-      /* @__PURE__ */ jsx14("p", { children: errorMessage }),
-      /* @__PURE__ */ jsx14(
+      /* @__PURE__ */ jsx15("p", { children: errorMessage }),
+      /* @__PURE__ */ jsx15(
         "button",
         {
           onClick: onClearError,
@@ -1085,8 +1110,8 @@ var ListLayout = ({
     ] }),
     enableIncompleteFilter && showFilterOptions && /* @__PURE__ */ jsxs9("div", { className: "mb-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg shadow-sm p-3 animate-kui-slide-down", children: [
       /* @__PURE__ */ jsxs9("div", { className: "flex justify-between items-center", children: [
-        /* @__PURE__ */ jsx14("h3", { className: "font-medium text-indigo-700 dark:text-indigo-300", children: filterTitle }),
-        /* @__PURE__ */ jsx14(
+        /* @__PURE__ */ jsx15("h3", { className: "font-medium text-indigo-700 dark:text-indigo-300", children: filterTitle }),
+        /* @__PURE__ */ jsx15(
           "button",
           {
             onClick: () => onToggleFilter(false),
@@ -1095,8 +1120,8 @@ var ListLayout = ({
           }
         )
       ] }),
-      onToggleIncomplete && /* @__PURE__ */ jsx14("div", { className: "mt-3", children: /* @__PURE__ */ jsxs9("div", { className: "flex items-center", children: [
-        /* @__PURE__ */ jsx14(
+      onToggleIncomplete && /* @__PURE__ */ jsx15("div", { className: "mt-3", children: /* @__PURE__ */ jsxs9("div", { className: "flex items-center", children: [
+        /* @__PURE__ */ jsx15(
           "input",
           {
             type: "checkbox",
@@ -1106,7 +1131,7 @@ var ListLayout = ({
             className: "h-5 w-5 text-indigo-600 dark:text-indigo-500 rounded focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700 dark:border-gray-600"
           }
         ),
-        /* @__PURE__ */ jsx14(
+        /* @__PURE__ */ jsx15(
           "label",
           {
             htmlFor: "showOnlyIncomplete",
@@ -1118,8 +1143,8 @@ var ListLayout = ({
     ] }),
     showSearchForm && /* @__PURE__ */ jsxs9("div", { className: "mb-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 relative animate-kui-slide-down", children: [
       /* @__PURE__ */ jsxs9("div", { className: "flex items-center", children: [
-        /* @__PURE__ */ jsx14("span", { className: "w-5 h-5 text-gray-400 dark:text-gray-500 absolute left-6", children: SearchIconComponent }),
-        /* @__PURE__ */ jsx14(
+        /* @__PURE__ */ jsx15("span", { className: "w-5 h-5 text-gray-400 dark:text-gray-500 absolute left-6", children: SearchIconComponent }),
+        /* @__PURE__ */ jsx15(
           "input",
           {
             type: "text",
@@ -1129,7 +1154,7 @@ var ListLayout = ({
             className: "w-full pl-10 pr-10 py-2 border dark:border-gray-700 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
           }
         ),
-        searchKeyword && /* @__PURE__ */ jsx14(
+        searchKeyword && /* @__PURE__ */ jsx15(
           "button",
           {
             onClick: () => onSearchChange(""),
@@ -1138,7 +1163,7 @@ var ListLayout = ({
           }
         )
       ] }),
-      /* @__PURE__ */ jsx14("div", { className: "flex justify-end mt-3", children: /* @__PURE__ */ jsx14(
+      /* @__PURE__ */ jsx15("div", { className: "flex justify-end mt-3", children: /* @__PURE__ */ jsx15(
         "button",
         {
           onClick: () => onToggleSearch(false),
@@ -1147,12 +1172,12 @@ var ListLayout = ({
         }
       ) })
     ] }),
-    showAddForm && addFormComponent && /* @__PURE__ */ jsx14("div", { className: "mb-4", children: addFormComponent }),
-    statsComponent && /* @__PURE__ */ jsx14("div", { className: "mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm", children: statsComponent }),
-    isLoading && /* @__PURE__ */ jsx14("div", { className: "flex justify-center items-center py-8", children: /* @__PURE__ */ jsx14("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400" }) }),
+    showAddForm && addFormComponent && /* @__PURE__ */ jsx15("div", { className: "mb-4", children: addFormComponent }),
+    statsComponent && /* @__PURE__ */ jsx15("div", { className: "mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm", children: statsComponent }),
+    isLoading && /* @__PURE__ */ jsx15("div", { className: "flex justify-center items-center py-8", children: /* @__PURE__ */ jsx15("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400" }) }),
     isError && onReload && /* @__PURE__ */ jsxs9("div", { className: "text-center py-8 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30 rounded-lg", children: [
-      /* @__PURE__ */ jsx14("p", { children: errorFetchMessage }),
-      /* @__PURE__ */ jsx14(
+      /* @__PURE__ */ jsx15("p", { children: errorFetchMessage }),
+      /* @__PURE__ */ jsx15(
         "button",
         {
           onClick: onReload,
@@ -1161,12 +1186,12 @@ var ListLayout = ({
         }
       )
     ] }),
-    !isLoading && !isError && /* @__PURE__ */ jsx14("div", { className: "space-y-3", children: hasItems ? children : /* @__PURE__ */ jsx14("div", { className: "text-center py-8 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg animate-kui-fade-in", children: searchKeyword ? /* @__PURE__ */ jsx14("p", { children: noSearchResultsMessage }) : showOnlyIncomplete ? /* @__PURE__ */ jsx14("p", { children: noIncompleteMessage }) : /* @__PURE__ */ jsx14("p", { children: emptyMessage }) }) })
+    !isLoading && !isError && /* @__PURE__ */ jsx15("div", { className: "space-y-3", children: hasItems ? children : /* @__PURE__ */ jsx15("div", { className: "text-center py-8 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg animate-kui-fade-in", children: searchKeyword ? /* @__PURE__ */ jsx15("p", { children: noSearchResultsMessage }) : showOnlyIncomplete ? /* @__PURE__ */ jsx15("p", { children: noIncompleteMessage }) : /* @__PURE__ */ jsx15("p", { children: emptyMessage }) }) })
   ] });
 };
 
 // src/components/molecules/MonthSelector/MonthSelector.tsx
-import { jsx as jsx15, jsxs as jsxs10 } from "react/jsx-runtime";
+import { jsx as jsx16, jsxs as jsxs10 } from "react/jsx-runtime";
 var defaultFormatLabel = (year, month) => `${year}-${String(month).padStart(2, "0")}`;
 var MonthSelector = ({
   selectedMonth,
@@ -1211,20 +1236,20 @@ var MonthSelector = ({
     }
   };
   return /* @__PURE__ */ jsxs10("div", { className: cn("flex items-center gap-2", className), children: [
-    /* @__PURE__ */ jsx15(
+    /* @__PURE__ */ jsx16(
       "button",
       {
         onClick: handlePrevMonth,
         className: "p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors",
         "aria-label": prevLabel,
-        children: /* @__PURE__ */ jsx15(
+        children: /* @__PURE__ */ jsx16(
           "svg",
           {
             className: "w-5 h-5",
             fill: "none",
             stroke: "currentColor",
             viewBox: "0 0 24 24",
-            children: /* @__PURE__ */ jsx15(
+            children: /* @__PURE__ */ jsx16(
               "path",
               {
                 strokeLinecap: "round",
@@ -1237,29 +1262,29 @@ var MonthSelector = ({
         )
       }
     ),
-    /* @__PURE__ */ jsx15(
+    /* @__PURE__ */ jsx16(
       "select",
       {
         value: selectedMonth,
         onChange: (e) => onMonthChange(e.target.value),
         className: "px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-        children: monthOptions.map((option) => /* @__PURE__ */ jsx15("option", { value: option.value, children: option.label }, option.value))
+        children: monthOptions.map((option) => /* @__PURE__ */ jsx16("option", { value: option.value, children: option.label }, option.value))
       }
     ),
-    /* @__PURE__ */ jsx15(
+    /* @__PURE__ */ jsx16(
       "button",
       {
         onClick: handleNextMonth,
         className: "p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors",
         "aria-label": nextLabel,
-        children: /* @__PURE__ */ jsx15(
+        children: /* @__PURE__ */ jsx16(
           "svg",
           {
             className: "w-5 h-5",
             fill: "none",
             stroke: "currentColor",
             viewBox: "0 0 24 24",
-            children: /* @__PURE__ */ jsx15(
+            children: /* @__PURE__ */ jsx16(
               "path",
               {
                 strokeLinecap: "round",
@@ -1276,13 +1301,13 @@ var MonthSelector = ({
 };
 
 // src/components/molecules/NavigationDrawer/NavigationDrawer.tsx
-import { Fragment, jsx as jsx16, jsxs as jsxs11 } from "react/jsx-runtime";
+import { Fragment, jsx as jsx17, jsxs as jsxs11 } from "react/jsx-runtime";
 var defaultRenderLink = ({
   href,
   children,
   className,
   onClick
-}) => /* @__PURE__ */ jsx16("a", { href, className, onClick, children });
+}) => /* @__PURE__ */ jsx17("a", { href, className, onClick, children });
 var NavigationDrawer = ({
   open,
   onClose,
@@ -1294,7 +1319,7 @@ var NavigationDrawer = ({
   closeButtonLabel = "Close"
 }) => {
   return /* @__PURE__ */ jsxs11(Fragment, { children: [
-    open && /* @__PURE__ */ jsx16(
+    open && /* @__PURE__ */ jsx17(
       "div",
       {
         className: "fixed inset-0 bg-black/30 z-40 transition-opacity",
@@ -1311,13 +1336,13 @@ var NavigationDrawer = ({
         ),
         style: { width: `${width}px` },
         children: [
-          /* @__PURE__ */ jsx16(DrawerHeader, { children: /* @__PURE__ */ jsx16(
+          /* @__PURE__ */ jsx17(DrawerHeader, { children: /* @__PURE__ */ jsx17(
             "button",
             {
               onClick: onClose,
               className: "p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700",
               "aria-label": closeButtonLabel,
-              children: /* @__PURE__ */ jsx16(
+              children: /* @__PURE__ */ jsx17(
                 "svg",
                 {
                   className: "w-6 h-6 dark:text-white",
@@ -1325,7 +1350,7 @@ var NavigationDrawer = ({
                   viewBox: "0 0 24 24",
                   strokeWidth: 1.5,
                   stroke: "currentColor",
-                  children: /* @__PURE__ */ jsx16(
+                  children: /* @__PURE__ */ jsx17(
                     "path",
                     {
                       strokeLinecap: "round",
@@ -1339,23 +1364,23 @@ var NavigationDrawer = ({
           ) }),
           /* @__PURE__ */ jsxs11("div", { className: "overflow-y-auto h-full pb-16", children: [
             sections.map((section, sectionIndex) => /* @__PURE__ */ jsxs11("div", { children: [
-              /* @__PURE__ */ jsx16("div", { className: "text-sm text-gray-500 dark:text-gray-400 px-4 pt-2", children: section.title }),
-              section.items.map((item) => /* @__PURE__ */ jsx16("div", { className: "px-2", children: renderLink({
+              /* @__PURE__ */ jsx17("div", { className: "text-sm text-gray-500 dark:text-gray-400 px-4 pt-2", children: section.title }),
+              section.items.map((item) => /* @__PURE__ */ jsx17("div", { className: "px-2", children: renderLink({
                 href: item.path,
                 className: "flex items-center px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200",
                 onClick: onClose,
                 children: /* @__PURE__ */ jsxs11(Fragment, { children: [
-                  item.icon && /* @__PURE__ */ jsx16("span", { className: "text-gray-500 dark:text-gray-400 mr-3", children: item.icon }),
-                  /* @__PURE__ */ jsx16("span", { children: item.name })
+                  item.icon && /* @__PURE__ */ jsx17("span", { className: "text-gray-500 dark:text-gray-400 mr-3", children: item.icon }),
+                  /* @__PURE__ */ jsx17("span", { children: item.name })
                 ] })
               }) }, item.name))
             ] }, section.title || `section-${sectionIndex}`)),
-            onLogout && /* @__PURE__ */ jsx16("div", { className: "px-2 mt-4", children: /* @__PURE__ */ jsx16(
+            onLogout && /* @__PURE__ */ jsx17("div", { className: "px-2 mt-4", children: /* @__PURE__ */ jsx17(
               "button",
               {
                 className: "w-full text-left flex items-center px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200",
                 onClick: onLogout,
-                children: /* @__PURE__ */ jsx16("span", { children: logoutLabel })
+                children: /* @__PURE__ */ jsx17("span", { children: logoutLabel })
               }
             ) })
           ] })
@@ -1366,7 +1391,7 @@ var NavigationDrawer = ({
 };
 
 // src/components/molecules/StatCards/StatCards.tsx
-import { jsx as jsx17, jsxs as jsxs12 } from "react/jsx-runtime";
+import { jsx as jsx18, jsxs as jsxs12 } from "react/jsx-runtime";
 var colorStyles2 = {
   blue: {
     bg: "bg-blue-50 dark:bg-blue-900/20",
@@ -1412,7 +1437,7 @@ var StatCards = ({
   columns = 3,
   className
 }) => {
-  return /* @__PURE__ */ jsx17("div", { className: cn("grid gap-4", columnStyles[columns], className), children: cards.map((card) => {
+  return /* @__PURE__ */ jsx18("div", { className: cn("grid gap-4", columnStyles[columns], className), children: cards.map((card) => {
     const color = card.color ?? "blue";
     const styles = colorStyles2[color];
     return /* @__PURE__ */ jsxs12(
@@ -1420,8 +1445,8 @@ var StatCards = ({
       {
         className: cn("border rounded-lg p-4", styles.bg, styles.border),
         children: [
-          /* @__PURE__ */ jsx17("h3", { className: cn("text-sm font-medium mb-1", styles.text), children: card.label }),
-          /* @__PURE__ */ jsx17("p", { className: cn("text-2xl font-bold", styles.text), children: formatValue(card.value) })
+          /* @__PURE__ */ jsx18("h3", { className: cn("text-sm font-medium mb-1", styles.text), children: card.label }),
+          /* @__PURE__ */ jsx18("p", { className: cn("text-2xl font-bold", styles.text), children: formatValue(card.value) })
         ]
       },
       card.label
@@ -1431,7 +1456,7 @@ var StatCards = ({
 
 // src/components/molecules/Tooltip/Tooltip.tsx
 import { useEffect as useEffect2, useRef as useRef2, useState } from "react";
-import { jsx as jsx18, jsxs as jsxs13 } from "react/jsx-runtime";
+import { jsx as jsx19, jsxs as jsxs13 } from "react/jsx-runtime";
 var Tooltip = ({
   content,
   children,
@@ -1503,7 +1528,7 @@ var Tooltip = ({
   };
   const { tooltip: tooltipClass, arrow: arrowClass } = getTooltipClasses();
   return /* @__PURE__ */ jsxs13("div", { className: cn("relative inline-block", className), ref: tooltipRef, children: [
-    /* @__PURE__ */ jsx18(
+    /* @__PURE__ */ jsx19(
       "button",
       {
         ref: buttonRef,
@@ -1522,8 +1547,8 @@ var Tooltip = ({
           "bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 animate-kui-fade-in"
         ),
         children: [
-          /* @__PURE__ */ jsx18("div", { className: "p-3 text-sm text-gray-700 dark:text-gray-200", children: content }),
-          /* @__PURE__ */ jsx18("div", { className: arrowClass, "aria-hidden": "true" })
+          /* @__PURE__ */ jsx19("div", { className: "p-3 text-sm text-gray-700 dark:text-gray-200", children: content }),
+          /* @__PURE__ */ jsx19("div", { className: arrowClass, "aria-hidden": "true" })
         ]
       }
     )
@@ -1532,7 +1557,7 @@ var Tooltip = ({
 
 // src/components/templates/AppLayout/AppLayout.tsx
 import { useState as useState2 } from "react";
-import { jsx as jsx19, jsxs as jsxs14 } from "react/jsx-runtime";
+import { jsx as jsx20, jsxs as jsxs14 } from "react/jsx-runtime";
 var AppLayout = ({
   children,
   appTitle,
@@ -1548,14 +1573,14 @@ var AppLayout = ({
   menuButtonLabel = "Open menu"
 }) => {
   const [drawerOpen, setDrawerOpen] = useState2(false);
-  const titleContent = /* @__PURE__ */ jsx19("span", { className: "text-xl font-bold text-primary-main dark:text-white", children: appTitle });
+  const titleContent = /* @__PURE__ */ jsx20("span", { className: "text-xl font-bold text-primary-main dark:text-white", children: appTitle });
   const defaultRenderLink2 = ({
     href,
     children: linkChildren
-  }) => /* @__PURE__ */ jsx19("a", { href, children: linkChildren });
+  }) => /* @__PURE__ */ jsx20("a", { href, children: linkChildren });
   const linkRenderer = renderLink || defaultRenderLink2;
   return /* @__PURE__ */ jsxs14("div", { className: "flex min-h-screen bg-white dark:bg-gray-900", children: [
-    /* @__PURE__ */ jsx19(AppBar, { position: "fixed", color: appBarColor, className: "shadow-none", children: /* @__PURE__ */ jsxs14("div", { className: "flex items-center justify-between px-4 py-2", children: [
+    /* @__PURE__ */ jsx20(AppBar, { position: "fixed", color: appBarColor, className: "shadow-none", children: /* @__PURE__ */ jsxs14("div", { className: "flex items-center justify-between px-4 py-2", children: [
       /* @__PURE__ */ jsxs14("h6", { className: "text-xl font-bold grow", children: [
         linkRenderer({
           href: titleHref,
@@ -1564,13 +1589,13 @@ var AppLayout = ({
         }),
         titleSuffix
       ] }),
-      /* @__PURE__ */ jsx19(
+      /* @__PURE__ */ jsx20(
         "button",
         {
           className: "text-primary-main dark:text-white ml-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700",
           "aria-label": menuButtonLabel,
           onClick: () => setDrawerOpen(true),
-          children: /* @__PURE__ */ jsx19(
+          children: /* @__PURE__ */ jsx20(
             "svg",
             {
               className: "w-6 h-6",
@@ -1578,7 +1603,7 @@ var AppLayout = ({
               viewBox: "0 0 24 24",
               strokeWidth: 1.5,
               stroke: "currentColor",
-              children: /* @__PURE__ */ jsx19(
+              children: /* @__PURE__ */ jsx20(
                 "path",
                 {
                   strokeLinecap: "round",
@@ -1591,7 +1616,7 @@ var AppLayout = ({
         }
       )
     ] }) }),
-    /* @__PURE__ */ jsx19(
+    /* @__PURE__ */ jsx20(
       NavigationDrawer,
       {
         open: drawerOpen,
@@ -1603,7 +1628,7 @@ var AppLayout = ({
         renderLink
       }
     ),
-    /* @__PURE__ */ jsx19(
+    /* @__PURE__ */ jsx20(
       "main",
       {
         className: cn(
@@ -1662,6 +1687,7 @@ function useMediaQuery(query) {
   return matches;
 }
 export {
+  Alert,
   AppBar,
   AppLayout,
   Button,

@@ -1,3 +1,5 @@
+export type { AlertProps, AlertVariant } from "./Alert";
+export { Alert } from "./Alert";
 export type { ButtonProps, ButtonSize, ButtonVariant } from "./Button";
 export { Button } from "./Button";
 export type { CardProps, PaddingSize, ShadowSize } from "./Card";
