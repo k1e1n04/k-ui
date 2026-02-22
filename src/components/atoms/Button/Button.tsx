@@ -74,7 +74,8 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={cn(
-        "font-medium rounded-md transition-colors",
+        "font-medium transition-colors",
+        iconOnly ? "rounded-full" : "rounded-md",
         variantStyles[variant],
         iconOnly ? iconSizeStyles[size] : sizeStyles[size],
         fullWidth && "w-full",
