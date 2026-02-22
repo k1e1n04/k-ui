@@ -15,6 +15,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["src/**/*", "tailwind-preset.ts"],
-  "exclude": ["node_modules", "dist", "**/*.stories.tsx", "**/*.test.tsx"]
+  "include": ["src/**/*", "tailwind-preset.ts", "vitest.setup.ts"],
+  "exclude": ["node_modules", "dist"]
 }

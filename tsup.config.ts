@@ -6,6 +6,7 @@ import postcssImport from "postcss-import";
 export default defineConfig({
   entry: ["src/index.ts"],
   format: ["esm"],
+  tsconfig: "tsconfig.build.json",
   dts: true,
   sourcemap: true,
   clean: true,
