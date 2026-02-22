@@ -4,6 +4,8 @@ export type { CheckboxProps, CheckboxSize } from "./Checkbox";
 export { Checkbox } from "./Checkbox";
 export type { DrawerHeaderProps } from "./DrawerHeader";
 export { DrawerHeader } from "./DrawerHeader";
+export type { InputProps, InputSize, InputType } from "./Input";
+export { Input } from "./Input";
 export type { SpinnerProps, SpinnerSize } from "./Spinner";
 export { Spinner } from "./Spinner";
 export type { ToggleSwitchProps, ToggleSwitchSize } from "./ToggleSwitch";

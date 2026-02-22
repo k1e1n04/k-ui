@@ -6,12 +6,22 @@ export type {
   CheckboxProps,
   CheckboxSize,
   DrawerHeaderProps,
+  InputProps,
+  InputSize,
+  InputType,
   SpinnerProps,
   SpinnerSize,
   ToggleSwitchProps,
   ToggleSwitchSize,
 } from "./atoms";
-export { Button, Checkbox, DrawerHeader, Spinner, ToggleSwitch } from "./atoms";
+export {
+  Button,
+  Checkbox,
+  DrawerHeader,
+  Input,
+  Spinner,
+  ToggleSwitch,
+} from "./atoms";
 // Molecules
 export type {
   AppBarColor,
