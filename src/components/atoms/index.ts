@@ -12,6 +12,8 @@ export type { DrawerHeaderProps } from "./DrawerHeader";
 export { DrawerHeader } from "./DrawerHeader";
 export type { InputProps, InputSize, InputType } from "./Input";
 export { Input } from "./Input";
+export type { ProgressBarProps, ProgressBarSize } from "./ProgressBar";
+export { ProgressBar } from "./ProgressBar";
 export type { SelectOption, SelectProps, SelectSize } from "./Select";
 export { Select } from "./Select";
 export type { SpinnerProps, SpinnerSize } from "./Spinner";
