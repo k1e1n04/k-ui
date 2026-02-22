@@ -18,25 +18,21 @@ export type InputType =
 /** インプットのサイズ */
 export type InputSize = "small" | "medium" | "large";
 
-export interface InputProps {
+export interface InputProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "type" | "size" | "onChange" | "value" | "className"
+  > {
   /** インプットのタイプ */
   type?: InputType;
-  /** フォーム送信時のフィールド名（type="hidden" で特に重要） */
-  name?: string;
   /** ラベルテキスト */
   label?: string;
-  /** 必須フラグ（ラベルに * を付与する） */
-  required?: boolean;
-  /** プレースホルダー */
-  placeholder?: string;
   /** エラーメッセージ（指定されるとエラー状態を表示する） */
   error?: string;
   /** 現在の値 */
   value?: string;
-  /** 変更ハンドラー */
+  /** 変更ハンドラー（入力値のみを受け取る） */
   onChange?: (value: string) => void;
-  /** 無効状態 */
-  disabled?: boolean;
   /** サイズ */
   size?: InputSize;
   /** 追加のクラス名（ルートラッパーに適用） */
@@ -71,7 +67,6 @@ const errorSizeStyles: Record<InputSize, string> = {
  */
 export const Input: React.FC<InputProps> = ({
   type = "text",
-  name,
   label,
   required = false,
   placeholder,
@@ -81,14 +76,32 @@ export const Input: React.FC<InputProps> = ({
   disabled = false,
   size = "medium",
   className,
+  id,
+  name,
+  "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
+  ...rest
 }) => {
   const baseId = useId();
-  const inputId = `${baseId}-input`;
+  const inputId = id ?? `${baseId}-input`;
   const errorId = `${baseId}-error`;
+  const mergedAriaDescribedBy = error
+    ? [ariaDescribedBy, errorId].filter(Boolean).join(" ")
+    : ariaDescribedBy;
+  const resolvedAriaInvalid = error ? true : (ariaInvalid ?? false);
 
   // type="hidden" の場合は UI を持たない単純な hidden input を返す
   if (type === "hidden") {
-    return <input type="hidden" name={name} value={value} />;
+    return (
+      <input
+        {...rest}
+        type="hidden"
+        id={id}
+        name={name}
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
+      />
+    );
   }
 
   return (
@@ -115,6 +128,7 @@ export const Input: React.FC<InputProps> = ({
       )}
       {/* インプット */}
       <input
+        {...rest}
         id={inputId}
         type={type}
         name={name}
@@ -123,8 +137,8 @@ export const Input: React.FC<InputProps> = ({
         disabled={disabled}
         placeholder={placeholder}
         required={required}
-        aria-invalid={!!error}
-        aria-describedby={error ? errorId : undefined}
+        aria-invalid={resolvedAriaInvalid}
+        aria-describedby={mergedAriaDescribedBy}
         className={cn(
           "w-full rounded-md border bg-white transition-colors duration-150",
           "text-gray-900 placeholder:text-gray-400",
