@@ -1,4 +1,5 @@
 import React, { ReactNode, RefObject } from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ClassValue } from 'clsx';
 
 /**
@@ -58,9 +59,11 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 declare const Badge: React.FC<BadgeProps>;
 
 /** ボタンのバリアント */
-type ButtonVariant = "primary" | "secondary" | "success" | "outline" | "ghost" | "danger";
+type ButtonVariant = "primary" | "secondary" | "success" | "info" | "outline" | "ghost" | "danger";
 /** ボタンのサイズ */
 type ButtonSize = "small" | "medium" | "large";
+/** ボタンのトーン */
+type ButtonTone = "solid" | "plain" | "subtle";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     /** ボタンの種類 */
     variant?: ButtonVariant;
@@ -70,6 +73,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     fullWidth?: boolean;
     /** アイコンのみのボタン */
     iconOnly?: boolean;
+    /** ボタンのトーン */
+    tone?: ButtonTone;
 }
 /**
  * 汎用ボタンコンポーネント
@@ -147,6 +152,44 @@ interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 declare const DrawerHeader: React.FC<DrawerHeaderProps>;
 
+/** フォームフィールドのサイズ */
+type FormFieldSize = "small" | "medium" | "large";
+interface FormFieldRenderProps {
+    /** フィールドに設定する aria-describedby */
+    describedBy?: string;
+    /** 説明文の要素ID */
+    descriptionId?: string;
+    /** エラー要素のID */
+    errorId?: string;
+}
+interface FormFieldProps {
+    /** ラベルテキスト */
+    label?: string;
+    /** 補助説明 */
+    description?: string;
+    /** 必須フラグ（ラベルに * を付与する） */
+    required?: boolean;
+    /** エラーメッセージ */
+    error?: string;
+    /** label と入力要素を紐づける htmlFor */
+    htmlFor?: string;
+    /** サイズ */
+    size?: FormFieldSize;
+    /** 追加のクラス名（ルートラッパーに適用） */
+    className?: string;
+    /** 既存の aria-describedby（内部IDとマージされる） */
+    "aria-describedby"?: string;
+    /** フィールド本体 */
+    children: React.ReactNode | ((props: FormFieldRenderProps) => React.ReactNode);
+}
+/**
+ * フォーム入力要素向けの共通ラッパー。
+ *
+ * label / description / required / error の表示ルールと
+ * aria-describedby のID連携を一元管理する。
+ */
+declare const FormField: React.FC<FormFieldProps>;
+
 type HeadingAs = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 type HeadingSize = "xl" | "lg" | "md" | "sm";
 type HeadingTone = "default" | "muted" | "inverse";
@@ -169,25 +212,19 @@ declare const Heading: React.FC<HeadingProps>;
 type InputType = "text" | "number" | "date" | "time" | "url" | "month" | "hidden";
 /** インプットのサイズ */
 type InputSize = "small" | "medium" | "large";
-interface InputProps {
+interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size" | "onChange" | "value" | "className"> {
     /** インプットのタイプ */
     type?: InputType;
-    /** フォーム送信時のフィールド名（type="hidden" で特に重要） */
-    name?: string;
     /** ラベルテキスト */
     label?: string;
-    /** 必須フラグ（ラベルに * を付与する） */
-    required?: boolean;
-    /** プレースホルダー */
-    placeholder?: string;
     /** エラーメッセージ（指定されるとエラー状態を表示する） */
     error?: string;
+    /** 補助説明 */
+    description?: string;
     /** 現在の値 */
     value?: string;
-    /** 変更ハンドラー */
+    /** 変更ハンドラー（入力値のみを受け取る） */
     onChange?: (value: string) => void;
-    /** 無効状態 */
-    disabled?: boolean;
     /** サイズ */
     size?: InputSize;
     /** 追加のクラス名（ルートラッパーに適用） */
@@ -220,6 +257,23 @@ interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 declare const ProgressBar: React.FC<ProgressBarProps>;
 
+interface SearchInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange" | "value" | "className"> {
+    /** 現在の検索キーワード */
+    value?: string;
+    /** 変更ハンドラー（入力値のみを受け取る） */
+    onChange?: (value: string) => void;
+    /** クリアボタン押下時のハンドラー */
+    onClear?: () => void;
+    /** 追加のクラス名（ルートラッパーに適用） */
+    className?: string;
+    /** クリアボタンの aria-label */
+    clearButtonAriaLabel?: string;
+}
+/**
+ * 検索アイコン内包の検索入力コンポーネント
+ */
+declare const SearchInput: React.FC<SearchInputProps>;
+
 /** セレクトのサイズ */
 type SelectSize = "small" | "medium" | "large";
 /** セレクトの選択肢 */
@@ -231,13 +285,15 @@ interface SelectOption {
     /** 無効状態 */
     disabled?: boolean;
 }
-interface SelectProps {
+interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange" | "size" | "value"> {
     /** 選択肢リスト */
     options: SelectOption[];
     /** ラベルテキスト */
     label?: string;
     /** 必須フラグ（ラベルに * を付与する） */
     required?: boolean;
+    /** 補助説明 */
+    description?: string;
     /** プレースホルダー（未選択時に表示される） */
     placeholder?: string;
     /** エラーメッセージ（指定されるとエラー状態を表示する） */
@@ -252,8 +308,8 @@ interface SelectProps {
     size?: SelectSize;
     /** 追加のクラス名（ルートラッパーに適用） */
     className?: string;
-    /** name 属性 */
-    name?: string;
+    /** clear 可能か（placeholder を再選択できる） */
+    clearable?: boolean;
 }
 /**
  * セレクトコンポーネント
@@ -284,6 +340,8 @@ interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaEl
     label?: string;
     /** エラーメッセージ（指定されるとエラー状態を表示する） */
     error?: string;
+    /** 補助説明 */
+    description?: string;
     /** 現在の値 */
     value?: string;
     /** 変更ハンドラー */
@@ -397,6 +455,65 @@ interface ConfirmDialogProps {
  * 汎用確認ダイアログコンポーネント
  */
 declare const ConfirmDialog: React.FC<ConfirmDialogProps>;
+
+interface DataTableColumn<T> {
+    /** 一意な列キー */
+    key: string;
+    /** 列ヘッダー */
+    header: ReactNode;
+    /** セルの表示内容 */
+    render: (row: T) => ReactNode;
+    /** モバイルカード表示時のラベル */
+    mobileLabel?: ReactNode;
+    /** ヘッダーセルの追加クラス */
+    headerClassName?: string;
+    /** データセルの追加クラス */
+    cellClassName?: string;
+}
+interface DataTableAction<T> {
+    /** ボタンラベル */
+    label: string;
+    /** 押下時のハンドラー */
+    onClick: (row: T) => void;
+    /** ボタンバリアント */
+    variant?: "primary" | "secondary" | "success" | "info" | "outline" | "ghost" | "danger";
+    /** aria-label */
+    ariaLabel?: string;
+    /** 行ごとの無効化制御 */
+    disabled?: boolean | ((row: T) => boolean);
+}
+type DataTableActions<T> = DataTableAction<T>[] | ((row: T) => DataTableAction<T>[]);
+type DataTableMobileMode = "scroll" | "cards";
+interface DataTableProps<T> {
+    /** カラム定義 */
+    columns: DataTableColumn<T>[];
+    /** 行データ */
+    rows: T[];
+    /** 行キー生成 */
+    getRowId: (row: T, index: number) => string;
+    /** 右端のアクション列 */
+    actions?: DataTableActions<T>;
+    /** アクション列ヘッダー */
+    actionHeader?: ReactNode;
+    /** ローディング状態 */
+    isLoading?: boolean;
+    /** ローディング文言 */
+    loadingLabel?: string;
+    /** 空状態文言 */
+    emptyMessage?: string;
+    /** モバイル表示モード */
+    mobileMode?: DataTableMobileMode;
+    /** 追加クラス */
+    className?: string;
+}
+/**
+ * 汎用DataTableコンポーネント
+ *
+ * - テーブルヘッダー / 行 / 空状態 / ローディングを提供
+ * - `mobileMode="scroll"` では横スクロール対応
+ * - `mobileMode="cards"` ではモバイルをカード表示に切り替え
+ */
+declare const DataTable: <T>({ columns, rows, getRowId, actions, actionHeader, isLoading, loadingLabel, emptyMessage, mobileMode, className, }: DataTableProps<T>) => react_jsx_runtime.JSX.Element;
 
 /** ダイアログの最大幅 */
 type DialogMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl";
@@ -679,6 +796,9 @@ interface AppLayoutProps {
  */
 declare const AppLayout: React.FC<AppLayoutProps>;
 
+type EmptyStateSize = "sm" | "md" | "lg";
+type EmptyStateAlign = "left" | "center";
+type EmptyStateActionPlacement = "below" | "inline";
 interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
      * 空状態を表すアイコン
@@ -696,6 +816,18 @@ interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
      * アクション要素（ボタン等）
      */
     action?: React.ReactNode;
+    /**
+     * コンポーネント全体のサイズ
+     */
+    size?: EmptyStateSize;
+    /**
+     * コンテンツの水平方向の配置
+     */
+    align?: EmptyStateAlign;
+    /**
+     * action の配置
+     */
+    actionPlacement?: EmptyStateActionPlacement;
 }
 /**
  * EmptyState コンポーネント
@@ -729,4 +861,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Card, type CardProps, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, EmptyState, type EmptyStateProps, Heading, type HeadingAs, type HeadingProps, type HeadingSize, type HeadingTone, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type PaddingSize, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, type ShadowSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, Typography, type TypographyAs, type TypographyProps, type TypographyTone, type TypographyVariant, type TypographyWeight, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Card, type CardProps, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, DataTable, type DataTableAction, type DataTableActions, type DataTableColumn, type DataTableMobileMode, type DataTableProps, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, EmptyState, type EmptyStateProps, FormField, type FormFieldProps, type FormFieldRenderProps, type FormFieldSize, Heading, type HeadingAs, type HeadingProps, type HeadingSize, type HeadingTone, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type PaddingSize, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, SearchInput, type SearchInputProps, Select, type SelectOption, type SelectProps, type SelectSize, type ShadowSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, Typography, type TypographyAs, type TypographyProps, type TypographyTone, type TypographyVariant, type TypographyWeight, cn, useClickOutside, useEscapeKey, useMediaQuery };
