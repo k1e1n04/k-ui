@@ -1,6 +1,34 @@
 import React, { ReactNode, RefObject } from 'react';
 import { ClassValue } from 'clsx';
 
+/**
+ * Alertコンポーネントのバリアント
+ */
+type AlertVariant = "success" | "info" | "warning" | "error";
+interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * アラートの種別
+     * @default 'info'
+     */
+    variant?: AlertVariant;
+    /**
+     * 表示するメッセージ
+     */
+    message: string;
+}
+/**
+ * Alert コンポーネント
+ *
+ * エラー、警告、情報、成功のメッセージを表示するインラインアラート
+ *
+ * @example
+ * <Alert variant="error" message="エラーが発生しました" />
+ *
+ * @example
+ * <Alert variant="success" message="保存しました" />
+ */
+declare const Alert: React.FC<AlertProps>;
+
 /** ボタンのバリアント */
 type ButtonVariant = "primary" | "secondary" | "success" | "outline" | "ghost" | "danger";
 /** ボタンのサイズ */
@@ -195,34 +223,6 @@ interface ToggleSwitchProps {
  * ON/OFFの切り替えに使用するスイッチUI
  */
 declare const ToggleSwitch: React.FC<ToggleSwitchProps>;
-
-/**
- * Alertコンポーネントのバリアント
- */
-type AlertVariant = "success" | "info" | "warning" | "error";
-interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-    /**
-     * アラートの種別
-     * @default 'info'
-     */
-    variant?: AlertVariant;
-    /**
-     * 表示するメッセージ
-     */
-    message: string;
-}
-/**
- * Alert コンポーネント
- *
- * エラー、警告、情報、成功のメッセージを表示するインラインアラート
- *
- * @example
- * <Alert variant="error" message="エラーが発生しました" />
- *
- * @example
- * <Alert variant="success" message="保存しました" />
- */
-declare const Alert: React.FC<AlertProps>;
 
 /** AppBarのポジション */
 type AppBarPosition = "fixed" | "static" | "absolute" | "relative" | "sticky";
