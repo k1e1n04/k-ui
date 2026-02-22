@@ -71,5 +71,5 @@ export {
   Tooltip,
 } from "./molecules";
 // Templates
-export type { AppLayoutProps } from "./templates";
-export { AppLayout } from "./templates";
+export type { AppLayoutProps, EmptyStateProps } from "./templates";
+export { AppLayout, EmptyState } from "./templates";

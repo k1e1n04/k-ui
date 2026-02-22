@@ -601,6 +601,34 @@ interface AppLayoutProps {
  */
 declare const AppLayout: React.FC<AppLayoutProps>;
 
+interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * 空状態を表すアイコン
+     */
+    icon?: React.ReactNode;
+    /**
+     * 空状態のタイトル
+     */
+    title: string;
+    /**
+     * 補足説明テキスト
+     */
+    description?: string;
+    /**
+     * アクション要素（ボタン等）
+     */
+    action?: React.ReactNode;
+}
+/**
+ * EmptyState コンポーネント
+ *
+ * データが存在しない状態を統一した見た目で表示するテンプレート
+ *
+ * @example
+ * <EmptyState title="No data" description="Please add items." />
+ */
+declare const EmptyState: React.FC<EmptyStateProps>;
+
 /**
  * 指定された要素の外側がクリックされたときにコールバックを実行するフック
  */
@@ -623,4 +651,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, EmptyState, type EmptyStateProps, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, Select, type SelectOption, type SelectProps, type SelectSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, cn, useClickOutside, useEscapeKey, useMediaQuery };
