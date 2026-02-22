@@ -55,4 +55,35 @@ describe("EmptyState", () => {
     const emptyState = screen.getByTestId("empty-state");
     expect(emptyState).toHaveAttribute("id", "empty");
   });
+
+  it("size ごとのクラスが適用される", () => {
+    render(<EmptyState title="No data" size="lg" data-testid="empty-state" />);
+    const emptyState = screen.getByTestId("empty-state");
+    expect(emptyState).toHaveClass("px-8");
+    expect(emptyState).toHaveClass("py-14");
+  });
+
+  it("align=left で左寄せクラスが適用される", () => {
+    render(
+      <EmptyState title="No data" align="left" data-testid="empty-state" />,
+    );
+    const emptyState = screen.getByTestId("empty-state");
+    expect(emptyState).toHaveClass("items-start");
+    expect(emptyState).toHaveClass("text-left");
+  });
+
+  it("actionPlacement=inline で action が末尾に表示される", () => {
+    render(
+      <EmptyState
+        title="No data"
+        description="desc"
+        action={<button type="button">Reset</button>}
+        actionPlacement="inline"
+      />,
+    );
+
+    const actionButton = screen.getByRole("button", { name: "Reset" });
+    const description = screen.getByText("desc");
+    expect(description.nextElementSibling).toContainElement(actionButton);
+  });
 });
