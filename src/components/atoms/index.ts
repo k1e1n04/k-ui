@@ -11,6 +11,12 @@ export { Checkbox } from "./Checkbox";
 export type { DrawerHeaderProps } from "./DrawerHeader";
 export { DrawerHeader } from "./DrawerHeader";
 export type {
+  FormFieldProps,
+  FormFieldRenderProps,
+  FormFieldSize,
+} from "./FormField";
+export { FormField } from "./FormField";
+export type {
   HeadingAs,
   HeadingProps,
   HeadingSize,
