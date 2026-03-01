@@ -44,6 +44,17 @@ export type DataTableActions<T> =
   | ((row: T) => DataTableAction<T>[]);
 export type DataTableMobileMode = "scroll" | "cards";
 
+export interface DataTableVirtualization {
+  /** 仮想スクロールを有効化（mobileMode=scroll のみ対応） */
+  enabled?: boolean;
+  /** 仮想スクロール時の表示高さ */
+  height?: number | string;
+  /** 仮想スクロール時の1行高さ(px) */
+  rowHeight?: number;
+  /** 仮想スクロール時の前後描画行数 */
+  overscan?: number;
+}
+
 export interface DataTableProps<T> {
   /** カラム定義 */
   columns: DataTableColumn<T>[];
@@ -63,14 +74,8 @@ export interface DataTableProps<T> {
   emptyMessage?: string;
   /** モバイル表示モード */
   mobileMode?: DataTableMobileMode;
-  /** 仮想スクロールを有効化（mobileMode=scroll のみ対応） */
-  virtualized?: boolean;
-  /** 仮想スクロール時の表示高さ */
-  height?: number | string;
-  /** 仮想スクロール時の1行高さ(px) */
-  rowHeight?: number;
-  /** 仮想スクロール時の前後描画行数 */
-  overscan?: number;
+  /** 仮想スクロール設定 */
+  virtualization?: DataTableVirtualization;
   /** 追加クラス */
   className?: string;
 }
@@ -133,20 +138,21 @@ export const DataTable = <T,>({
   loadingLabel = "Loading...",
   emptyMessage = "No data available.",
   mobileMode = "scroll",
-  virtualized = false,
-  height = 400,
-  rowHeight = 52,
-  overscan = 4,
+  virtualization,
   className,
 }: DataTableProps<T>) => {
   const hasActionColumn = Boolean(actions);
   const tableColumnCount = columns.length + (hasActionColumn ? 1 : 0);
   const [scrollTop, setScrollTop] = useState(0);
+  const isVirtualizationEnabled = virtualization?.enabled ?? false;
+  const virtualizedHeight = virtualization?.height ?? 400;
+  const virtualizedRowHeight = virtualization?.rowHeight ?? 52;
+  const virtualizedOverscan = virtualization?.overscan ?? 4;
   const viewportHeight =
-    typeof height === "number"
-      ? height
-      : Number.parseInt(String(height).replace("px", ""), 10) || 400;
-  const shouldVirtualize = virtualized && mobileMode === "scroll";
+    typeof virtualizedHeight === "number"
+      ? virtualizedHeight
+      : Number.parseInt(String(virtualizedHeight).replace("px", ""), 10) || 400;
+  const shouldVirtualize = isVirtualizationEnabled && mobileMode === "scroll";
 
   const virtualizedWindow = useMemo(() => {
     if (!shouldVirtualize || rows.length === 0) {
@@ -158,8 +164,8 @@ export const DataTable = <T,>({
       };
     }
 
-    const safeRowHeight = rowHeight > 0 ? rowHeight : 52;
-    const safeOverscan = overscan >= 0 ? overscan : 0;
+    const safeRowHeight = virtualizedRowHeight > 0 ? virtualizedRowHeight : 52;
+    const safeOverscan = virtualizedOverscan >= 0 ? virtualizedOverscan : 0;
     const visibleCount = Math.ceil(viewportHeight / safeRowHeight);
     const startIndex = Math.max(
       0,
@@ -179,8 +185,8 @@ export const DataTable = <T,>({
   }, [
     shouldVirtualize,
     rows.length,
-    rowHeight,
-    overscan,
+    virtualizedRowHeight,
+    virtualizedOverscan,
     viewportHeight,
     scrollTop,
   ]);
@@ -190,7 +196,7 @@ export const DataTable = <T,>({
     : rows;
 
   const tableWrapperStyle: CSSProperties | undefined = shouldVirtualize
-    ? { height, overflowY: "auto" }
+    ? { height: virtualizedHeight, overflowY: "auto" }
     : undefined;
 
   if (isLoading) {

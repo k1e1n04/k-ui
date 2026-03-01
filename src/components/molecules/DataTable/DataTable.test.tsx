@@ -125,10 +125,12 @@ describe("DataTable", () => {
         columns={columns}
         rows={manyRows}
         getRowId={(row) => row.id}
-        virtualized
-        height={120}
-        rowHeight={40}
-        overscan={0}
+        virtualization={{
+          enabled: true,
+          height: 120,
+          rowHeight: 40,
+          overscan: 0,
+        }}
       />,
     );
 
@@ -148,10 +150,12 @@ describe("DataTable", () => {
         columns={columns}
         rows={manyRows}
         getRowId={(row) => row.id}
-        virtualized
-        height={120}
-        rowHeight={40}
-        overscan={0}
+        virtualization={{
+          enabled: true,
+          height: 120,
+          rowHeight: 40,
+          overscan: 0,
+        }}
       />,
     );
 

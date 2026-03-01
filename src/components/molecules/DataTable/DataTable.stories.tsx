@@ -128,10 +128,12 @@ export const VirtualizedLargeDataset: Story = {
       columns={taskColumns}
       rows={largeTaskRows}
       getRowId={(row) => row.id}
-      virtualized
-      height={420}
-      rowHeight={52}
-      overscan={6}
+      virtualization={{
+        enabled: true,
+        height: 420,
+        rowHeight: 52,
+        overscan: 6,
+      }}
     />
   ),
 };
