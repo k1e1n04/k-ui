@@ -14,6 +14,14 @@ export type { DialogMaxWidth, DialogProps } from "./Dialog";
 export { Dialog } from "./Dialog";
 export type { InfoTooltipProps, InfoTooltipSize } from "./InfoTooltip";
 export { InfoTooltip } from "./InfoTooltip";
+export type {
+  KeyValueItem,
+  KeyValueListLayout,
+  KeyValueListProps,
+  KeyValueListSize,
+  KeyValueListTone,
+} from "./KeyValueList";
+export { KeyValueList } from "./KeyValueList";
 export type { ListItemProps } from "./ListItem";
 export { ListItem } from "./ListItem";
 export type { ListLayoutProps } from "./ListLayout";
