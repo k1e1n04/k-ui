@@ -37,6 +37,13 @@ const taskRows: TaskRow[] = [
   { id: "task-3", title: "Update docs", owner: "Ken", status: "Open" },
 ];
 
+const largeTaskRows: TaskRow[] = Array.from({ length: 2000 }, (_, idx) => ({
+  id: `task-${idx + 1}`,
+  title: `Task ${idx + 1}`,
+  owner: idx % 2 === 0 ? "Ken" : "Nao",
+  status: idx % 3 === 0 ? "Done" : "Open",
+}));
+
 const taskActions: DataTableAction<TaskRow>[] = [
   {
     label: "Edit",
@@ -111,6 +118,20 @@ export const MobileCards: Story = {
       getRowId={(row) => row.id}
       actions={taskActions}
       mobileMode="cards"
+    />
+  ),
+};
+
+export const VirtualizedLargeDataset: Story = {
+  render: () => (
+    <DataTable<TaskRow>
+      columns={taskColumns}
+      rows={largeTaskRows}
+      getRowId={(row) => row.id}
+      virtualized
+      height={420}
+      rowHeight={52}
+      overscan={6}
     />
   ),
 };
