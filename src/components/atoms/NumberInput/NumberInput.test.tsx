@@ -136,10 +136,7 @@ describe("NumberInput", () => {
 
   it("error があるとき aria-invalid=true がセットされる", () => {
     render(<NumberInput error="Error" />);
-    expect(screen.getByRole("textbox")).toHaveAttribute(
-      "aria-invalid",
-      "true",
-    );
+    expect(screen.getByRole("textbox")).toHaveAttribute("aria-invalid", "true");
   });
 
   it("required=true のとき * が表示される", () => {
@@ -152,13 +149,14 @@ describe("NumberInput", () => {
     expect(screen.getByPlaceholderText("0")).toBeInTheDocument();
   });
 
-  it.each(["small", "medium", "large"] as const)(
-    "size=%s でレンダリングされる",
-    (size) => {
-      render(<NumberInput size={size} />);
-      expect(screen.getByRole("textbox")).toBeInTheDocument();
-    },
-  );
+  it.each([
+    "small",
+    "medium",
+    "large",
+  ] as const)("size=%s でレンダリングされる", (size) => {
+    render(<NumberInput size={size} />);
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+  });
 
   it("className がルートラッパーに渡される", () => {
     const { container } = render(<NumberInput className="mt-4" />);
@@ -181,11 +179,8 @@ describe("NumberInput", () => {
   });
 
   it("onBlur イベントが発火する", () => {
-    const handleBlur = vi.fn();
     render(<NumberInput />);
-    // blur はコンポーネント内部で処理されるため、input の blur をトリガー
     fireEvent.blur(screen.getByRole("textbox"));
-    // エラーなく blur が処理されることを確認
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 });

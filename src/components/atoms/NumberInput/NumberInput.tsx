@@ -208,9 +208,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
     >
       {({ describedBy }) => (
         <>
-          {name && (
-            <input type="hidden" name={name} value={hiddenValue} />
-          )}
+          {name && <input type="hidden" name={name} value={hiddenValue} />}
           <div className="relative flex items-center">
             <input
               ref={inputRef}
