@@ -12,6 +12,8 @@ export type {
 export { DataTable } from "./DataTable";
 export type { DialogMaxWidth, DialogProps } from "./Dialog";
 export { Dialog } from "./Dialog";
+export type { InfoTooltipProps, InfoTooltipSize } from "./InfoTooltip";
+export { InfoTooltip } from "./InfoTooltip";
 export type { ListItemProps } from "./ListItem";
 export { ListItem } from "./ListItem";
 export type { ListLayoutProps } from "./ListLayout";
