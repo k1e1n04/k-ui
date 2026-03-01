@@ -45,3 +45,5 @@ export type {
   TypographyWeight,
 } from "./Typography";
 export { Typography } from "./Typography";
+export type { YearMonthInputProps, YearMonthInputSize } from "./YearMonthInput";
+export { YearMonthInput } from "./YearMonthInput";

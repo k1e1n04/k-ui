@@ -40,6 +40,8 @@ export type {
   TypographyTone,
   TypographyVariant,
   TypographyWeight,
+  YearMonthInputProps,
+  YearMonthInputSize,
 } from "./atoms";
 export {
   Alert,
@@ -58,6 +60,7 @@ export {
   Textarea,
   ToggleSwitch,
   Typography,
+  YearMonthInput,
 } from "./atoms";
 // Molecules
 export type {
