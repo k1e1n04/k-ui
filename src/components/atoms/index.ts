@@ -25,6 +25,12 @@ export type {
 export { Heading } from "./Heading";
 export type { InputProps, InputSize, InputType } from "./Input";
 export { Input } from "./Input";
+export type {
+  NumberInputEmptyBehavior,
+  NumberInputProps,
+  NumberInputSize,
+} from "./NumberInput";
+export { NumberInput } from "./NumberInput";
 export type { ProgressBarProps, ProgressBarSize } from "./ProgressBar";
 export { ProgressBar } from "./ProgressBar";
 export type { SearchInputProps } from "./SearchInput";
