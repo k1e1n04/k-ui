@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { type CSSProperties, type ReactNode, useMemo, useState } from "react";
 import { cn } from "../../../utils/cn";
 import { Button, Spinner, Typography } from "../../atoms";
 
@@ -44,6 +44,17 @@ export type DataTableActions<T> =
   | ((row: T) => DataTableAction<T>[]);
 export type DataTableMobileMode = "scroll" | "cards";
 
+export interface DataTableVirtualization {
+  /** 仮想スクロールを有効化（mobileMode=scroll のみ対応） */
+  enabled?: boolean;
+  /** 仮想スクロール時の表示高さ */
+  height?: number | string;
+  /** 仮想スクロール時の1行高さ(px) */
+  rowHeight?: number;
+  /** 仮想スクロール時の前後描画行数 */
+  overscan?: number;
+}
+
 export interface DataTableProps<T> {
   /** カラム定義 */
   columns: DataTableColumn<T>[];
@@ -63,6 +74,8 @@ export interface DataTableProps<T> {
   emptyMessage?: string;
   /** モバイル表示モード */
   mobileMode?: DataTableMobileMode;
+  /** 仮想スクロール設定 */
+  virtualization?: DataTableVirtualization;
   /** 追加クラス */
   className?: string;
 }
@@ -125,10 +138,66 @@ export const DataTable = <T,>({
   loadingLabel = "Loading...",
   emptyMessage = "No data available.",
   mobileMode = "scroll",
+  virtualization,
   className,
 }: DataTableProps<T>) => {
   const hasActionColumn = Boolean(actions);
   const tableColumnCount = columns.length + (hasActionColumn ? 1 : 0);
+  const [scrollTop, setScrollTop] = useState(0);
+  const isVirtualizationEnabled = virtualization?.enabled ?? false;
+  const virtualizedHeight = virtualization?.height ?? 400;
+  const virtualizedRowHeight = virtualization?.rowHeight ?? 52;
+  const virtualizedOverscan = virtualization?.overscan ?? 4;
+  const viewportHeight =
+    typeof virtualizedHeight === "number"
+      ? virtualizedHeight
+      : Number.parseInt(String(virtualizedHeight).replace("px", ""), 10) || 400;
+  const shouldVirtualize = isVirtualizationEnabled && mobileMode === "scroll";
+
+  const virtualizedWindow = useMemo(() => {
+    if (!shouldVirtualize || rows.length === 0) {
+      return {
+        startIndex: 0,
+        endIndex: rows.length,
+        topSpacerHeight: 0,
+        bottomSpacerHeight: 0,
+      };
+    }
+
+    const safeRowHeight = virtualizedRowHeight > 0 ? virtualizedRowHeight : 52;
+    const safeOverscan = virtualizedOverscan >= 0 ? virtualizedOverscan : 0;
+    const visibleCount = Math.ceil(viewportHeight / safeRowHeight);
+    const startIndex = Math.max(
+      0,
+      Math.floor(scrollTop / safeRowHeight) - safeOverscan,
+    );
+    const endIndex = Math.min(
+      rows.length,
+      startIndex + visibleCount + safeOverscan * 2,
+    );
+
+    return {
+      startIndex,
+      endIndex,
+      topSpacerHeight: startIndex * safeRowHeight,
+      bottomSpacerHeight: Math.max(0, (rows.length - endIndex) * safeRowHeight),
+    };
+  }, [
+    shouldVirtualize,
+    rows.length,
+    virtualizedRowHeight,
+    virtualizedOverscan,
+    viewportHeight,
+    scrollTop,
+  ]);
+
+  const visibleRows = shouldVirtualize
+    ? rows.slice(virtualizedWindow.startIndex, virtualizedWindow.endIndex)
+    : rows;
+
+  const tableWrapperStyle: CSSProperties | undefined = shouldVirtualize
+    ? { height: virtualizedHeight, overflowY: "auto" }
+    : undefined;
 
   if (isLoading) {
     return (
@@ -251,6 +320,12 @@ export const DataTable = <T,>({
         "w-full overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700",
         className,
       )}
+      style={tableWrapperStyle}
+      onScroll={
+        shouldVirtualize
+          ? (event) => setScrollTop(event.currentTarget.scrollTop)
+          : undefined
+      }
     >
       <table className="min-w-full border-collapse">
         <thead className="bg-gray-50 dark:bg-gray-800/60">
@@ -286,29 +361,59 @@ export const DataTable = <T,>({
               </td>
             </tr>
           ) : (
-            rows.map((row, index) => (
-              <tr
-                key={getRowId(row, index)}
-                className="bg-white dark:bg-gray-900"
-              >
-                {columns.map((column) => (
+            <>
+              {shouldVirtualize && virtualizedWindow.topSpacerHeight > 0 && (
+                <tr>
                   <td
-                    key={column.key}
-                    className={cn(
-                      "px-4 py-3 text-sm text-gray-700 dark:text-gray-200",
-                      column.cellClassName,
-                    )}
+                    colSpan={tableColumnCount}
+                    style={{
+                      height: `${virtualizedWindow.topSpacerHeight}px`,
+                      padding: 0,
+                    }}
+                  />
+                </tr>
+              )}
+              {visibleRows.map((row, index) => {
+                const rowIndex = shouldVirtualize
+                  ? virtualizedWindow.startIndex + index
+                  : index;
+
+                return (
+                  <tr
+                    key={getRowId(row, rowIndex)}
+                    className="bg-white dark:bg-gray-900"
                   >
-                    {column.render(row)}
-                  </td>
-                ))}
-                {hasActionColumn && (
-                  <td className="px-4 py-3 text-right">
-                    {renderActions(row, actions)}
-                  </td>
-                )}
-              </tr>
-            ))
+                    {columns.map((column) => (
+                      <td
+                        key={column.key}
+                        className={cn(
+                          "px-4 py-3 text-sm text-gray-700 dark:text-gray-200",
+                          column.cellClassName,
+                        )}
+                      >
+                        {column.render(row)}
+                      </td>
+                    ))}
+                    {hasActionColumn && (
+                      <td className="px-4 py-3 text-right">
+                        {renderActions(row, actions)}
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
+              {shouldVirtualize && virtualizedWindow.bottomSpacerHeight > 0 && (
+                <tr>
+                  <td
+                    colSpan={tableColumnCount}
+                    style={{
+                      height: `${virtualizedWindow.bottomSpacerHeight}px`,
+                      padding: 0,
+                    }}
+                  />
+                </tr>
+              )}
+            </>
           )}
         </tbody>
       </table>
