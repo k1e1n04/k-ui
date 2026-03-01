@@ -237,6 +237,62 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "
  */
 declare const Input: React.FC<InputProps>;
 
+/** NumberInput のサイズ */
+type NumberInputSize = "small" | "medium" | "large";
+/** 空文字時の挙動 */
+type NumberInputEmptyBehavior = "undefined" | "zero";
+interface NumberInputProps {
+    /** 現在の数値 */
+    value?: number;
+    /** 値変更ハンドラー */
+    onValueChange?: (value: number | undefined) => void;
+    /** 小数桁数 */
+    precision?: number;
+    /** 最小値 */
+    min?: number;
+    /** 最大値 */
+    max?: number;
+    /** ステップ */
+    step?: number;
+    /** 接尾辞（例: %, 万円） */
+    suffix?: string;
+    /** 負数を許可するか */
+    allowNegative?: boolean;
+    /** 空文字時の挙動 */
+    emptyBehavior?: NumberInputEmptyBehavior;
+    /** ラベルテキスト */
+    label?: string;
+    /** エラーメッセージ */
+    error?: string;
+    /** 補助説明 */
+    description?: string;
+    /** 必須フラグ */
+    required?: boolean;
+    /** 無効化 */
+    disabled?: boolean;
+    /** プレースホルダー */
+    placeholder?: string;
+    /** サイズ */
+    size?: NumberInputSize;
+    /** 追加のクラス名（ルートラッパーに適用） */
+    className?: string;
+    /** input の id */
+    id?: string;
+    /** input の name */
+    name?: string;
+    /** aria-invalid の上書き */
+    "aria-invalid"?: boolean;
+    /** aria-describedby の上書き */
+    "aria-describedby"?: string;
+}
+/**
+ * 数値入力コンポーネント
+ *
+ * precision/suffix/min-max/empty handling をサポートする数値専用インプット。
+ * 内部的にはテキスト入力を使用し、フォーマット・パースを制御する。
+ */
+declare const NumberInput: React.FC<NumberInputProps>;
+
 /** プログレスバーのサイズ */
 type ProgressBarSize = "sm" | "md" | "lg";
 interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -408,6 +464,50 @@ interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
  */
 declare const Typography: React.FC<TypographyProps>;
 
+/** YearMonthInput のサイズ */
+type YearMonthInputSize = "small" | "medium" | "large";
+interface YearMonthInputProps {
+    /** 現在の値（YYYY-MM 形式） */
+    value?: string;
+    /** 値変更ハンドラー */
+    onChange?: (value: string | undefined) => void;
+    /** 最小値（YYYY-MM 形式） */
+    min?: string;
+    /** 最大値（YYYY-MM 形式） */
+    max?: string;
+    /** クリアボタンを表示するか */
+    allowClear?: boolean;
+    /** ラベルテキスト */
+    label?: string;
+    /** エラーメッセージ */
+    error?: string;
+    /** 補助説明 */
+    description?: string;
+    /** 必須フラグ */
+    required?: boolean;
+    /** 無効化 */
+    disabled?: boolean;
+    /** サイズ */
+    size?: YearMonthInputSize;
+    /** 追加のクラス名（ルートラッパーに適用） */
+    className?: string;
+    /** input の id */
+    id?: string;
+    /** input の name */
+    name?: string;
+    /** aria-invalid の上書き */
+    "aria-invalid"?: boolean;
+    /** aria-describedby の上書き */
+    "aria-describedby"?: string;
+}
+/**
+ * 年月入力コンポーネント
+ *
+ * YYYY-MM 形式の年月を入力するための専用インプット。
+ * ネイティブの type="month" を使用し、ブラウザ間の差異を吸収する。
+ */
+declare const YearMonthInput: React.FC<YearMonthInputProps>;
+
 /** AppBarのポジション */
 type AppBarPosition = "fixed" | "static" | "absolute" | "relative" | "sticky";
 /** AppBarのカラー */
@@ -484,6 +584,16 @@ interface DataTableAction<T> {
 }
 type DataTableActions<T> = DataTableAction<T>[] | ((row: T) => DataTableAction<T>[]);
 type DataTableMobileMode = "scroll" | "cards";
+interface DataTableVirtualization {
+    /** 仮想スクロールを有効化（mobileMode=scroll のみ対応） */
+    enabled?: boolean;
+    /** 仮想スクロール時の表示高さ */
+    height?: number | string;
+    /** 仮想スクロール時の1行高さ(px) */
+    rowHeight?: number;
+    /** 仮想スクロール時の前後描画行数 */
+    overscan?: number;
+}
 interface DataTableProps<T> {
     /** カラム定義 */
     columns: DataTableColumn<T>[];
@@ -503,6 +613,8 @@ interface DataTableProps<T> {
     emptyMessage?: string;
     /** モバイル表示モード */
     mobileMode?: DataTableMobileMode;
+    /** 仮想スクロール設定 */
+    virtualization?: DataTableVirtualization;
     /** 追加クラス */
     className?: string;
 }
@@ -513,7 +625,7 @@ interface DataTableProps<T> {
  * - `mobileMode="scroll"` では横スクロール対応
  * - `mobileMode="cards"` ではモバイルをカード表示に切り替え
  */
-declare const DataTable: <T>({ columns, rows, getRowId, actions, actionHeader, isLoading, loadingLabel, emptyMessage, mobileMode, className, }: DataTableProps<T>) => react_jsx_runtime.JSX.Element;
+declare const DataTable: <T>({ columns, rows, getRowId, actions, actionHeader, isLoading, loadingLabel, emptyMessage, mobileMode, virtualization, className, }: DataTableProps<T>) => react_jsx_runtime.JSX.Element;
 
 /** ダイアログの最大幅 */
 type DialogMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl";
@@ -546,6 +658,27 @@ interface DialogProps {
  * - ダークモード対応
  */
 declare const Dialog: React.FC<DialogProps>;
+
+/** InfoTooltip のサイズ */
+type InfoTooltipSize = "sm" | "md";
+interface InfoTooltipProps {
+    /** ツールチップの内容 */
+    content: ReactNode;
+    /** トリガーラベル（aria-label 用） */
+    label?: string;
+    /** サイズ */
+    size?: InfoTooltipSize;
+    /** 追加のクラス名 */
+    className?: string;
+}
+/**
+ * インフォメーションツールチップコンポーネント
+ *
+ * Tooltip のユースケース特化ラッパー。
+ * 情報アイコン (i) とアクセシビリティ属性を内包し、
+ * 説明補助のツールチップを簡単に配置できる。
+ */
+declare const InfoTooltip: React.FC<InfoTooltipProps>;
 
 interface ListItemProps extends React.HTMLAttributes<HTMLDivElement> {
     /** リストアイテムの内容 */
@@ -861,4 +994,4 @@ declare function useMediaQuery(query: string): boolean;
  */
 declare function cn(...inputs: ClassValue[]): string;
 
-export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Card, type CardProps, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, DataTable, type DataTableAction, type DataTableActions, type DataTableColumn, type DataTableMobileMode, type DataTableProps, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, EmptyState, type EmptyStateProps, FormField, type FormFieldProps, type FormFieldRenderProps, type FormFieldSize, Heading, type HeadingAs, type HeadingProps, type HeadingSize, type HeadingTone, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, type PaddingSize, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, SearchInput, type SearchInputProps, Select, type SelectOption, type SelectProps, type SelectSize, type ShadowSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, Typography, type TypographyAs, type TypographyProps, type TypographyTone, type TypographyVariant, type TypographyWeight, cn, useClickOutside, useEscapeKey, useMediaQuery };
+export { Alert, type AlertProps, type AlertVariant, AppBar, type AppBarColor, type AppBarPosition, type AppBarProps, AppLayout, type AppLayoutProps, Badge, type BadgeProps, type BadgeVariant, Button, type ButtonProps, type ButtonSize, type ButtonVariant, Card, type CardProps, Checkbox, type CheckboxProps, type CheckboxSize, ConfirmDialog, type ConfirmDialogProps, type ConfirmDialogVariant, DataTable, type DataTableAction, type DataTableActions, type DataTableColumn, type DataTableMobileMode, type DataTableProps, Dialog, type DialogMaxWidth, type DialogProps, DrawerHeader, type DrawerHeaderProps, type DrawerItem, type DrawerSection, EmptyState, type EmptyStateProps, FormField, type FormFieldProps, type FormFieldRenderProps, type FormFieldSize, Heading, type HeadingAs, type HeadingProps, type HeadingSize, type HeadingTone, InfoTooltip, type InfoTooltipProps, type InfoTooltipSize, Input, type InputProps, type InputSize, type InputType, ListItem, type ListItemProps, ListLayout, type ListLayoutProps, MonthSelector, type MonthSelectorProps, NavigationDrawer, type NavigationDrawerProps, NumberInput, type NumberInputEmptyBehavior, type NumberInputProps, type NumberInputSize, type PaddingSize, ProgressBar, type ProgressBarProps, type ProgressBarSize, type RenderLinkProps, SearchInput, type SearchInputProps, Select, type SelectOption, type SelectProps, type SelectSize, type ShadowSize, Spinner, type SpinnerProps, type SpinnerSize, type StatCardColor, type StatCardItem, StatCards, type StatCardsProps, Textarea, type TextareaProps, type TextareaSize, ToggleSwitch, type ToggleSwitchProps, type ToggleSwitchSize, Tooltip, type TooltipProps, Typography, type TypographyAs, type TypographyProps, type TypographyTone, type TypographyVariant, type TypographyWeight, YearMonthInput, type YearMonthInputProps, type YearMonthInputSize, cn, useClickOutside, useEscapeKey, useMediaQuery };
