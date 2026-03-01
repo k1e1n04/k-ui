@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
@@ -111,5 +111,60 @@ describe("DataTable", () => {
 
     expect(screen.getAllByText("Name").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Nao").length).toBeGreaterThan(0);
+  });
+
+  it("virtualized=true で表示領域分のみ描画する", () => {
+    const manyRows: UserRow[] = Array.from({ length: 200 }, (_, idx) => ({
+      id: String(idx + 1),
+      name: `User ${idx + 1}`,
+      role: "Member",
+    }));
+
+    render(
+      <DataTable<UserRow>
+        columns={columns}
+        rows={manyRows}
+        getRowId={(row) => row.id}
+        virtualization={{
+          enabled: true,
+          height: 120,
+          rowHeight: 40,
+          overscan: 0,
+        }}
+      />,
+    );
+
+    expect(screen.getByText("User 1")).toBeInTheDocument();
+    expect(screen.queryByText("User 120")).not.toBeInTheDocument();
+  });
+
+  it("virtualized=true でスクロール位置に応じた行を描画する", () => {
+    const manyRows: UserRow[] = Array.from({ length: 200 }, (_, idx) => ({
+      id: String(idx + 1),
+      name: `User ${idx + 1}`,
+      role: "Member",
+    }));
+
+    const { container } = render(
+      <DataTable<UserRow>
+        columns={columns}
+        rows={manyRows}
+        getRowId={(row) => row.id}
+        virtualization={{
+          enabled: true,
+          height: 120,
+          rowHeight: 40,
+          overscan: 0,
+        }}
+      />,
+    );
+
+    const wrapper = container.querySelector("div[style*='overflow-y: auto']");
+    expect(wrapper).not.toBeNull();
+
+    fireEvent.scroll(wrapper as Element, { target: { scrollTop: 400 } });
+
+    expect(screen.queryByText("User 1")).not.toBeInTheDocument();
+    expect(screen.getByText("User 11")).toBeInTheDocument();
   });
 });

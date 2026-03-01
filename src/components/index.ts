@@ -21,6 +21,9 @@ export type {
   InputProps,
   InputSize,
   InputType,
+  NumberInputEmptyBehavior,
+  NumberInputProps,
+  NumberInputSize,
   PaddingSize,
   ProgressBarProps,
   ProgressBarSize,
@@ -40,6 +43,8 @@ export type {
   TypographyTone,
   TypographyVariant,
   TypographyWeight,
+  YearMonthInputProps,
+  YearMonthInputSize,
 } from "./atoms";
 export {
   Alert,
@@ -51,6 +56,7 @@ export {
   FormField,
   Heading,
   Input,
+  NumberInput,
   ProgressBar,
   SearchInput,
   Select,
@@ -58,6 +64,7 @@ export {
   Textarea,
   ToggleSwitch,
   Typography,
+  YearMonthInput,
 } from "./atoms";
 // Molecules
 export type {
@@ -75,6 +82,13 @@ export type {
   DialogProps,
   DrawerItem,
   DrawerSection,
+  InfoTooltipProps,
+  InfoTooltipSize,
+  KeyValueItem,
+  KeyValueListLayout,
+  KeyValueListProps,
+  KeyValueListSize,
+  KeyValueListTone,
   ListItemProps,
   ListLayoutProps,
   MonthSelectorProps,
@@ -90,6 +104,8 @@ export {
   ConfirmDialog,
   DataTable,
   Dialog,
+  InfoTooltip,
+  KeyValueList,
   ListItem,
   ListLayout,
   MonthSelector,
