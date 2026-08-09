@@ -192,3 +192,13 @@
   --animate-kui-slide-up: kui-slide-up 0.3s ease-in-out;
   --animate-kui-spin: kui-spin 1s linear infinite;
 }
+
+:root {
+  --kui-z-dropdown: 30;
+  --kui-z-drawer: 40;
+  --kui-z-overlay: 45;
+  --kui-z-modal: 50;
+  --kui-z-popover: 60;
+  --kui-z-toast: 70;
+  --kui-z-tooltip: 80;
+}

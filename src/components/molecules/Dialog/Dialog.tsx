@@ -2,31 +2,36 @@
 
 import type React from "react";
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 
+import { useEscapeKey } from "../../../hooks/useEscapeKey";
+import { useFocusTrap } from "../../../hooks/useFocusTrap";
 import { cn } from "../../../utils/cn";
 
-/** ダイアログの最大幅 */
+/** ダイアログの最大幅。 @default undefined */
 export type DialogMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl";
 
+/** ダイアログのプロパティ。 @default undefined */
 export interface DialogProps {
-  /** ダイアログの開閉状態 */
+  /** ダイアログの開閉状態。 @default undefined */
   open: boolean;
-  /** ダイアログを閉じる関数 */
+  /** ダイアログを閉じる関数。 @default undefined */
   onClose: () => void;
-  /** ダイアログのタイトル */
+  /** ダイアログのタイトル。 @default undefined */
   title?: string;
-  /** ダイアログのコンテンツ */
+  /** ダイアログのコンテンツ。 @default undefined */
   children: ReactNode;
-  /** ダイアログの最大幅 */
+  /** ダイアログの最大幅。 @default "md" */
   maxWidth?: DialogMaxWidth;
-  /** 閉じるボタンを非表示にするかどうか */
+  /** 閉じるボタンを非表示にするか。 @default false */
   hideCloseButton?: boolean;
-  /** 外クリックで閉じることを無効にするかどうか */
+  /** 外クリックで閉じることを無効にするか。 @default false */
   disableOutsideClick?: boolean;
-  /** 閉じるボタンのaria-label */
+  /** 閉じるボタンの aria-label。 @default "Close dialog" */
   closeButtonLabel?: string;
-  /** 追加のクラス名 */
+  /** タイトルがない場合のダイアログの aria-label。 @default "Dialog" */
+  ariaLabel?: string;
+  /** 追加のクラス名。 @default undefined */
   className?: string;
 }
 
@@ -39,6 +44,29 @@ const maxWidthClasses: Record<DialogMaxWidth, string> = {
   "2xl": "max-w-2xl",
 };
 
+let activeDialogScrollLocks = 0;
+let originalBodyOverflow: string | null = null;
+
+const lockBodyScroll = (): (() => void) => {
+  if (activeDialogScrollLocks === 0) {
+    originalBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+  }
+  activeDialogScrollLocks += 1;
+
+  let released = false;
+  return () => {
+    if (released) return;
+
+    released = true;
+    activeDialogScrollLocks -= 1;
+    if (activeDialogScrollLocks === 0) {
+      document.body.style.overflow = originalBodyOverflow ?? "";
+      originalBodyOverflow = null;
+    }
+  };
+};
+
 /**
  * 共通ダイアログコンポーネント
  *
@@ -46,6 +74,8 @@ const maxWidthClasses: Record<DialogMaxWidth, string> = {
  * - 外クリックでダイアログを閉じる
  * - ESCキーでダイアログを閉じる
  * - ダークモード対応
+ *
+ * @default undefined
  */
 export const Dialog: React.FC<DialogProps> = ({
   open,
@@ -56,26 +86,21 @@ export const Dialog: React.FC<DialogProps> = ({
   hideCloseButton = false,
   disableOutsideClick = false,
   closeButtonLabel = "Close dialog",
+  ariaLabel = "Dialog",
   className,
 }) => {
-  // ESCキーでダイアログを閉じる
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+
+  useEscapeKey(onClose, open);
+  useFocusTrap(dialogRef, open, { initialFocusRef: closeButtonRef });
+
   useEffect(() => {
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && open) {
-        onClose();
-      }
-    };
+    if (!open) return;
 
-    if (open) {
-      document.addEventListener("keydown", handleEscapeKey);
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
-      document.body.style.overflow = "unset";
-    };
-  }, [open, onClose]);
+    return lockBodyScroll();
+  }, [open]);
 
   // 外クリックでダイアログを閉じる
   const handleBackdropClick = () => {
@@ -88,7 +113,7 @@ export const Dialog: React.FC<DialogProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-y-auto flex items-start sm:items-center justify-center p-4 pt-12 sm:pt-4"
+      className="fixed inset-0 z-[var(--kui-z-modal)] overflow-y-auto flex items-start sm:items-center justify-center p-4 pt-12 sm:pt-4"
       style={{
         backgroundColor: "var(--kui-color-overlay)",
         backdropFilter: "blur(2px)",
@@ -104,6 +129,9 @@ export const Dialog: React.FC<DialogProps> = ({
       <div
         role="dialog"
         aria-modal="true"
+        aria-label={title ? undefined : ariaLabel}
+        aria-labelledby={title ? titleId : undefined}
+        ref={dialogRef}
         className={cn(
           "relative bg-surface rounded-lg shadow-xl w-full transform transition-all duration-200 ease-out",
           maxWidthClasses[maxWidth],
@@ -114,10 +142,16 @@ export const Dialog: React.FC<DialogProps> = ({
         {(title || !hideCloseButton) && (
           <div className="flex justify-between items-center p-6 pb-4">
             {title && (
-              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+              <h3
+                id={titleId}
+                className="text-lg font-semibold text-foreground"
+              >
+                {title}
+              </h3>
             )}
             {!hideCloseButton && (
               <button
+                ref={closeButtonRef}
                 type="button"
                 onClick={onClose}
                 className="text-muted hover:text-foreground transition-colors p-1"
