@@ -27,5 +27,5 @@ export interface SegmentedControlProps {
     className?: string;
 }
 /** 選択肢を横並びのセグメントとして表示するコントロール。 @default undefined */
-export declare function SegmentedControl({ options, value, onChange, fullWidth, disabled, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, className, }: SegmentedControlProps): import("react/jsx-runtime").JSX.Element;
+export declare function SegmentedControl({ options, value, onChange, fullWidth, disabled, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, className, }: SegmentedControlProps): import("react").JSX.Element;
 //# sourceMappingURL=SegmentedControl.d.ts.map

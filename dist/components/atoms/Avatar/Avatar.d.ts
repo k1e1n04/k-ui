@@ -16,5 +16,5 @@ export interface AvatarProps {
     className?: string;
 }
 /** アバターを表示するコンポーネント。 @default undefined */
-export declare function Avatar({ src, name, alt, size, shape, className, }: AvatarProps): import("react/jsx-runtime").JSX.Element;
+export declare function Avatar({ src, name, alt, size, shape, className, }: AvatarProps): import("react").JSX.Element;
 //# sourceMappingURL=Avatar.d.ts.map

@@ -7,5 +7,5 @@ export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
     fullWidth?: boolean;
 }
 /** ボタンを連続したグループとして表示するコンポーネント。 @default undefined */
-export declare function ButtonGroup({ orientation, fullWidth, className, children, ...props }: ButtonGroupProps): import("react/jsx-runtime").JSX.Element;
+export declare function ButtonGroup({ orientation, fullWidth, className, children, ...props }: ButtonGroupProps): React.JSX.Element;
 //# sourceMappingURL=ButtonGroup.d.ts.map

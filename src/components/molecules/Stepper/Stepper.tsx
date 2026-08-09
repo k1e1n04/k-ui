@@ -5,6 +5,8 @@ import { cn } from "../../../utils/cn";
 
 /** ステッパーの手順。 @default undefined */
 export interface StepperStep {
+  /** 手順の一意な識別子。 @default undefined */
+  id?: string;
   /** 手順のラベル。 @default undefined */
   label: React.ReactNode;
   /** 手順の説明。 @default undefined */
@@ -68,7 +70,7 @@ export const Stepper: React.FC<StepperProps> = ({
         );
         return (
           <li
-            key={`${String(step.label)}-${index}`}
+            key={step.id ?? String(step.label)}
             aria-current={isActive ? "step" : undefined}
             className="flex min-w-0 flex-1 items-start"
           >

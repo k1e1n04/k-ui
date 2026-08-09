@@ -12,14 +12,18 @@ describe("Avatar", () => {
     fireEvent.error(screen.getByRole("img"));
     expect(screen.getByText("JD")).toBeInTheDocument();
   });
-  it.each([
-    "small",
-    "medium",
-    "large",
-  ] as const)("size=%s とshapeを適用する", (size) => {
-    render(
-      <Avatar name="Jane Doe" size={size} shape="square" className="custom" />,
-    );
-    expect(screen.getByText("JD")).toHaveClass("custom");
-  });
+  it.each(["small", "medium", "large"] as const)(
+    "size=%s とshapeを適用する",
+    (size) => {
+      render(
+        <Avatar
+          name="Jane Doe"
+          size={size}
+          shape="square"
+          className="custom"
+        />,
+      );
+      expect(screen.getByText("JD")).toHaveClass("custom");
+    },
+  );
 });

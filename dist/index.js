@@ -2040,13 +2040,13 @@ function AvatarGroup({ avatars, max, className }) {
   const visible = max === void 0 ? avatars : avatars.slice(0, max);
   const remaining = Math.max(0, avatars.length - visible.length);
   return /* @__PURE__ */ jsxs16("fieldset", { "aria-label": "Avatars", className: cn("flex -space-x-2", className), children: [
-    visible.map((avatar, index) => /* @__PURE__ */ jsx31(
+    visible.map((avatar) => /* @__PURE__ */ jsx31(
       Avatar,
       {
         ...avatar,
         className: cn("ring-2 ring-surface", avatar.className)
       },
-      `${avatar.name}-${index}`
+      `${avatar.src ?? ""}-${avatar.name ?? ""}`
     )),
     remaining > 0 && /* @__PURE__ */ jsxs16("span", { className: "inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface-sunken text-sm text-foreground ring-2 ring-surface", children: [
       "+",
@@ -4525,7 +4525,7 @@ var Stepper = ({
           )
         ]
       },
-      `${String(step.label)}-${index}`
+      step.id ?? String(step.label)
     );
   }) });
 };
@@ -4642,7 +4642,7 @@ var Timeline = ({
             ] })
           ]
         },
-        `${String(item.title)}-${index}`
+        item.id ?? String(item.title)
       );
     })
   }

@@ -148,14 +148,13 @@ describe("Select", () => {
     expect(select).toHaveAttribute("aria-describedby", errorElement.id);
   });
 
-  it.each([
-    "small",
-    "medium",
-    "large",
-  ] as const)("size=%s でレンダリングされる", (size) => {
-    render(<Select options={defaultOptions} size={size} />);
-    expect(screen.getByRole("combobox")).toBeInTheDocument();
-  });
+  it.each(["small", "medium", "large"] as const)(
+    "size=%s でレンダリングされる",
+    (size) => {
+      render(<Select options={defaultOptions} size={size} />);
+      expect(screen.getByRole("combobox")).toBeInTheDocument();
+    },
+  );
 
   it("disabled な選択肢がレンダリングされる", () => {
     const options = [

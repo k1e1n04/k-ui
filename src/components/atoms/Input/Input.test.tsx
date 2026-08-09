@@ -99,27 +99,22 @@ describe("Input", () => {
     expect(input).toHaveAttribute("aria-describedby", errorElement.id);
   });
 
-  it.each([
-    "small",
-    "medium",
-    "large",
-  ] as const)("size=%s でレンダリングされる", (size) => {
-    render(<Input size={size} />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-  });
+  it.each(["small", "medium", "large"] as const)(
+    "size=%s でレンダリングされる",
+    (size) => {
+      render(<Input size={size} />);
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
+    },
+  );
 
-  it.each([
-    "text",
-    "number",
-    "date",
-    "time",
-    "url",
-    "month",
-  ] as const)("type=%s でレンダリングされる", (type) => {
-    const { container } = render(<Input type={type} />);
-    const input = container.querySelector("input");
-    expect(input).toHaveAttribute("type", type);
-  });
+  it.each(["text", "number", "date", "time", "url", "month"] as const)(
+    "type=%s でレンダリングされる",
+    (type) => {
+      const { container } = render(<Input type={type} />);
+      const input = container.querySelector("input");
+      expect(input).toHaveAttribute("type", type);
+    },
+  );
 
   describe("type=hidden", () => {
     it("type=hidden のとき hidden input のみレンダリングされる", () => {

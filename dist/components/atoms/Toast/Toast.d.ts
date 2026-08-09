@@ -32,5 +32,5 @@ export interface ToastProps {
     className?: string;
 }
 /** 一時的な通知を表示するトースト。 @default undefined */
-export declare function Toast({ variant, title, message, onDismiss, action, className, ...events }: ToastProps): import("react/jsx-runtime").JSX.Element;
+export declare function Toast({ variant, title, message, onDismiss, action, className, ...events }: ToastProps): React.JSX.Element;
 //# sourceMappingURL=Toast.d.ts.map

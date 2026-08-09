@@ -68,5 +68,5 @@ export interface DataTableProps<T> {
  * - `mobileMode="scroll"` では横スクロール対応
  * - `mobileMode="cards"` ではモバイルをカード表示に切り替え
  */
-export declare const DataTable: <T>({ columns, rows, getRowId, actions, actionHeader, isLoading, loadingLabel, emptyMessage, mobileMode, virtualization, className, }: DataTableProps<T>) => import("react/jsx-runtime").JSX.Element;
+export declare const DataTable: <T>({ columns, rows, getRowId, actions, actionHeader, isLoading, loadingLabel, emptyMessage, mobileMode, virtualization, className, }: DataTableProps<T>) => import("react").JSX.Element;
 //# sourceMappingURL=DataTable.d.ts.map

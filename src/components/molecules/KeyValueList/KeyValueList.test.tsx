@@ -84,13 +84,13 @@ describe("KeyValueList", () => {
     expect(screen.getByText("Name")).toBeInTheDocument();
   });
 
-  it.each([
-    "horizontal",
-    "vertical",
-  ] as const)("layout=%s でレンダリングされる", (layout) => {
-    render(<KeyValueList items={defaultItems} layout={layout} />);
-    expect(screen.getByText("Name")).toBeInTheDocument();
-  });
+  it.each(["horizontal", "vertical"] as const)(
+    "layout=%s でレンダリングされる",
+    (layout) => {
+      render(<KeyValueList items={defaultItems} layout={layout} />);
+      expect(screen.getByText("Name")).toBeInTheDocument();
+    },
+  );
 
   it("className がルートに渡される", () => {
     const { container } = render(

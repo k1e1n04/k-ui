@@ -9,5 +9,5 @@ export interface AvatarGroupProps {
     className?: string;
 }
 /** 複数のアバターを重ねて表示するコンポーネント。 @default undefined */
-export declare function AvatarGroup({ avatars, max, className }: AvatarGroupProps): import("react/jsx-runtime").JSX.Element;
+export declare function AvatarGroup({ avatars, max, className }: AvatarGroupProps): import("react").JSX.Element;
 //# sourceMappingURL=AvatarGroup.d.ts.map

@@ -17,9 +17,9 @@ export function AvatarGroup({ avatars, max, className }: AvatarGroupProps) {
   const remaining = Math.max(0, avatars.length - visible.length);
   return (
     <fieldset aria-label="Avatars" className={cn("flex -space-x-2", className)}>
-      {visible.map((avatar, index) => (
+      {visible.map((avatar) => (
         <Avatar
-          key={`${avatar.name}-${index}`}
+          key={`${avatar.src ?? ""}-${avatar.name ?? ""}`}
           {...avatar}
           className={cn("ring-2 ring-surface", avatar.className)}
         />

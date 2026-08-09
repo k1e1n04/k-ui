@@ -79,14 +79,13 @@ describe("Checkbox", () => {
     expect(screen.queryByText(/.+/)).not.toBeInTheDocument();
   });
 
-  it.each([
-    "small",
-    "medium",
-    "large",
-  ] as const)("size=%s でレンダリングされる", (size) => {
-    render(<Checkbox checked={false} onChange={() => {}} size={size} />);
-    expect(screen.getByRole("checkbox")).toBeInTheDocument();
-  });
+  it.each(["small", "medium", "large"] as const)(
+    "size=%s でレンダリングされる",
+    (size) => {
+      render(<Checkbox checked={false} onChange={() => {}} size={size} />);
+      expect(screen.getByRole("checkbox")).toBeInTheDocument();
+    },
+  );
 
   it("className が渡される", () => {
     const { container } = render(

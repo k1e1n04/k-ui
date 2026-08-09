@@ -26,5 +26,5 @@ export interface SliderProps {
     className?: string;
 }
 /** 数値または範囲を選択するスライダー。 @default undefined */
-export declare function Slider({ value, onChange, min, max, step, marks, label, description, error, disabled, className, }: SliderProps): import("react/jsx-runtime").JSX.Element;
+export declare function Slider({ value, onChange, min, max, step, marks, label, description, error, disabled, className, }: SliderProps): import("react").JSX.Element;
 //# sourceMappingURL=Slider.d.ts.map

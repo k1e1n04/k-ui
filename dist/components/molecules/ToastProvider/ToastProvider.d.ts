@@ -44,5 +44,5 @@ export interface ToastProviderProps {
 /** トースト操作 API を利用するフック。 @default undefined */
 export declare function useToast(): ToastContextValue;
 /** トーストを管理・表示するプロバイダー。 @default undefined */
-export declare function ToastProvider({ children, position, defaultDuration, maxToasts, portalContainer, }: ToastProviderProps): import("react/jsx-runtime").JSX.Element;
+export declare function ToastProvider({ children, position, defaultDuration, maxToasts, portalContainer, }: ToastProviderProps): React.JSX.Element;
 //# sourceMappingURL=ToastProvider.d.ts.map

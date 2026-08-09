@@ -31,14 +31,13 @@ describe("ProgressBar", () => {
     expect(screen.getByRole("progressbar")).not.toHaveAttribute("aria-label");
   });
 
-  it.each([
-    "sm",
-    "md",
-    "lg",
-  ] as const)("size=%s でレンダリングされる", (size) => {
-    render(<ProgressBar value={30} size={size} />);
-    expect(screen.getByRole("progressbar")).toBeInTheDocument();
-  });
+  it.each(["sm", "md", "lg"] as const)(
+    "size=%s でレンダリングされる",
+    (size) => {
+      render(<ProgressBar value={30} size={size} />);
+      expect(screen.getByRole("progressbar")).toBeInTheDocument();
+    },
+  );
 
   it("size=lg のとき lg スタイルが適用される", () => {
     render(<ProgressBar value={30} size="lg" />);

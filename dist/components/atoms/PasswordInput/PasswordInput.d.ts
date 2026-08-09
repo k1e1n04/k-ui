@@ -24,5 +24,5 @@ export interface PasswordInputProps extends Omit<React.InputHTMLAttributes<HTMLI
     className?: string;
 }
 /** パスワードの表示切替を備えた入力欄。 @default undefined */
-export declare function PasswordInput({ value, onChange, label, description, error, showToggle, visibilityLabels, size, className, disabled, id, required, "aria-describedby": ariaDescribedBy, ...props }: PasswordInputProps): import("react/jsx-runtime").JSX.Element;
+export declare function PasswordInput({ value, onChange, label, description, error, showToggle, visibilityLabels, size, className, disabled, id, required, "aria-describedby": ariaDescribedBy, ...props }: PasswordInputProps): React.JSX.Element;
 //# sourceMappingURL=PasswordInput.d.ts.map

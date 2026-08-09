@@ -104,14 +104,13 @@ describe("Textarea", () => {
     expect(screen.getByRole("textbox")).toHaveAttribute("rows", "3");
   });
 
-  it.each([
-    "small",
-    "medium",
-    "large",
-  ] as const)("size=%s でレンダリングされる", (size) => {
-    render(<Textarea size={size} />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-  });
+  it.each(["small", "medium", "large"] as const)(
+    "size=%s でレンダリングされる",
+    (size) => {
+      render(<Textarea size={size} />);
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
+    },
+  );
 
   it("className がルートラッパーに渡される", () => {
     const { container } = render(<Textarea className="mt-4" />);

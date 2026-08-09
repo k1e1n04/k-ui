@@ -12,5 +12,5 @@ export interface SkeletonProps {
     className?: string;
 }
 /** 読み込み中のプレースホルダー。 @default undefined */
-export declare function Skeleton({ variant, animation, width, height, className, }: SkeletonProps): import("react/jsx-runtime").JSX.Element;
+export declare function Skeleton({ variant, animation, width, height, className, }: SkeletonProps): import("react").JSX.Element;
 //# sourceMappingURL=Skeleton.d.ts.map

@@ -49,19 +49,19 @@ describe("RadioGroup", () => {
     expect(radio).toHaveAttribute("aria-invalid", "true");
     expect(radio).toHaveAttribute("aria-describedby");
   });
-  it.each([
-    "horizontal",
-    "vertical",
-  ] as const)("orientation=%s のクラスを適用する", (orientation) => {
-    render(
-      <RadioGroup
-        options={options}
-        value=""
-        onChange={vi.fn()}
-        orientation={orientation}
-        className="custom"
-      />,
-    );
-    expect(screen.getByRole("radiogroup")).toHaveClass("custom");
-  });
+  it.each(["horizontal", "vertical"] as const)(
+    "orientation=%s のクラスを適用する",
+    (orientation) => {
+      render(
+        <RadioGroup
+          options={options}
+          value=""
+          onChange={vi.fn()}
+          orientation={orientation}
+          className="custom"
+        />,
+      );
+      expect(screen.getByRole("radiogroup")).toHaveClass("custom");
+    },
+  );
 });

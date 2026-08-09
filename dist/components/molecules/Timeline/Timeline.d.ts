@@ -1,6 +1,8 @@
 import type React from "react";
 /** タイムライン項目。 @default undefined */
 export interface TimelineItem {
+    /** 項目の一意な識別子。 @default undefined */
+    id?: string;
     /** 見出し。 @default undefined */
     title: React.ReactNode;
     /** 時刻表示。 @default undefined */

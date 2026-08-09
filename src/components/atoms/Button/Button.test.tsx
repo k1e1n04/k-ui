@@ -70,14 +70,13 @@ describe("Button", () => {
     expect(screen.getByRole("button")).toHaveClass("mt-4");
   });
 
-  it.each([
-    "small",
-    "medium",
-    "large",
-  ] as const)("size=%s でレンダリングされる", (size) => {
-    render(<Button size={size}>Click</Button>);
-    expect(screen.getByRole("button")).toBeInTheDocument();
-  });
+  it.each(["small", "medium", "large"] as const)(
+    "size=%s でレンダリングされる",
+    (size) => {
+      render(<Button size={size}>Click</Button>);
+      expect(screen.getByRole("button")).toBeInTheDocument();
+    },
+  );
 
   it.each([
     "primary",

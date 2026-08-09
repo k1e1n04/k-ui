@@ -1,6 +1,8 @@
 import type React from "react";
 /** ステッパーの手順。 @default undefined */
 export interface StepperStep {
+    /** 手順の一意な識別子。 @default undefined */
+    id?: string;
     /** 手順のラベル。 @default undefined */
     label: React.ReactNode;
     /** 手順の説明。 @default undefined */

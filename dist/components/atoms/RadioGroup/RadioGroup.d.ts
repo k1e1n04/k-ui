@@ -35,5 +35,5 @@ export interface RadioGroupProps {
     className?: string;
 }
 /** 選択肢から一つを選ぶラジオグループ。 @default undefined */
-export declare function RadioGroup({ options, value, onChange, label, description, error, required, orientation, size, disabled, name, className, }: RadioGroupProps): import("react/jsx-runtime").JSX.Element;
+export declare function RadioGroup({ options, value, onChange, label, description, error, required, orientation, size, disabled, name, className, }: RadioGroupProps): import("react").JSX.Element;
 //# sourceMappingURL=RadioGroup.d.ts.map

@@ -16,16 +16,13 @@ describe("Badge", () => {
     );
   });
 
-  it.each([
-    "info",
-    "success",
-    "warning",
-    "danger",
-    "neutral",
-  ] as const)("variant=%s でレンダリングされる", (variant) => {
-    render(<Badge variant={variant}>Label</Badge>);
-    expect(screen.getByText("Label")).toBeInTheDocument();
-  });
+  it.each(["info", "success", "warning", "danger", "neutral"] as const)(
+    "variant=%s でレンダリングされる",
+    (variant) => {
+      render(<Badge variant={variant}>Label</Badge>);
+      expect(screen.getByText("Label")).toBeInTheDocument();
+    },
+  );
 
   it("variant=success のとき success スタイルが適用される", () => {
     render(<Badge variant="success">Success</Badge>);

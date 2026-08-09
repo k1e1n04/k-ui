@@ -19,5 +19,5 @@ export interface ChipProps {
     className?: string;
 }
 /** 選択・削除操作を提供できるチップ。 @default undefined */
-export declare function Chip({ children, variant, selected, onClick, onDelete, disabled, className, }: ChipProps): import("react/jsx-runtime").JSX.Element;
+export declare function Chip({ children, variant, selected, onClick, onDelete, disabled, className, }: ChipProps): React.JSX.Element;
 //# sourceMappingURL=Chip.d.ts.map

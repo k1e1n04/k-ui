@@ -149,14 +149,13 @@ describe("NumberInput", () => {
     expect(screen.getByPlaceholderText("0")).toBeInTheDocument();
   });
 
-  it.each([
-    "small",
-    "medium",
-    "large",
-  ] as const)("size=%s でレンダリングされる", (size) => {
-    render(<NumberInput size={size} />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-  });
+  it.each(["small", "medium", "large"] as const)(
+    "size=%s でレンダリングされる",
+    (size) => {
+      render(<NumberInput size={size} />);
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
+    },
+  );
 
   it("className がルートラッパーに渡される", () => {
     const { container } = render(<NumberInput className="mt-4" />);

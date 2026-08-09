@@ -15,20 +15,18 @@ describe("Card", () => {
     expect(card).toHaveClass("bg-surface", "rounded-lg", "p-6", "shadow");
   });
 
-  it.each([
-    "none",
-    "sm",
-    "md",
-    "lg",
-  ] as const)("padding=%s でレンダリングされる", (padding) => {
-    render(
-      <Card padding={padding} data-testid="card">
-        コンテンツ
-      </Card>,
-    );
-    const card = screen.getByTestId("card");
-    expect(card).toBeInTheDocument();
-  });
+  it.each(["none", "sm", "md", "lg"] as const)(
+    "padding=%s でレンダリングされる",
+    (padding) => {
+      render(
+        <Card padding={padding} data-testid="card">
+          コンテンツ
+        </Card>,
+      );
+      const card = screen.getByTestId("card");
+      expect(card).toBeInTheDocument();
+    },
+  );
 
   it("padding=none のとき p-* クラスが適用されない", () => {
     render(
@@ -58,19 +56,18 @@ describe("Card", () => {
     expect(screen.getByTestId("card")).toHaveClass("p-8");
   });
 
-  it.each([
-    "none",
-    "sm",
-    "md",
-  ] as const)("shadow=%s でレンダリングされる", (shadow) => {
-    render(
-      <Card shadow={shadow} data-testid="card">
-        コンテンツ
-      </Card>,
-    );
-    const card = screen.getByTestId("card");
-    expect(card).toBeInTheDocument();
-  });
+  it.each(["none", "sm", "md"] as const)(
+    "shadow=%s でレンダリングされる",
+    (shadow) => {
+      render(
+        <Card shadow={shadow} data-testid="card">
+          コンテンツ
+        </Card>,
+      );
+      const card = screen.getByTestId("card");
+      expect(card).toBeInTheDocument();
+    },
+  );
 
   it("shadow=none のとき shadow クラスが適用されない", () => {
     render(

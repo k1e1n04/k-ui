@@ -12,20 +12,18 @@ describe("Toast", () => {
     );
     expect(onDismiss).toHaveBeenCalled();
   });
-  it.each([
-    "success",
-    "info",
-    "warning",
-    "danger",
-  ] as const)("variant=%s を表示する", (variant) => {
-    render(
-      <Toast
-        variant={variant}
-        title="Notice"
-        message="Message"
-        className="custom"
-      />,
-    );
-    expect(screen.getByRole("status")).toHaveClass("custom");
-  });
+  it.each(["success", "info", "warning", "danger"] as const)(
+    "variant=%s を表示する",
+    (variant) => {
+      render(
+        <Toast
+          variant={variant}
+          title="Notice"
+          message="Message"
+          className="custom"
+        />,
+      );
+      expect(screen.getByRole("status")).toHaveClass("custom");
+    },
+  );
 });

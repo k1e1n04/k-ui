@@ -10,5 +10,5 @@ export interface DividerProps {
     className?: string;
 }
 /** 内容を視覚的に分ける区切り線。 @default undefined */
-export declare function Divider({ orientation, variant, label, className, }: DividerProps): import("react/jsx-runtime").JSX.Element;
+export declare function Divider({ orientation, variant, label, className, }: DividerProps): import("react").JSX.Element;
 //# sourceMappingURL=Divider.d.ts.map

@@ -26,15 +26,13 @@ describe("Alert", () => {
     expect(alert).toHaveClass("border-l-4");
   });
 
-  it.each([
-    "success",
-    "info",
-    "warning",
-    "error",
-  ] as const)("variant=%s でレンダリングされる", (variant) => {
-    render(<Alert message="テスト" variant={variant} />);
-    expect(screen.getByRole("alert")).toBeInTheDocument();
-  });
+  it.each(["success", "info", "warning", "error"] as const)(
+    "variant=%s でレンダリングされる",
+    (variant) => {
+      render(<Alert message="テスト" variant={variant} />);
+      expect(screen.getByRole("alert")).toBeInTheDocument();
+    },
+  );
 
   it("variant=error のとき danger スタイルが適用される", () => {
     render(<Alert message="テスト" variant="error" />);

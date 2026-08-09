@@ -103,15 +103,14 @@ describe("YearMonthInput", () => {
     expect(input).toHaveAttribute("max", "2026-12");
   });
 
-  it.each([
-    "small",
-    "medium",
-    "large",
-  ] as const)("size=%s でレンダリングされる", (size) => {
-    const { container } = render(<YearMonthInput size={size} />);
-    const input = container.querySelector('input[type="month"]');
-    expect(input).toBeInTheDocument();
-  });
+  it.each(["small", "medium", "large"] as const)(
+    "size=%s でレンダリングされる",
+    (size) => {
+      const { container } = render(<YearMonthInput size={size} />);
+      const input = container.querySelector('input[type="month"]');
+      expect(input).toBeInTheDocument();
+    },
+  );
 
   it("className がルートラッパーに渡される", () => {
     const { container } = render(<YearMonthInput className="mt-4" />);

@@ -5,6 +5,8 @@ import { cn } from "../../../utils/cn";
 
 /** タイムライン項目。 @default undefined */
 export interface TimelineItem {
+  /** 項目の一意な識別子。 @default undefined */
+  id?: string;
   /** 見出し。 @default undefined */
   title: React.ReactNode;
   /** 時刻表示。 @default undefined */
@@ -48,7 +50,7 @@ export const Timeline: React.FC<TimelineProps> = ({
         align === "right" || (align === "alternate" && index % 2 === 1);
       return (
         <li
-          key={`${String(item.title)}-${index}`}
+          key={item.id ?? String(item.title)}
           className={cn(
             "relative flex w-full max-w-2xl gap-3 border-l border-border pb-6 pl-6 last:pb-0",
             rightAligned &&

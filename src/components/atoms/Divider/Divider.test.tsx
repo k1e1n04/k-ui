@@ -7,15 +7,15 @@ describe("Divider", () => {
     render(<Divider label="OR" />);
     expect(screen.getByText("OR")).toBeInTheDocument();
   });
-  it.each([
-    "horizontal",
-    "vertical",
-  ] as const)("orientation=%s を公開する", (orientation) => {
-    render(<Divider orientation={orientation} className="custom" />);
-    expect(screen.getByRole("separator")).toHaveAttribute(
-      "aria-orientation",
-      orientation,
-    );
-    expect(screen.getByRole("separator")).toHaveClass("custom");
-  });
+  it.each(["horizontal", "vertical"] as const)(
+    "orientation=%s を公開する",
+    (orientation) => {
+      render(<Divider orientation={orientation} className="custom" />);
+      expect(screen.getByRole("separator")).toHaveAttribute(
+        "aria-orientation",
+        orientation,
+      );
+      expect(screen.getByRole("separator")).toHaveClass("custom");
+    },
+  );
 });
