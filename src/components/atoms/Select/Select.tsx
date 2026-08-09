@@ -112,19 +112,17 @@ export const Select: React.FC<SelectProps> = ({
             aria-invalid={!!error}
             aria-describedby={describedBy}
             className={cn(
-              "w-full appearance-none rounded-md border bg-white transition-colors duration-150",
-              "text-gray-900",
-              "dark:bg-gray-800 dark:text-gray-100",
+              "w-full appearance-none rounded-md border bg-surface transition-colors duration-150",
+              "text-foreground",
               selectSizeStyles[size],
               error
                 ? [
-                    "border-[var(--kui-color-danger)]",
-                    "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1",
+                    "border-danger-main",
+                    "focus:outline-none focus:ring-2 focus:ring-danger-main focus:ring-offset-1",
                   ]
                 : [
-                    "border-[var(--kui-color-border-strong)]",
-                    "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
-                    "dark:border-gray-600",
+                    "border-border-strong",
+                    "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1",
                   ],
               selectProps.disabled && "cursor-not-allowed opacity-50",
             )}
@@ -146,7 +144,7 @@ export const Select: React.FC<SelectProps> = ({
           </select>
           <svg
             className={cn(
-              "pointer-events-none absolute top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400",
+              "pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted",
               chevronSizeStyles[size],
               selectProps.disabled && "opacity-50",
             )}

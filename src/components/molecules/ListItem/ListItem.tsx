@@ -27,10 +27,9 @@ export const ListItem: React.FC<ListItemProps> = ({
   return (
     <div
       className={cn(
-        "px-4 py-3 bg-white dark:bg-gray-800 rounded-lg",
-        hoverable &&
-          "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors",
-        bordered && "border border-gray-200 dark:border-gray-700",
+        "px-4 py-3 bg-surface rounded-lg",
+        hoverable && "hover:bg-surface-raised transition-colors",
+        bordered && "border border-border",
         className,
       )}
       {...props}

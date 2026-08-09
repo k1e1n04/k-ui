@@ -89,11 +89,9 @@ import { FormField, Select } from "k-ui";
 フォーム入力要素は `FormField` と組み合わせる構成を推奨。
 `label / description / required / error` と `aria-describedby` の連携を統一できる。
 
-Tailwind CSS プリセットも提供している。
-
-```ts
-import kuiPreset from "k-ui/tailwind-preset";
-```
+`k-ui/tokens.css` を読み込むと、Tailwind CSS v4 の `@theme` により
+`bg-primary-main` や `text-foreground` などのトークンユーティリティをそのまま使える。
+追加の JavaScript プリセット設定は不要。
 
 ## Typography 運用ガイド
 

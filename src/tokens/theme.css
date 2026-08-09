@@ -4,8 +4,24 @@
   --color-primary-light: var(--kui-color-primary-hover);
   --color-secondary-main: var(--kui-color-secondary);
   --color-secondary-light: var(--kui-color-secondary-subtle);
+  --color-surface: var(--kui-color-surface);
+  --color-surface-raised: var(--kui-color-surface-raised);
+  --color-surface-sunken: var(--kui-color-surface-sunken);
+  --color-foreground: var(--kui-color-text);
+  --color-muted: var(--kui-color-text-muted);
+  --color-inverse: var(--kui-color-text-inverse);
+  --color-border: var(--kui-color-border);
+  --color-border-strong: var(--kui-color-border-strong);
   --color-success-main: var(--kui-color-success);
+  --color-success-subtle: var(--kui-color-success-subtle);
+  --color-danger-main: var(--kui-color-danger);
+  --color-danger-subtle: var(--kui-color-danger-subtle);
+  --color-info-main: var(--kui-color-info);
+  --color-info-subtle: var(--kui-color-info-subtle);
+  --color-warning-main: var(--kui-color-warning);
+  --color-warning-subtle: var(--kui-color-warning-subtle);
   --color-accent-main: var(--kui-color-accent);
+  --color-accent-subtle: var(--kui-color-accent-subtle);
 
   /* アニメーション */
   --animate-kui-fade-in: kui-fade-in 0.3s ease-in-out;

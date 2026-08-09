@@ -65,19 +65,17 @@ export const ListSearchExample: Story = {
           placeholder="Search grocery items"
           aria-label="Search grocery items"
         />
-        <ul className="rounded-md border border-gray-200 dark:border-gray-700">
+        <ul className="rounded-md border border-border">
           {filtered.map((item) => (
             <li
               key={item}
-              className="border-b border-gray-200 px-3 py-2 text-sm last:border-b-0 dark:border-gray-700"
+              className="border-b border-border px-3 py-2 text-sm last:border-b-0"
             >
               {item}
             </li>
           ))}
           {filtered.length === 0 && (
-            <li className="px-3 py-2 text-sm text-gray-500">
-              No matching items
-            </li>
+            <li className="px-3 py-2 text-sm text-muted">No matching items</li>
           )}
         </ul>
       </div>

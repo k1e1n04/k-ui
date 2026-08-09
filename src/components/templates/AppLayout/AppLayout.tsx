@@ -62,9 +62,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const titleContent = (
-    <span className="text-xl font-bold text-primary-main dark:text-white">
-      {appTitle}
-    </span>
+    <span className="text-xl font-bold text-primary-main">{appTitle}</span>
   );
 
   const defaultRenderLink = ({
@@ -75,7 +73,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   const linkRenderer = renderLink || defaultRenderLink;
 
   return (
-    <div className="flex min-h-screen bg-white dark:bg-gray-900">
+    <div className="flex min-h-screen bg-surface">
       {/* アプリバー */}
       <AppBar position="fixed" color={appBarColor} className="shadow-none">
         <div className="flex items-center justify-between px-4 py-2">
@@ -88,7 +86,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
             {titleSuffix}
           </h6>
           <button
-            className="text-primary-main dark:text-white ml-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+            type="button"
+            className="text-primary-main ml-2 p-2 rounded-full hover:bg-surface-sunken"
             aria-label={menuButtonLabel}
             onClick={() => setDrawerOpen(true)}
           >
@@ -124,7 +123,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       {/* メインコンテンツ */}
       <main
         className={cn(
-          "grow pt-16 px-4 mb-6 sm:px-[10%] bg-white dark:bg-gray-900 text-black dark:text-white transition-colors min-h-[calc(100vh-4rem)] pb-[env(safe-area-inset-bottom)]",
+          "grow pt-16 px-4 mb-6 sm:px-[10%] bg-surface text-foreground transition-colors min-h-[calc(100vh-4rem)] pb-[env(safe-area-inset-bottom)]",
           className,
         )}
       >

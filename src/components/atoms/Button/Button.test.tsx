@@ -102,8 +102,8 @@ describe("Button", () => {
     const button = screen.getByRole("button");
     expect(button).toHaveClass(
       "bg-transparent",
-      "text-[var(--kui-color-danger)]",
-      "hover:bg-[var(--kui-color-danger-subtle)]",
+      "text-danger-main",
+      "hover:bg-danger-subtle",
     );
   });
 
@@ -115,10 +115,7 @@ describe("Button", () => {
     );
 
     const button = screen.getByRole("button");
-    expect(button).toHaveClass(
-      "bg-[var(--kui-color-info-subtle)]",
-      "text-[var(--kui-color-info)]",
-    );
+    expect(button).toHaveClass("bg-info-subtle", "text-info-main");
   });
 
   it("non-semantic variant では tone を指定しても既存スタイルが維持される", () => {
@@ -130,7 +127,7 @@ describe("Button", () => {
 
     expect(screen.getByRole("button")).toHaveClass(
       "bg-primary-main",
-      "text-white",
+      "text-inverse",
     );
   });
 });

@@ -210,15 +210,15 @@ export const DataTable = <T,>({
   if (mobileMode === "cards") {
     return (
       <div className={cn("w-full", className)}>
-        <div className="hidden md:block overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="hidden md:block overflow-x-auto rounded-lg border border-border">
           <table className="min-w-full border-collapse">
-            <thead className="bg-gray-50 dark:bg-gray-800/60">
+            <thead className="bg-surface-raised">
               <tr>
                 {columns.map((column) => (
                   <th
                     key={column.key}
                     className={cn(
-                      "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300",
+                      "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted",
                       column.headerClassName,
                     )}
                   >
@@ -226,18 +226,18 @@ export const DataTable = <T,>({
                   </th>
                 ))}
                 {hasActionColumn && (
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-muted">
                     {actionHeader}
                   </th>
                 )}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-border">
               {rows.length === 0 ? (
                 <tr>
                   <td
                     colSpan={tableColumnCount}
-                    className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400"
+                    className="px-4 py-8 text-center text-sm text-muted"
                   >
                     <Typography as="span" tone="muted">
                       {emptyMessage}
@@ -246,15 +246,12 @@ export const DataTable = <T,>({
                 </tr>
               ) : (
                 rows.map((row, index) => (
-                  <tr
-                    key={getRowId(row, index)}
-                    className="bg-white dark:bg-gray-900"
-                  >
+                  <tr key={getRowId(row, index)} className="bg-surface">
                     {columns.map((column) => (
                       <td
                         key={column.key}
                         className={cn(
-                          "px-4 py-3 text-sm text-gray-700 dark:text-gray-200",
+                          "px-4 py-3 text-sm text-foreground",
                           column.cellClassName,
                         )}
                       >
@@ -275,7 +272,7 @@ export const DataTable = <T,>({
 
         <div className="space-y-3 md:hidden">
           {rows.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-8 text-center dark:border-gray-700 dark:bg-gray-900/50">
+            <div className="rounded-lg border border-dashed border-border-strong bg-surface-raised px-4 py-8 text-center">
               <Typography as="p" tone="muted">
                 {emptyMessage}
               </Typography>
@@ -284,17 +281,17 @@ export const DataTable = <T,>({
             rows.map((row, index) => (
               <div
                 key={getRowId(row, index)}
-                className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+                className="rounded-lg border border-border bg-surface p-4 shadow-sm"
               >
                 <dl className="space-y-3">
                   {columns.map((column) => (
                     <div key={column.key} className="space-y-1">
-                      <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                      <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
                         {column.mobileLabel ?? column.header}
                       </dt>
                       <dd
                         className={cn(
-                          "text-sm text-gray-700 dark:text-gray-200",
+                          "text-sm text-foreground",
                           column.cellClassName,
                         )}
                       >
@@ -317,7 +314,7 @@ export const DataTable = <T,>({
   return (
     <div
       className={cn(
-        "w-full overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700",
+        "w-full overflow-x-auto rounded-lg border border-border",
         className,
       )}
       style={tableWrapperStyle}
@@ -328,13 +325,13 @@ export const DataTable = <T,>({
       }
     >
       <table className="min-w-full border-collapse">
-        <thead className="bg-gray-50 dark:bg-gray-800/60">
+        <thead className="bg-surface-raised">
           <tr>
             {columns.map((column) => (
               <th
                 key={column.key}
                 className={cn(
-                  "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300",
+                  "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted",
                   column.headerClassName,
                 )}
               >
@@ -342,18 +339,18 @@ export const DataTable = <T,>({
               </th>
             ))}
             {hasActionColumn && (
-              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">
+              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-muted">
                 {actionHeader}
               </th>
             )}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody className="divide-y divide-border">
           {rows.length === 0 ? (
             <tr>
               <td
                 colSpan={tableColumnCount}
-                className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400"
+                className="px-4 py-8 text-center text-sm text-muted"
               >
                 <Typography as="span" tone="muted">
                   {emptyMessage}
@@ -379,15 +376,12 @@ export const DataTable = <T,>({
                   : index;
 
                 return (
-                  <tr
-                    key={getRowId(row, rowIndex)}
-                    className="bg-white dark:bg-gray-900"
-                  >
+                  <tr key={getRowId(row, rowIndex)} className="bg-surface">
                     {columns.map((column) => (
                       <td
                         key={column.key}
                         className={cn(
-                          "px-4 py-3 text-sm text-gray-700 dark:text-gray-200",
+                          "px-4 py-3 text-sm text-foreground",
                           column.cellClassName,
                         )}
                       >

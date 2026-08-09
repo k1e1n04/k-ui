@@ -101,10 +101,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       {label && (
         <label
           htmlFor={htmlFor}
-          className={cn(
-            "font-medium text-gray-700 dark:text-gray-300",
-            labelSizeStyles[size],
-          )}
+          className={cn("font-medium text-foreground", labelSizeStyles[size])}
         >
           {label}
           {required && (
@@ -121,10 +118,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       {description && (
         <p
           id={descriptionId}
-          className={cn(
-            "text-gray-600 dark:text-gray-400",
-            descriptionSizeStyles[size],
-          )}
+          className={cn("text-muted", descriptionSizeStyles[size])}
         >
           {description}
         </p>

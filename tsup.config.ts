@@ -7,7 +7,7 @@ export default defineConfig({
   entry: ["src/index.ts"],
   format: ["esm"],
   tsconfig: "tsconfig.build.json",
-  dts: true,
+  dts: false,
   sourcemap: true,
   clean: true,
   external: ["react", "react-dom"],

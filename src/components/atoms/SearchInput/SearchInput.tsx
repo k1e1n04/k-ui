@@ -44,7 +44,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <div className={cn("relative", className)}>
       <span
-        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"
         aria-hidden="true"
       >
         <svg className="size-5" viewBox="0 0 24 24" fill="none">
@@ -65,12 +65,11 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         disabled={disabled}
         placeholder={placeholder}
         className={cn(
-          "w-full rounded-md border bg-white py-2 pl-10 transition-colors duration-150",
-          "text-sm text-gray-900 placeholder:text-gray-400",
-          "dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500",
+          "w-full rounded-md border bg-surface py-2 pl-10 transition-colors duration-150",
+          "text-sm text-foreground placeholder:text-muted",
           hasValue ? "pr-10" : "pr-3",
-          "border-[var(--kui-color-border-strong)] dark:border-gray-600",
-          "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
+          "border-border-strong",
+          "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1",
           disabled && "cursor-not-allowed opacity-50",
         )}
       />
@@ -79,7 +78,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           type="button"
           aria-label={clearButtonAriaLabel}
           onClick={handleClear}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted transition-colors hover:bg-surface-sunken hover:text-foreground"
         >
           <svg
             className="size-4"

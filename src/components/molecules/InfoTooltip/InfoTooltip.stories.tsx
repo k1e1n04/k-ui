@@ -52,9 +52,7 @@ export const CustomLabel: Story = {
 export const WithFormLabel: Story = {
   render: () => (
     <div className="flex items-center gap-1">
-      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-        Interest Rate
-      </span>
+      <span className="text-sm font-medium text-foreground">Interest Rate</span>
       <InfoTooltip
         content="The annual percentage rate applied to your loan balance."
         size="sm"
