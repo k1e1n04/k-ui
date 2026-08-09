@@ -40,34 +40,34 @@ const colorStyles: Record<
   { bg: string; text: string; border: string }
 > = {
   blue: {
-    bg: "bg-blue-50 dark:bg-blue-900/20",
-    text: "text-blue-800 dark:text-blue-200",
-    border: "border-blue-200 dark:border-blue-800",
+    bg: "bg-info-subtle",
+    text: "text-info-main",
+    border: "border-info-main",
   },
   green: {
-    bg: "bg-green-50 dark:bg-green-900/20",
-    text: "text-green-800 dark:text-green-200",
-    border: "border-green-200 dark:border-green-800",
+    bg: "bg-success-subtle",
+    text: "text-success-main",
+    border: "border-success-main",
   },
   purple: {
-    bg: "bg-purple-50 dark:bg-purple-900/20",
-    text: "text-purple-800 dark:text-purple-200",
-    border: "border-purple-200 dark:border-purple-800",
+    bg: "bg-accent-subtle",
+    text: "text-accent-main",
+    border: "border-accent-main",
   },
   red: {
-    bg: "bg-red-50 dark:bg-red-900/20",
-    text: "text-red-800 dark:text-red-200",
-    border: "border-red-200 dark:border-red-800",
+    bg: "bg-danger-subtle",
+    text: "text-danger-main",
+    border: "border-danger-main",
   },
   yellow: {
-    bg: "bg-yellow-50 dark:bg-yellow-900/20",
-    text: "text-yellow-800 dark:text-yellow-200",
-    border: "border-yellow-200 dark:border-yellow-800",
+    bg: "bg-warning-subtle",
+    text: "text-warning-main",
+    border: "border-warning-main",
   },
   gray: {
-    bg: "bg-gray-50 dark:bg-gray-800",
-    text: "text-gray-800 dark:text-gray-200",
-    border: "border-gray-200 dark:border-gray-700",
+    bg: "bg-surface-raised",
+    text: "text-foreground",
+    border: "border-border",
   },
 };
 

@@ -28,7 +28,10 @@ export const Primary: Story = {
     children: (
       <div className="flex items-center justify-between px-4 py-2">
         <h1 className="text-xl font-bold">App Title</h1>
-        <button className="p-2 rounded-full hover:bg-white/10">
+        <button
+          type="button"
+          className="p-2 rounded-full hover:bg-surface-sunken"
+        >
           <svg
             className="w-6 h-6"
             fill="none"

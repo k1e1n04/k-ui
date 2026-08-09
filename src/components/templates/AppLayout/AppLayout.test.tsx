@@ -35,14 +35,12 @@ describe("AppLayout", () => {
       </AppLayout>,
     );
 
-    expect(container.querySelector(".fixed.inset-0.bg-black\\/30")).toBeNull();
+    expect(container.querySelector(".fixed.inset-0")).toBeNull();
     await user.click(screen.getByRole("button", { name: "Open menu" }));
-    expect(
-      container.querySelector(".fixed.inset-0.bg-black\\/30"),
-    ).toBeInTheDocument();
+    expect(container.querySelector(".fixed.inset-0")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Close" }));
-    expect(container.querySelector(".fixed.inset-0.bg-black\\/30")).toBeNull();
+    expect(container.querySelector(".fixed.inset-0")).toBeNull();
   });
 
   it("renderLink でタイトルリンクをカスタマイズできる", () => {

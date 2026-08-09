@@ -36,17 +36,14 @@ export interface ButtonProps
 
 /** バリアントに応じたスタイル */
 const variantStyles: Record<ButtonVariant, string> = {
-  primary:
-    "bg-primary-main hover:bg-primary-light text-white dark:bg-blue-700 dark:hover:bg-blue-800",
-  secondary:
-    "bg-secondary-light hover:bg-gray-200 text-primary-main dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200",
-  success: "bg-[var(--kui-color-success)] hover:opacity-90 text-white",
-  info: "bg-[var(--kui-color-info)] hover:opacity-90 text-white",
+  primary: "bg-primary-main hover:bg-primary-light text-inverse",
+  secondary: "bg-secondary-light hover:bg-surface-sunken text-primary-main",
+  success: "bg-success-main hover:opacity-90 text-inverse",
+  info: "bg-info-main hover:opacity-90 text-inverse",
   outline:
-    "bg-transparent border border-primary-main text-primary-main hover:bg-primary-main/5 dark:border-blue-500 dark:text-blue-400 dark:hover:bg-blue-900/20",
-  ghost:
-    "bg-transparent hover:bg-gray-100 text-primary-main dark:hover:bg-gray-700 dark:text-gray-300",
-  danger: "bg-[var(--kui-color-danger)] hover:opacity-90 text-white",
+    "bg-transparent border border-primary-main text-primary-main hover:bg-surface-sunken",
+  ghost: "bg-transparent hover:bg-surface-sunken text-primary-main",
+  danger: "bg-danger-main hover:opacity-90 text-inverse",
 };
 
 /** サイズに応じたスタイル */
@@ -70,22 +67,16 @@ const semanticToneStyles: Record<
   Record<Exclude<ButtonTone, "solid">, string>
 > = {
   success: {
-    plain:
-      "bg-transparent text-[var(--kui-color-success)] hover:bg-[var(--kui-color-success-subtle)]",
-    subtle:
-      "bg-[var(--kui-color-success-subtle)] text-[var(--kui-color-success)] hover:opacity-90",
+    plain: "bg-transparent text-success-main hover:bg-success-subtle",
+    subtle: "bg-success-subtle text-success-main hover:opacity-90",
   },
   info: {
-    plain:
-      "bg-transparent text-[var(--kui-color-info)] hover:bg-[var(--kui-color-info-subtle)]",
-    subtle:
-      "bg-[var(--kui-color-info-subtle)] text-[var(--kui-color-info)] hover:opacity-90",
+    plain: "bg-transparent text-info-main hover:bg-info-subtle",
+    subtle: "bg-info-subtle text-info-main hover:opacity-90",
   },
   danger: {
-    plain:
-      "bg-transparent text-[var(--kui-color-danger)] hover:bg-[var(--kui-color-danger-subtle)]",
-    subtle:
-      "bg-[var(--kui-color-danger-subtle)] text-[var(--kui-color-danger)] hover:opacity-90",
+    plain: "bg-transparent text-danger-main hover:bg-danger-subtle",
+    subtle: "bg-danger-subtle text-danger-main hover:opacity-90",
   },
 };
 

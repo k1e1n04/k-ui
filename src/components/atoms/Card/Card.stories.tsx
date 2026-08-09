@@ -89,10 +89,10 @@ export const RichContent: Story = {
   render: (args) => (
     <Card {...args}>
       <h2 className="text-xl font-bold mb-4">Card with Rich Content</h2>
-      <p className="text-gray-700 dark:text-gray-300 mb-4">
+      <p className="text-foreground mb-4">
         This is an example of a Card with more complex content.
       </p>
-      <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+      <ul className="list-disc list-inside space-y-2 text-foreground">
         <li>Item 1</li>
         <li>Item 2</li>
         <li>Item 3</li>

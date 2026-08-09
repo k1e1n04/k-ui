@@ -14,7 +14,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: (
-      <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+      <button
+        type="button"
+        className="p-2 rounded-full hover:bg-surface-sunken"
+      >
         <svg
           className="w-6 h-6"
           fill="none"

@@ -39,9 +39,9 @@ export interface KeyValueListProps {
 
 /** トーンに応じた値のスタイル */
 const toneStyles: Record<KeyValueListTone, string> = {
-  default: "text-gray-900 dark:text-gray-100",
-  success: "text-[var(--kui-color-success)]",
-  danger: "text-[var(--kui-color-danger)]",
+  default: "text-foreground",
+  success: "text-success-main",
+  danger: "text-danger-main",
 };
 
 /** サイズに応じたフォントスタイル */
@@ -76,11 +76,7 @@ export const KeyValueList: React.FC<KeyValueListProps> = ({
 }) => {
   return (
     <dl
-      className={cn(
-        "w-full",
-        separator && "divide-y divide-gray-200 dark:divide-gray-700",
-        className,
-      )}
+      className={cn("w-full", separator && "divide-y divide-border", className)}
     >
       {items.map((item) => (
         <div
@@ -92,12 +88,7 @@ export const KeyValueList: React.FC<KeyValueListProps> = ({
               : "flex flex-col gap-0.5",
           )}
         >
-          <dt
-            className={cn(
-              "text-gray-500 dark:text-gray-400 shrink-0",
-              keySizeStyles[size],
-            )}
-          >
+          <dt className={cn("text-muted shrink-0", keySizeStyles[size])}>
             {item.key}
           </dt>
           <dd

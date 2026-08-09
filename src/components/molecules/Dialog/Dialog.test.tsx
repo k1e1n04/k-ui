@@ -47,7 +47,7 @@ describe("Dialog", () => {
       </Dialog>,
     );
 
-    const backdrop = container.querySelector(".fixed.inset-0");
+    const backdrop = container.querySelector("button.absolute.inset-0");
     expect(backdrop).toBeInTheDocument();
     if (backdrop) {
       await user.click(backdrop);
@@ -65,7 +65,7 @@ describe("Dialog", () => {
       </Dialog>,
     );
 
-    const backdrop = container.querySelector(".fixed.inset-0");
+    const backdrop = container.querySelector("button.absolute.inset-0");
     expect(backdrop).toBeInTheDocument();
     if (backdrop) {
       await user.click(backdrop);

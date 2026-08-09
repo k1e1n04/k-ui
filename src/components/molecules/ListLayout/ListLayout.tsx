@@ -229,8 +229,9 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
 
           {!showSearchForm && (
             <button
+              type="button"
               onClick={() => onToggleSearch(true)}
-              className="p-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
+              className="p-2 rounded-full bg-info-subtle text-info-main hover:opacity-90 transition-colors"
               aria-label={searchButtonLabel}
             >
               {SearchIconComponent}
@@ -238,12 +239,13 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
           )}
           {enableIncompleteFilter && (
             <button
+              type="button"
               onClick={() => onToggleFilter(!showFilterOptions)}
               className={cn(
                 "p-2 rounded-full transition-colors",
                 showFilterOptions
-                  ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-500 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800/70"
-                  : "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700",
+                  ? "bg-info-subtle text-info-main hover:opacity-90"
+                  : "bg-surface-raised text-muted hover:bg-surface-sunken",
               )}
               aria-label={filterButtonLabel}
             >
@@ -253,12 +255,13 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
 
           {onToggleAddForm ? (
             <button
+              type="button"
               onClick={() => onToggleAddForm(!showAddForm)}
               className={cn(
                 "p-2 rounded-full transition-colors",
                 showAddForm
-                  ? "bg-rose-100 dark:bg-rose-900/50 text-rose-500 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800/70"
-                  : "bg-rose-50 dark:bg-rose-900/30 text-rose-500 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-800/50",
+                  ? "bg-danger-subtle text-danger-main hover:opacity-90"
+                  : "bg-accent-subtle text-accent-main hover:opacity-90",
               )}
               aria-label={showAddForm ? closeFormLabel : addButtonLabel}
             >
@@ -267,8 +270,9 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
           ) : (
             onAddClick && (
               <button
+                type="button"
                 onClick={onAddClick}
-                className="p-2 rounded-full bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+                className="p-2 rounded-full bg-primary-main text-inverse hover:bg-primary-light transition-colors"
                 aria-label={addButtonLabel}
               >
                 {AddIconComponent}
@@ -280,13 +284,14 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
 
       {/* エラーメッセージ */}
       {errorMessage && onClearError && (
-        <div className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 p-3 rounded-lg mb-4 flex justify-between items-center animate-kui-slide-down shadow-sm">
+        <div className="bg-danger-subtle text-danger-main p-3 rounded-lg mb-4 flex justify-between items-center animate-kui-slide-down shadow-sm">
           <Typography as="p" tone="danger">
             {errorMessage}
           </Typography>
           <button
+            type="button"
             onClick={onClearError}
-            className="text-red-500 dark:text-red-300 p-1 hover:bg-red-100 dark:hover:bg-red-800/50 rounded-full transition-colors"
+            className="text-danger-main p-1 hover:bg-danger-subtle rounded-full transition-colors"
           >
             {CloseIconComponent}
           </button>
@@ -295,7 +300,7 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
 
       {/* フィルターオプション */}
       {enableIncompleteFilter && showFilterOptions && (
-        <div className="mb-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg shadow-sm p-3 animate-kui-slide-down">
+        <div className="mb-4 bg-info-subtle rounded-lg shadow-sm p-3 animate-kui-slide-down">
           <div className="flex justify-between items-center">
             <Heading
               as="h3"
@@ -308,8 +313,9 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
               {filterTitle}
             </Heading>
             <button
+              type="button"
               onClick={() => onToggleFilter(false)}
-              className="text-indigo-500 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-800/50 p-1 rounded-full transition-colors"
+              className="text-info-main hover:opacity-90 p-1 rounded-full transition-colors"
             >
               {CloseIconComponent}
             </button>
@@ -323,7 +329,7 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
                   id="showOnlyIncomplete"
                   checked={showOnlyIncomplete}
                   onChange={(e) => onToggleIncomplete(e.target.checked)}
-                  className="h-5 w-5 text-indigo-600 dark:text-indigo-500 rounded focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700 dark:border-gray-600"
+                  className="h-5 w-5 text-primary-main rounded focus:ring-primary-main bg-surface border-border-strong"
                 />
                 <label htmlFor="showOnlyIncomplete" className="ml-2">
                   <Typography as="span">{incompleteFilterLabel}</Typography>
@@ -336,9 +342,9 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
 
       {/* 検索フォーム */}
       {showSearchForm && (
-        <div className="mb-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 relative animate-kui-slide-down">
+        <div className="mb-4 bg-surface rounded-lg shadow-sm p-3 relative animate-kui-slide-down">
           <div className="flex items-center">
-            <span className="w-5 h-5 text-gray-400 dark:text-gray-500 absolute left-6">
+            <span className="w-5 h-5 text-muted absolute left-6">
               {SearchIconComponent}
             </span>
             <input
@@ -346,12 +352,13 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
               value={searchKeyword}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full pl-10 pr-10 py-2 border dark:border-gray-700 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              className="w-full pl-10 pr-10 py-2 border border-border bg-surface-raised text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-info-main"
             />
             {searchKeyword && (
               <button
+                type="button"
                 onClick={() => onSearchChange("")}
-                className="absolute right-6 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition-colors"
+                className="absolute right-6 text-muted hover:text-foreground p-1 hover:bg-surface-sunken rounded-full transition-colors"
               >
                 {CloseIconComponent}
               </button>
@@ -360,8 +367,9 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
 
           <div className="flex justify-end mt-3">
             <button
+              type="button"
               onClick={() => onToggleSearch(false)}
-              className="text-sm text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-3 py-1 hover:bg-blue-50 dark:hover:bg-blue-800/50 rounded-md transition-colors"
+              className="text-sm text-info-main px-3 py-1 hover:bg-info-subtle rounded-md transition-colors"
             >
               <Typography as="span" variant="body-sm" tone="info">
                 {closeSearchLabel}
@@ -378,7 +386,7 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
 
       {/* 統計表示 */}
       {statsComponent && (
-        <div className="mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+        <div className="mb-6 bg-surface p-4 rounded-lg shadow-sm">
           {statsComponent}
         </div>
       )}
@@ -386,19 +394,20 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
       {/* ローディング状態 */}
       {isLoading && (
         <div className="flex justify-center items-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400" />
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-info-main" />
         </div>
       )}
 
       {/* エラー状態 */}
       {isError && onReload && (
-        <div className="text-center py-8 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30 rounded-lg">
+        <div className="text-center py-8 text-danger-main bg-danger-subtle rounded-lg">
           <Typography as="p" tone="danger">
             {errorFetchMessage}
           </Typography>
           <button
+            type="button"
             onClick={onReload}
-            className="mt-2 px-4 py-2 bg-red-100 dark:bg-red-800/50 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-700/50 transition-colors"
+            className="mt-2 px-4 py-2 bg-danger-subtle text-danger-main rounded-md hover:opacity-90 transition-colors"
           >
             <Typography as="span" variant="body-sm" tone="danger">
               {reloadLabel}
@@ -413,7 +422,7 @@ export const ListLayout: React.FC<ListLayoutProps> = ({
           {hasItems ? (
             children
           ) : (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg animate-kui-fade-in">
+            <div className="text-center py-8 text-muted bg-surface-raised rounded-lg animate-kui-fade-in">
               {searchKeyword ? (
                 <Typography as="p" tone="muted">
                   {noSearchResultsMessage}

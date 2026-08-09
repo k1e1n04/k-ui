@@ -33,10 +33,9 @@ const positionStyles: Record<AppBarPosition, string> = {
 
 /** カラーに応じたクラス */
 const colorStyles: Record<AppBarColor, string> = {
-  primary: "bg-primary-main text-white",
-  secondary:
-    "bg-secondary-main text-primary-main dark:bg-gray-800 dark:text-white",
-  success: "bg-success-main text-white",
+  primary: "bg-primary-main text-inverse",
+  secondary: "bg-secondary-main text-primary-main",
+  success: "bg-success-main text-inverse",
   transparent: "bg-transparent",
 };
 

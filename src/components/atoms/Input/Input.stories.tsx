@@ -233,7 +233,7 @@ export const FormIntegration: Story = {
         />
         <button
           type="submit"
-          className="px-3 py-2 rounded-md bg-[var(--kui-color-info)] text-white text-sm"
+          className="px-3 py-2 rounded-md bg-info-main text-inverse text-sm"
         >
           Submit
         </button>

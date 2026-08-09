@@ -97,20 +97,20 @@ export const Tooltip: React.FC<TooltipProps> = ({
         return {
           tooltip: "absolute z-10 w-64 sm:w-72 mt-2 left-0",
           arrow:
-            "absolute -top-2 left-4 w-4 h-4 bg-white dark:bg-gray-800 transform rotate-45 border-t border-l border-gray-200 dark:border-gray-700",
+            "absolute -top-2 left-4 w-4 h-4 bg-surface transform rotate-45 border-t border-l border-border",
         };
       case "right":
         return {
           tooltip: "absolute z-10 w-64 sm:w-72 mt-2 right-0",
           arrow:
-            "absolute -top-2 right-4 w-4 h-4 bg-white dark:bg-gray-800 transform rotate-45 border-t border-l border-gray-200 dark:border-gray-700",
+            "absolute -top-2 right-4 w-4 h-4 bg-surface transform rotate-45 border-t border-l border-border",
         };
       default:
         return {
           tooltip:
             "absolute z-10 w-64 sm:w-72 mt-2 left-1/2 transform -translate-x-1/2",
           arrow:
-            "absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white dark:bg-gray-800 rotate-45 border-t border-l border-gray-200 dark:border-gray-700",
+            "absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-surface rotate-45 border-t border-l border-border",
         };
     }
   };
@@ -122,7 +122,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       <button
         ref={buttonRef}
         type="button"
-        className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+        className="text-muted hover:text-foreground focus:outline-none p-1 rounded-full hover:bg-surface-sunken"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={triggerLabel}
       >
@@ -133,12 +133,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
         <div
           className={cn(
             tooltipClass,
-            "bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 animate-kui-fade-in",
+            "bg-surface rounded-lg shadow-lg border border-border animate-kui-fade-in",
           )}
         >
-          <div className="p-3 text-sm text-gray-700 dark:text-gray-200">
-            {content}
-          </div>
+          <div className="p-3 text-sm text-foreground">{content}</div>
           <div className={arrowClass} aria-hidden="true" />
         </div>
       )}

@@ -41,13 +41,11 @@ export const Spinner: React.FC<SpinnerProps> = ({
       <div className="text-center">
         <div
           className={cn(
-            "animate-spin rounded-full border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2",
+            "animate-spin rounded-full border-b-2 border-info-main mx-auto mb-2",
             sizeStyles[size],
           )}
         />
-        {label && (
-          <p className="text-gray-600 dark:text-gray-300 text-sm">{label}</p>
-        )}
+        {label && <p className="text-muted text-sm">{label}</p>}
       </div>
     </div>
   );

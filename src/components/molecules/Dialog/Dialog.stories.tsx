@@ -24,11 +24,7 @@ export const Default: Story = {
     open: true,
     onClose: () => {},
     title: "Dialog Title",
-    children: (
-      <p className="text-gray-700 dark:text-gray-300">
-        Dialog content goes here.
-      </p>
-    ),
+    children: <p className="text-foreground">Dialog content goes here.</p>,
   },
 };
 
@@ -36,9 +32,7 @@ export const WithoutTitle: Story = {
   args: {
     open: true,
     onClose: () => {},
-    children: (
-      <p className="text-gray-700 dark:text-gray-300">Content without title.</p>
-    ),
+    children: <p className="text-foreground">Content without title.</p>,
   },
 };
 
@@ -48,11 +42,7 @@ export const Large: Story = {
     onClose: () => {},
     title: "Large Dialog",
     maxWidth: "lg",
-    children: (
-      <p className="text-gray-700 dark:text-gray-300">
-        This is a large dialog.
-      </p>
-    ),
+    children: <p className="text-foreground">This is a large dialog.</p>,
   },
 };
 
@@ -74,7 +64,7 @@ export const Interactive: Story = {
           onClose={() => setOpen(false)}
           title="Interactive Dialog"
         >
-          <p className="text-gray-700 dark:text-gray-300">
+          <p className="text-foreground">
             Press ESC or click outside to close.
           </p>
         </Dialog>

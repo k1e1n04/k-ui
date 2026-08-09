@@ -123,20 +123,18 @@ export const YearMonthInput: React.FC<YearMonthInputProps> = ({
             aria-invalid={resolvedAriaInvalid}
             aria-describedby={describedBy}
             className={cn(
-              "w-full rounded-md border bg-white transition-colors duration-150",
-              "text-gray-900",
-              "dark:bg-gray-800 dark:text-gray-100",
+              "w-full rounded-md border bg-surface transition-colors duration-150",
+              "text-foreground",
               inputSizeStyles[size],
               showClear && "pr-8",
               error
                 ? [
-                    "border-[var(--kui-color-danger)]",
-                    "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1",
+                    "border-danger-main",
+                    "focus:outline-none focus:ring-2 focus:ring-danger-main focus:ring-offset-1",
                   ]
                 : [
-                    "border-[var(--kui-color-border-strong)]",
-                    "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
-                    "dark:border-gray-600",
+                    "border-border-strong",
+                    "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1",
                   ],
               disabled && "cursor-not-allowed opacity-50",
             )}
@@ -148,8 +146,7 @@ export const YearMonthInput: React.FC<YearMonthInputProps> = ({
               aria-label="Clear"
               className={cn(
                 "absolute right-1 flex items-center justify-center rounded-full",
-                "text-gray-400 hover:text-gray-600 hover:bg-gray-100",
-                "dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-700",
+                "text-muted hover:text-foreground hover:bg-surface-sunken",
                 "transition-colors duration-150",
                 clearButtonSizeStyles[size],
               )}

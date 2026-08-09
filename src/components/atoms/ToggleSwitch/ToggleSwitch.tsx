@@ -88,15 +88,13 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
         className={cn(
           "relative inline-flex items-center rounded-full transition-colors duration-200",
           trackSizeStyles[size],
-          checked
-            ? "bg-primary-main dark:bg-blue-600"
-            : "bg-gray-300 dark:bg-gray-600",
+          checked ? "bg-primary-main" : "bg-border-strong",
         )}
       >
         {/* つまみ */}
         <span
           className={cn(
-            "inline-block rounded-full bg-white shadow transform transition-transform duration-200",
+            "inline-block rounded-full bg-surface shadow transform transition-transform duration-200",
             thumbSizeStyles[size],
             checked ? thumbTranslateStyles[size] : "translate-x-0.5",
           )}
@@ -105,10 +103,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
       {/* ラベル */}
       {label && (
         <span
-          className={cn(
-            "select-none text-gray-700 dark:text-gray-300",
-            labelSizeStyles[size],
-          )}
+          className={cn("select-none text-foreground", labelSizeStyles[size])}
         >
           {label}
         </span>

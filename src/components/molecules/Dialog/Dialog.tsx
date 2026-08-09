@@ -2,7 +2,7 @@
 
 import type React from "react";
 import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { cn } from "../../../utils/cn";
 
@@ -58,8 +58,6 @@ export const Dialog: React.FC<DialogProps> = ({
   closeButtonLabel = "Close dialog",
   className,
 }) => {
-  const dialogRef = useRef<HTMLDivElement>(null);
-
   // ESCキーでダイアログを閉じる
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
@@ -80,12 +78,8 @@ export const Dialog: React.FC<DialogProps> = ({
   }, [open, onClose]);
 
   // 外クリックでダイアログを閉じる
-  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (
-      !disableOutsideClick &&
-      dialogRef.current &&
-      !dialogRef.current.contains(event.target as Node)
-    ) {
+  const handleBackdropClick = () => {
+    if (!disableOutsideClick) {
       onClose();
     }
   };
@@ -99,30 +93,34 @@ export const Dialog: React.FC<DialogProps> = ({
         backgroundColor: "var(--kui-color-overlay)",
         backdropFilter: "blur(2px)",
       }}
-      onClick={handleBackdropClick}
     >
+      <button
+        type="button"
+        aria-label="Close dialog backdrop"
+        className="absolute inset-0 cursor-default"
+        disabled={disableOutsideClick}
+        onClick={handleBackdropClick}
+      />
       <div
-        ref={dialogRef}
         role="dialog"
+        aria-modal="true"
         className={cn(
-          "bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full transform transition-all duration-200 ease-out",
+          "relative bg-surface rounded-lg shadow-xl w-full transform transition-all duration-200 ease-out",
           maxWidthClasses[maxWidth],
           className,
         )}
-        onClick={(e) => e.stopPropagation()}
       >
         {/* ヘッダー */}
         {(title || !hideCloseButton) && (
           <div className="flex justify-between items-center p-6 pb-4">
             {title && (
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {title}
-              </h3>
+              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
             )}
             {!hideCloseButton && (
               <button
+                type="button"
                 onClick={onClose}
-                className="text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-400 transition-colors p-1"
+                className="text-muted hover:text-foreground transition-colors p-1"
                 aria-label={closeButtonLabel}
               >
                 {/* XMarkIcon インラインSVG */}

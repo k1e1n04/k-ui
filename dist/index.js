@@ -165,13 +165,13 @@ var Badge = ({
 // src/components/atoms/Button/Button.tsx
 import { jsx as jsx4 } from "react/jsx-runtime";
 var variantStyles4 = {
-  primary: "bg-primary-main hover:bg-primary-light text-white dark:bg-blue-700 dark:hover:bg-blue-800",
-  secondary: "bg-secondary-light hover:bg-gray-200 text-primary-main dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200",
-  success: "bg-[var(--kui-color-success)] hover:opacity-90 text-white",
-  info: "bg-[var(--kui-color-info)] hover:opacity-90 text-white",
-  outline: "bg-transparent border border-primary-main text-primary-main hover:bg-primary-main/5 dark:border-blue-500 dark:text-blue-400 dark:hover:bg-blue-900/20",
-  ghost: "bg-transparent hover:bg-gray-100 text-primary-main dark:hover:bg-gray-700 dark:text-gray-300",
-  danger: "bg-[var(--kui-color-danger)] hover:opacity-90 text-white"
+  primary: "bg-primary-main hover:bg-primary-light text-inverse",
+  secondary: "bg-secondary-light hover:bg-surface-sunken text-primary-main",
+  success: "bg-success-main hover:opacity-90 text-inverse",
+  info: "bg-info-main hover:opacity-90 text-inverse",
+  outline: "bg-transparent border border-primary-main text-primary-main hover:bg-surface-sunken",
+  ghost: "bg-transparent hover:bg-surface-sunken text-primary-main",
+  danger: "bg-danger-main hover:opacity-90 text-inverse"
 };
 var sizeStyles = {
   small: "text-xs px-2 py-1",
@@ -185,16 +185,16 @@ var iconSizeStyles = {
 };
 var semanticToneStyles = {
   success: {
-    plain: "bg-transparent text-[var(--kui-color-success)] hover:bg-[var(--kui-color-success-subtle)]",
-    subtle: "bg-[var(--kui-color-success-subtle)] text-[var(--kui-color-success)] hover:opacity-90"
+    plain: "bg-transparent text-success-main hover:bg-success-subtle",
+    subtle: "bg-success-subtle text-success-main hover:opacity-90"
   },
   info: {
-    plain: "bg-transparent text-[var(--kui-color-info)] hover:bg-[var(--kui-color-info-subtle)]",
-    subtle: "bg-[var(--kui-color-info-subtle)] text-[var(--kui-color-info)] hover:opacity-90"
+    plain: "bg-transparent text-info-main hover:bg-info-subtle",
+    subtle: "bg-info-subtle text-info-main hover:opacity-90"
   },
   danger: {
-    plain: "bg-transparent text-[var(--kui-color-danger)] hover:bg-[var(--kui-color-danger-subtle)]",
-    subtle: "bg-[var(--kui-color-danger-subtle)] text-[var(--kui-color-danger)] hover:opacity-90"
+    plain: "bg-transparent text-danger-main hover:bg-danger-subtle",
+    subtle: "bg-danger-subtle text-danger-main hover:opacity-90"
   }
 };
 var isSemanticVariant = (variant) => {
@@ -211,14 +211,14 @@ var Button = ({
   children,
   ...props
 }) => {
-  const toneStyles3 = tone === "solid" || !isSemanticVariant(variant) ? variantStyles4[variant] : semanticToneStyles[variant][tone];
+  const toneStyles4 = tone === "solid" || !isSemanticVariant(variant) ? variantStyles4[variant] : semanticToneStyles[variant][tone];
   return /* @__PURE__ */ jsx4(
     "button",
     {
       className: cn(
         "font-medium transition-colors",
         iconOnly ? "rounded-full" : "rounded-md",
-        toneStyles3,
+        toneStyles4,
         iconOnly ? iconSizeStyles[size] : sizeStyles[size],
         fullWidth && "w-full",
         disabled && "opacity-50 cursor-not-allowed",
@@ -257,10 +257,10 @@ var Card = ({
     "div",
     {
       className: cn(
-        "bg-white dark:bg-gray-800 rounded-lg",
+        "bg-surface rounded-lg",
         paddingMap[padding],
         shadowMap[shadow],
-        border && "border border-gray-200 dark:border-gray-700",
+        border && "border border-border",
         className
       ),
       ...props,
@@ -325,9 +325,9 @@ var Checkbox = ({
             "aria-hidden": "true",
             className: cn(
               "inline-flex items-center justify-center shrink-0 rounded border-2 transition-colors duration-150",
-              "peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 peer-focus-visible:ring-offset-2",
+              "peer-focus-visible:ring-2 peer-focus-visible:ring-info-main peer-focus-visible:ring-offset-2",
               boxSizeStyles[size],
-              checked ? "bg-primary-main border-primary-main dark:bg-blue-600 dark:border-blue-600" : "bg-white border-gray-400 dark:bg-gray-800 dark:border-gray-500"
+              checked ? "bg-primary-main border-primary-main" : "bg-surface border-border-strong"
             ),
             children: checked && /* @__PURE__ */ jsx6(
               "svg",
@@ -339,7 +339,7 @@ var Checkbox = ({
                 strokeLinecap: "round",
                 strokeLinejoin: "round",
                 "aria-hidden": "true",
-                className: cn("text-white", checkmarkSizeStyles[size]),
+                className: cn("text-inverse", checkmarkSizeStyles[size]),
                 children: /* @__PURE__ */ jsx6("polyline", { points: "2,6 5,9 10,3" })
               }
             )
@@ -348,10 +348,7 @@ var Checkbox = ({
         label && /* @__PURE__ */ jsx6(
           "span",
           {
-            className: cn(
-              "select-none text-gray-700 dark:text-gray-300",
-              labelSizeStyles[size]
-            ),
+            className: cn("select-none text-foreground", labelSizeStyles[size]),
             children: label
           }
         )
@@ -427,10 +424,7 @@ var FormField = ({
       "label",
       {
         htmlFor,
-        className: cn(
-          "font-medium text-gray-700 dark:text-gray-300",
-          labelSizeStyles2[size]
-        ),
+        className: cn("font-medium text-foreground", labelSizeStyles2[size]),
         children: [
           label,
           required && /* @__PURE__ */ jsx8(
@@ -448,10 +442,7 @@ var FormField = ({
       "p",
       {
         id: descriptionId,
-        className: cn(
-          "text-gray-600 dark:text-gray-400",
-          descriptionSizeStyles[size]
-        ),
+        className: cn("text-muted", descriptionSizeStyles[size]),
         children: description
       }
     ),
@@ -588,17 +579,15 @@ var Input = ({
           "aria-invalid": resolvedAriaInvalid,
           "aria-describedby": describedBy,
           className: cn(
-            "w-full rounded-md border bg-white transition-colors duration-150",
-            "text-gray-900 placeholder:text-gray-400",
-            "dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500",
+            "w-full rounded-md border bg-surface transition-colors duration-150",
+            "text-foreground placeholder:text-muted",
             inputSizeStyles[size],
             error ? [
-              "border-[var(--kui-color-danger)]",
-              "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1"
+              "border-danger-main",
+              "focus:outline-none focus:ring-2 focus:ring-danger-main focus:ring-offset-1"
             ] : [
-              "border-[var(--kui-color-border-strong)]",
-              "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
-              "dark:border-gray-600"
+              "border-border-strong",
+              "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1"
             ],
             disabled && "cursor-not-allowed opacity-50"
           )
@@ -751,18 +740,16 @@ var NumberInput = ({
               "aria-invalid": resolvedAriaInvalid,
               "aria-describedby": describedBy,
               className: cn(
-                "w-full rounded-md border bg-white transition-colors duration-150",
-                "text-gray-900 placeholder:text-gray-400",
-                "dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500",
+                "w-full rounded-md border bg-surface transition-colors duration-150",
+                "text-foreground placeholder:text-muted",
                 inputSizeStyles2[size],
                 suffix && "pr-0",
                 error ? [
-                  "border-[var(--kui-color-danger)]",
-                  "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1"
+                  "border-danger-main",
+                  "focus:outline-none focus:ring-2 focus:ring-danger-main focus:ring-offset-1"
                 ] : [
-                  "border-[var(--kui-color-border-strong)]",
-                  "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
-                  "dark:border-gray-600"
+                  "border-border-strong",
+                  "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1"
                 ],
                 disabled && "cursor-not-allowed opacity-50"
               )
@@ -772,7 +759,7 @@ var NumberInput = ({
             "span",
             {
               className: cn(
-                "pointer-events-none shrink-0 text-gray-500 dark:text-gray-400",
+                "pointer-events-none shrink-0 text-muted",
                 suffixSizeStyles[size]
               ),
               children: suffix
@@ -848,7 +835,7 @@ var SearchInput = ({
     /* @__PURE__ */ jsx13(
       "span",
       {
-        className: "pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500",
+        className: "pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted",
         "aria-hidden": "true",
         children: /* @__PURE__ */ jsx13("svg", { className: "size-5", viewBox: "0 0 24 24", fill: "none", children: /* @__PURE__ */ jsx13(
           "path",
@@ -872,12 +859,11 @@ var SearchInput = ({
         disabled,
         placeholder,
         className: cn(
-          "w-full rounded-md border bg-white py-2 pl-10 transition-colors duration-150",
-          "text-sm text-gray-900 placeholder:text-gray-400",
-          "dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500",
+          "w-full rounded-md border bg-surface py-2 pl-10 transition-colors duration-150",
+          "text-sm text-foreground placeholder:text-muted",
           hasValue ? "pr-10" : "pr-3",
-          "border-[var(--kui-color-border-strong)] dark:border-gray-600",
-          "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
+          "border-border-strong",
+          "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1",
           disabled && "cursor-not-allowed opacity-50"
         )
       }
@@ -888,7 +874,7 @@ var SearchInput = ({
         type: "button",
         "aria-label": clearButtonAriaLabel,
         onClick: handleClear,
-        className: "absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300",
+        className: "absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted transition-colors hover:bg-surface-sunken hover:text-foreground",
         children: /* @__PURE__ */ jsx13(
           "svg",
           {
@@ -968,17 +954,15 @@ var Select = ({
             "aria-invalid": !!error,
             "aria-describedby": describedBy,
             className: cn(
-              "w-full appearance-none rounded-md border bg-white transition-colors duration-150",
-              "text-gray-900",
-              "dark:bg-gray-800 dark:text-gray-100",
+              "w-full appearance-none rounded-md border bg-surface transition-colors duration-150",
+              "text-foreground",
               selectSizeStyles[size],
               error ? [
-                "border-[var(--kui-color-danger)]",
-                "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1"
+                "border-danger-main",
+                "focus:outline-none focus:ring-2 focus:ring-danger-main focus:ring-offset-1"
               ] : [
-                "border-[var(--kui-color-border-strong)]",
-                "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
-                "dark:border-gray-600"
+                "border-border-strong",
+                "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1"
               ],
               selectProps.disabled && "cursor-not-allowed opacity-50"
             ),
@@ -1000,7 +984,7 @@ var Select = ({
           "svg",
           {
             className: cn(
-              "pointer-events-none absolute top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400",
+              "pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted",
               chevronSizeStyles[size],
               selectProps.disabled && "opacity-50"
             ),
@@ -1048,12 +1032,12 @@ var Spinner = ({
           "div",
           {
             className: cn(
-              "animate-spin rounded-full border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2",
+              "animate-spin rounded-full border-b-2 border-info-main mx-auto mb-2",
               sizeStyles4[size]
             )
           }
         ),
-        label && /* @__PURE__ */ jsx15("p", { className: "text-gray-600 dark:text-gray-300 text-sm", children: label })
+        label && /* @__PURE__ */ jsx15("p", { className: "text-muted text-sm", children: label })
       ] })
     }
   );
@@ -1106,18 +1090,16 @@ var Textarea = ({
           "aria-invalid": !!error,
           "aria-describedby": describedBy,
           className: cn(
-            "w-full rounded-md border bg-white transition-colors duration-150",
-            "text-gray-900 placeholder:text-gray-400",
-            "dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500",
+            "w-full rounded-md border bg-surface transition-colors duration-150",
+            "text-foreground placeholder:text-muted",
             "resize-y",
             textareaSizeStyles[size],
             error ? [
-              "border-[var(--kui-color-danger)]",
-              "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1"
+              "border-danger-main",
+              "focus:outline-none focus:ring-2 focus:ring-danger-main focus:ring-offset-1"
             ] : [
-              "border-[var(--kui-color-border-strong)]",
-              "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
-              "dark:border-gray-600"
+              "border-border-strong",
+              "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1"
             ],
             textareaProps.disabled && "cursor-not-allowed opacity-50"
           )
@@ -1186,13 +1168,13 @@ var ToggleSwitch = ({
             className: cn(
               "relative inline-flex items-center rounded-full transition-colors duration-200",
               trackSizeStyles[size],
-              checked ? "bg-primary-main dark:bg-blue-600" : "bg-gray-300 dark:bg-gray-600"
+              checked ? "bg-primary-main" : "bg-border-strong"
             ),
             children: /* @__PURE__ */ jsx17(
               "span",
               {
                 className: cn(
-                  "inline-block rounded-full bg-white shadow transform transition-transform duration-200",
+                  "inline-block rounded-full bg-surface shadow transform transition-transform duration-200",
                   thumbSizeStyles[size],
                   checked ? thumbTranslateStyles[size] : "translate-x-0.5"
                 )
@@ -1203,10 +1185,7 @@ var ToggleSwitch = ({
         label && /* @__PURE__ */ jsx17(
           "span",
           {
-            className: cn(
-              "select-none text-gray-700 dark:text-gray-300",
-              labelSizeStyles3[size]
-            ),
+            className: cn("select-none text-foreground", labelSizeStyles3[size]),
             children: label
           }
         )
@@ -1284,18 +1263,16 @@ var YearMonthInput = ({
             "aria-invalid": resolvedAriaInvalid,
             "aria-describedby": describedBy,
             className: cn(
-              "w-full rounded-md border bg-white transition-colors duration-150",
-              "text-gray-900",
-              "dark:bg-gray-800 dark:text-gray-100",
+              "w-full rounded-md border bg-surface transition-colors duration-150",
+              "text-foreground",
               inputSizeStyles3[size],
               showClear && "pr-8",
               error ? [
-                "border-[var(--kui-color-danger)]",
-                "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-danger)] focus:ring-offset-1"
+                "border-danger-main",
+                "focus:outline-none focus:ring-2 focus:ring-danger-main focus:ring-offset-1"
               ] : [
-                "border-[var(--kui-color-border-strong)]",
-                "focus:outline-none focus:ring-2 focus:ring-[var(--kui-color-info)] focus:ring-offset-1",
-                "dark:border-gray-600"
+                "border-border-strong",
+                "focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-1"
               ],
               disabled && "cursor-not-allowed opacity-50"
             )
@@ -1309,8 +1286,7 @@ var YearMonthInput = ({
             "aria-label": "Clear",
             className: cn(
               "absolute right-1 flex items-center justify-center rounded-full",
-              "text-gray-400 hover:text-gray-600 hover:bg-gray-100",
-              "dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-700",
+              "text-muted hover:text-foreground hover:bg-surface-sunken",
               "transition-colors duration-150",
               clearButtonSizeStyles[size]
             ),
@@ -1332,9 +1308,9 @@ var positionStyles = {
   sticky: "sticky top-0"
 };
 var colorStyles = {
-  primary: "bg-primary-main text-white",
-  secondary: "bg-secondary-main text-primary-main dark:bg-gray-800 dark:text-white",
-  success: "bg-success-main text-white",
+  primary: "bg-primary-main text-inverse",
+  secondary: "bg-secondary-main text-primary-main",
+  success: "bg-success-main text-inverse",
   transparent: "bg-transparent"
 };
 var AppBar = ({
@@ -1360,7 +1336,7 @@ var AppBar = ({
 };
 
 // src/components/molecules/Dialog/Dialog.tsx
-import { useEffect, useRef as useRef2 } from "react";
+import { useEffect } from "react";
 import { jsx as jsx20, jsxs as jsxs9 } from "react/jsx-runtime";
 var maxWidthClasses = {
   sm: "max-w-sm",
@@ -1380,7 +1356,6 @@ var Dialog = ({
   closeButtonLabel = "Close dialog",
   className
 }) => {
-  const dialogRef = useRef2(null);
   useEffect(() => {
     const handleEscapeKey = (event) => {
       if (event.key === "Escape" && open) {
@@ -1396,13 +1371,13 @@ var Dialog = ({
       document.body.style.overflow = "unset";
     };
   }, [open, onClose]);
-  const handleBackdropClick = (event) => {
-    if (!disableOutsideClick && dialogRef.current && !dialogRef.current.contains(event.target)) {
+  const handleBackdropClick = () => {
+    if (!disableOutsideClick) {
       onClose();
     }
   };
   if (!open) return null;
-  return /* @__PURE__ */ jsx20(
+  return /* @__PURE__ */ jsxs9(
     "div",
     {
       className: "fixed inset-0 z-50 overflow-y-auto flex items-start sm:items-center justify-center p-4 pt-12 sm:pt-4",
@@ -1410,52 +1385,63 @@ var Dialog = ({
         backgroundColor: "var(--kui-color-overlay)",
         backdropFilter: "blur(2px)"
       },
-      onClick: handleBackdropClick,
-      children: /* @__PURE__ */ jsxs9(
-        "div",
-        {
-          ref: dialogRef,
-          role: "dialog",
-          className: cn(
-            "bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full transform transition-all duration-200 ease-out",
-            maxWidthClasses[maxWidth],
-            className
-          ),
-          onClick: (e) => e.stopPropagation(),
-          children: [
-            (title || !hideCloseButton) && /* @__PURE__ */ jsxs9("div", { className: "flex justify-between items-center p-6 pb-4", children: [
-              title && /* @__PURE__ */ jsx20("h3", { className: "text-lg font-semibold text-gray-900 dark:text-white", children: title }),
-              !hideCloseButton && /* @__PURE__ */ jsx20(
-                "button",
-                {
-                  onClick: onClose,
-                  className: "text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-400 transition-colors p-1",
-                  "aria-label": closeButtonLabel,
-                  children: /* @__PURE__ */ jsx20(
-                    "svg",
-                    {
-                      className: "h-6 w-6",
-                      fill: "none",
-                      viewBox: "0 0 24 24",
-                      strokeWidth: 1.5,
-                      stroke: "currentColor",
-                      children: /* @__PURE__ */ jsx20(
-                        "path",
-                        {
-                          strokeLinecap: "round",
-                          strokeLinejoin: "round",
-                          d: "M6 18L18 6M6 6l12 12"
-                        }
-                      )
-                    }
-                  )
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsx20("div", { className: title || !hideCloseButton ? "px-6 pb-6" : "p-6", children })
-          ]
-        }
-      )
+      children: [
+        /* @__PURE__ */ jsx20(
+          "button",
+          {
+            type: "button",
+            "aria-label": "Close dialog backdrop",
+            className: "absolute inset-0 cursor-default",
+            disabled: disableOutsideClick,
+            onClick: handleBackdropClick
+          }
+        ),
+        /* @__PURE__ */ jsxs9(
+          "div",
+          {
+            role: "dialog",
+            "aria-modal": "true",
+            className: cn(
+              "relative bg-surface rounded-lg shadow-xl w-full transform transition-all duration-200 ease-out",
+              maxWidthClasses[maxWidth],
+              className
+            ),
+            children: [
+              (title || !hideCloseButton) && /* @__PURE__ */ jsxs9("div", { className: "flex justify-between items-center p-6 pb-4", children: [
+                title && /* @__PURE__ */ jsx20("h3", { className: "text-lg font-semibold text-foreground", children: title }),
+                !hideCloseButton && /* @__PURE__ */ jsx20(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: onClose,
+                    className: "text-muted hover:text-foreground transition-colors p-1",
+                    "aria-label": closeButtonLabel,
+                    children: /* @__PURE__ */ jsx20(
+                      "svg",
+                      {
+                        className: "h-6 w-6",
+                        fill: "none",
+                        viewBox: "0 0 24 24",
+                        strokeWidth: 1.5,
+                        stroke: "currentColor",
+                        children: /* @__PURE__ */ jsx20(
+                          "path",
+                          {
+                            strokeLinecap: "round",
+                            strokeLinejoin: "round",
+                            d: "M6 18L18 6M6 6l12 12"
+                          }
+                        )
+                      }
+                    )
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsx20("div", { className: title || !hideCloseButton ? "px-6 pb-6" : "p-6", children })
+            ]
+          }
+        )
+      ]
     }
   );
 };
@@ -1464,22 +1450,22 @@ var Dialog = ({
 import { jsx as jsx21, jsxs as jsxs10 } from "react/jsx-runtime";
 var variantStyles5 = {
   danger: {
-    iconBg: "bg-red-100 dark:bg-red-900/30",
-    iconColor: "text-red-600 dark:text-red-400",
-    buttonBg: "bg-red-600 dark:bg-red-700",
-    buttonHover: "hover:bg-red-700 dark:hover:bg-red-800"
+    iconBg: "bg-danger-subtle",
+    iconColor: "text-danger-main",
+    buttonBg: "bg-danger-main",
+    buttonHover: "hover:opacity-90"
   },
   warning: {
-    iconBg: "bg-yellow-100 dark:bg-yellow-900/30",
-    iconColor: "text-yellow-600 dark:text-yellow-400",
-    buttonBg: "bg-yellow-600 dark:bg-yellow-700",
-    buttonHover: "hover:bg-yellow-700 dark:hover:bg-yellow-800"
+    iconBg: "bg-warning-subtle",
+    iconColor: "text-warning-main",
+    buttonBg: "bg-warning-main",
+    buttonHover: "hover:opacity-90"
   },
   info: {
-    iconBg: "bg-blue-100 dark:bg-blue-900/30",
-    iconColor: "text-blue-600 dark:text-blue-400",
-    buttonBg: "bg-blue-600 dark:bg-blue-700",
-    buttonHover: "hover:bg-blue-700 dark:hover:bg-blue-800"
+    iconBg: "bg-info-subtle",
+    iconColor: "text-info-main",
+    buttonBg: "bg-info-main",
+    buttonHover: "hover:opacity-90"
   }
 };
 var DefaultIcon = ({ className }) => /* @__PURE__ */ jsx21(
@@ -1549,19 +1535,21 @@ var ConfirmDialog = ({
           /* @__PURE__ */ jsx21(
             "button",
             {
+              type: "button",
               onClick: onClose,
               disabled: isProcessing,
-              className: "px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+              className: "px-4 py-2 text-sm font-medium text-foreground bg-surface-sunken hover:bg-border text rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-border-strong disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
               children: cancelLabel
             }
           ),
           /* @__PURE__ */ jsx21(
             "button",
             {
+              type: "button",
               onClick: onConfirm,
               disabled: isProcessing,
               className: cn(
-                "px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+                "px-4 py-2 text-sm font-medium text-inverse rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
                 styles.buttonBg,
                 styles.buttonHover
               ),
@@ -1669,62 +1657,55 @@ var DataTable = ({
   }
   if (mobileMode === "cards") {
     return /* @__PURE__ */ jsxs11("div", { className: cn("w-full", className), children: [
-      /* @__PURE__ */ jsx22("div", { className: "hidden md:block overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700", children: /* @__PURE__ */ jsxs11("table", { className: "min-w-full border-collapse", children: [
-        /* @__PURE__ */ jsx22("thead", { className: "bg-gray-50 dark:bg-gray-800/60", children: /* @__PURE__ */ jsxs11("tr", { children: [
+      /* @__PURE__ */ jsx22("div", { className: "hidden md:block overflow-x-auto rounded-lg border border-border", children: /* @__PURE__ */ jsxs11("table", { className: "min-w-full border-collapse", children: [
+        /* @__PURE__ */ jsx22("thead", { className: "bg-surface-raised", children: /* @__PURE__ */ jsxs11("tr", { children: [
           columns.map((column) => /* @__PURE__ */ jsx22(
             "th",
             {
               className: cn(
-                "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300",
+                "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted",
                 column.headerClassName
               ),
               children: column.header
             },
             column.key
           )),
-          hasActionColumn && /* @__PURE__ */ jsx22("th", { className: "px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300", children: actionHeader })
+          hasActionColumn && /* @__PURE__ */ jsx22("th", { className: "px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-muted", children: actionHeader })
         ] }) }),
-        /* @__PURE__ */ jsx22("tbody", { className: "divide-y divide-gray-200 dark:divide-gray-700", children: rows.length === 0 ? /* @__PURE__ */ jsx22("tr", { children: /* @__PURE__ */ jsx22(
+        /* @__PURE__ */ jsx22("tbody", { className: "divide-y divide-border", children: rows.length === 0 ? /* @__PURE__ */ jsx22("tr", { children: /* @__PURE__ */ jsx22(
           "td",
           {
             colSpan: tableColumnCount,
-            className: "px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400",
+            className: "px-4 py-8 text-center text-sm text-muted",
             children: /* @__PURE__ */ jsx22(Typography, { as: "span", tone: "muted", children: emptyMessage })
           }
-        ) }) : rows.map((row, index) => /* @__PURE__ */ jsxs11(
-          "tr",
-          {
-            className: "bg-white dark:bg-gray-900",
-            children: [
-              columns.map((column) => /* @__PURE__ */ jsx22(
-                "td",
-                {
-                  className: cn(
-                    "px-4 py-3 text-sm text-gray-700 dark:text-gray-200",
-                    column.cellClassName
-                  ),
-                  children: column.render(row)
-                },
-                column.key
-              )),
-              hasActionColumn && /* @__PURE__ */ jsx22("td", { className: "px-4 py-3 text-right", children: renderActions(row, actions) })
-            ]
-          },
-          getRowId(row, index)
-        )) })
+        ) }) : rows.map((row, index) => /* @__PURE__ */ jsxs11("tr", { className: "bg-surface", children: [
+          columns.map((column) => /* @__PURE__ */ jsx22(
+            "td",
+            {
+              className: cn(
+                "px-4 py-3 text-sm text-foreground",
+                column.cellClassName
+              ),
+              children: column.render(row)
+            },
+            column.key
+          )),
+          hasActionColumn && /* @__PURE__ */ jsx22("td", { className: "px-4 py-3 text-right", children: renderActions(row, actions) })
+        ] }, getRowId(row, index))) })
       ] }) }),
-      /* @__PURE__ */ jsx22("div", { className: "space-y-3 md:hidden", children: rows.length === 0 ? /* @__PURE__ */ jsx22("div", { className: "rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-8 text-center dark:border-gray-700 dark:bg-gray-900/50", children: /* @__PURE__ */ jsx22(Typography, { as: "p", tone: "muted", children: emptyMessage }) }) : rows.map((row, index) => /* @__PURE__ */ jsxs11(
+      /* @__PURE__ */ jsx22("div", { className: "space-y-3 md:hidden", children: rows.length === 0 ? /* @__PURE__ */ jsx22("div", { className: "rounded-lg border border-dashed border-border-strong bg-surface-raised px-4 py-8 text-center", children: /* @__PURE__ */ jsx22(Typography, { as: "p", tone: "muted", children: emptyMessage }) }) : rows.map((row, index) => /* @__PURE__ */ jsxs11(
         "div",
         {
-          className: "rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900",
+          className: "rounded-lg border border-border bg-surface p-4 shadow-sm",
           children: [
             /* @__PURE__ */ jsx22("dl", { className: "space-y-3", children: columns.map((column) => /* @__PURE__ */ jsxs11("div", { className: "space-y-1", children: [
-              /* @__PURE__ */ jsx22("dt", { className: "text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400", children: column.mobileLabel ?? column.header }),
+              /* @__PURE__ */ jsx22("dt", { className: "text-xs font-semibold uppercase tracking-wide text-muted", children: column.mobileLabel ?? column.header }),
               /* @__PURE__ */ jsx22(
                 "dd",
                 {
                   className: cn(
-                    "text-sm text-gray-700 dark:text-gray-200",
+                    "text-sm text-foreground",
                     column.cellClassName
                   ),
                   children: column.render(row)
@@ -1742,31 +1723,31 @@ var DataTable = ({
     "div",
     {
       className: cn(
-        "w-full overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700",
+        "w-full overflow-x-auto rounded-lg border border-border",
         className
       ),
       style: tableWrapperStyle,
       onScroll: shouldVirtualize ? (event) => setScrollTop(event.currentTarget.scrollTop) : void 0,
       children: /* @__PURE__ */ jsxs11("table", { className: "min-w-full border-collapse", children: [
-        /* @__PURE__ */ jsx22("thead", { className: "bg-gray-50 dark:bg-gray-800/60", children: /* @__PURE__ */ jsxs11("tr", { children: [
+        /* @__PURE__ */ jsx22("thead", { className: "bg-surface-raised", children: /* @__PURE__ */ jsxs11("tr", { children: [
           columns.map((column) => /* @__PURE__ */ jsx22(
             "th",
             {
               className: cn(
-                "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300",
+                "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted",
                 column.headerClassName
               ),
               children: column.header
             },
             column.key
           )),
-          hasActionColumn && /* @__PURE__ */ jsx22("th", { className: "px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300", children: actionHeader })
+          hasActionColumn && /* @__PURE__ */ jsx22("th", { className: "px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-muted", children: actionHeader })
         ] }) }),
-        /* @__PURE__ */ jsx22("tbody", { className: "divide-y divide-gray-200 dark:divide-gray-700", children: rows.length === 0 ? /* @__PURE__ */ jsx22("tr", { children: /* @__PURE__ */ jsx22(
+        /* @__PURE__ */ jsx22("tbody", { className: "divide-y divide-border", children: rows.length === 0 ? /* @__PURE__ */ jsx22("tr", { children: /* @__PURE__ */ jsx22(
           "td",
           {
             colSpan: tableColumnCount,
-            className: "px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400",
+            className: "px-4 py-8 text-center text-sm text-muted",
             children: /* @__PURE__ */ jsx22(Typography, { as: "span", tone: "muted", children: emptyMessage })
           }
         ) }) : /* @__PURE__ */ jsxs11(Fragment2, { children: [
@@ -1782,27 +1763,20 @@ var DataTable = ({
           ) }),
           visibleRows.map((row, index) => {
             const rowIndex = shouldVirtualize ? virtualizedWindow.startIndex + index : index;
-            return /* @__PURE__ */ jsxs11(
-              "tr",
-              {
-                className: "bg-white dark:bg-gray-900",
-                children: [
-                  columns.map((column) => /* @__PURE__ */ jsx22(
-                    "td",
-                    {
-                      className: cn(
-                        "px-4 py-3 text-sm text-gray-700 dark:text-gray-200",
-                        column.cellClassName
-                      ),
-                      children: column.render(row)
-                    },
-                    column.key
-                  )),
-                  hasActionColumn && /* @__PURE__ */ jsx22("td", { className: "px-4 py-3 text-right", children: renderActions(row, actions) })
-                ]
-              },
-              getRowId(row, rowIndex)
-            );
+            return /* @__PURE__ */ jsxs11("tr", { className: "bg-surface", children: [
+              columns.map((column) => /* @__PURE__ */ jsx22(
+                "td",
+                {
+                  className: cn(
+                    "px-4 py-3 text-sm text-foreground",
+                    column.cellClassName
+                  ),
+                  children: column.render(row)
+                },
+                column.key
+              )),
+              hasActionColumn && /* @__PURE__ */ jsx22("td", { className: "px-4 py-3 text-right", children: renderActions(row, actions) })
+            ] }, getRowId(row, rowIndex));
           }),
           shouldVirtualize && virtualizedWindow.bottomSpacerHeight > 0 && /* @__PURE__ */ jsx22("tr", { children: /* @__PURE__ */ jsx22(
             "td",
@@ -1821,7 +1795,7 @@ var DataTable = ({
 };
 
 // src/components/molecules/Tooltip/Tooltip.tsx
-import { useEffect as useEffect2, useRef as useRef3, useState as useState3 } from "react";
+import { useEffect as useEffect2, useRef as useRef2, useState as useState3 } from "react";
 import { jsx as jsx23, jsxs as jsxs12 } from "react/jsx-runtime";
 var Tooltip = ({
   content,
@@ -1831,8 +1805,8 @@ var Tooltip = ({
 }) => {
   const [isOpen, setIsOpen] = useState3(false);
   const [tooltipPosition, setTooltipPosition] = useState3("right");
-  const tooltipRef = useRef3(null);
-  const buttonRef = useRef3(null);
+  const tooltipRef = useRef2(null);
+  const buttonRef = useRef2(null);
   useEffect2(() => {
     if (isOpen && buttonRef.current) {
       requestAnimationFrame(() => {
@@ -1878,17 +1852,17 @@ var Tooltip = ({
       case "left":
         return {
           tooltip: "absolute z-10 w-64 sm:w-72 mt-2 left-0",
-          arrow: "absolute -top-2 left-4 w-4 h-4 bg-white dark:bg-gray-800 transform rotate-45 border-t border-l border-gray-200 dark:border-gray-700"
+          arrow: "absolute -top-2 left-4 w-4 h-4 bg-surface transform rotate-45 border-t border-l border-border"
         };
       case "right":
         return {
           tooltip: "absolute z-10 w-64 sm:w-72 mt-2 right-0",
-          arrow: "absolute -top-2 right-4 w-4 h-4 bg-white dark:bg-gray-800 transform rotate-45 border-t border-l border-gray-200 dark:border-gray-700"
+          arrow: "absolute -top-2 right-4 w-4 h-4 bg-surface transform rotate-45 border-t border-l border-border"
         };
       default:
         return {
           tooltip: "absolute z-10 w-64 sm:w-72 mt-2 left-1/2 transform -translate-x-1/2",
-          arrow: "absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white dark:bg-gray-800 rotate-45 border-t border-l border-gray-200 dark:border-gray-700"
+          arrow: "absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-surface rotate-45 border-t border-l border-border"
         };
     }
   };
@@ -1899,7 +1873,7 @@ var Tooltip = ({
       {
         ref: buttonRef,
         type: "button",
-        className: "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700",
+        className: "text-muted hover:text-foreground focus:outline-none p-1 rounded-full hover:bg-surface-sunken",
         onClick: () => setIsOpen(!isOpen),
         "aria-label": triggerLabel,
         children
@@ -1910,10 +1884,10 @@ var Tooltip = ({
       {
         className: cn(
           tooltipClass,
-          "bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 animate-kui-fade-in"
+          "bg-surface rounded-lg shadow-lg border border-border animate-kui-fade-in"
         ),
         children: [
-          /* @__PURE__ */ jsx23("div", { className: "p-3 text-sm text-gray-700 dark:text-gray-200", children: content }),
+          /* @__PURE__ */ jsx23("div", { className: "p-3 text-sm text-foreground", children: content }),
           /* @__PURE__ */ jsx23("div", { className: arrowClass, "aria-hidden": "true" })
         ]
       }
@@ -1954,8 +1928,67 @@ var InfoTooltip = ({
   ) });
 };
 
+// src/components/molecules/KeyValueList/KeyValueList.tsx
+import { jsx as jsx25, jsxs as jsxs13 } from "react/jsx-runtime";
+var toneStyles3 = {
+  default: "text-foreground",
+  success: "text-success-main",
+  danger: "text-danger-main"
+};
+var keySizeStyles = {
+  sm: "text-xs",
+  md: "text-sm"
+};
+var valueSizeStyles = {
+  sm: "text-xs",
+  md: "text-sm"
+};
+var itemPaddingStyles = {
+  sm: "py-1.5",
+  md: "py-2"
+};
+var KeyValueList = ({
+  items,
+  layout = "horizontal",
+  size = "md",
+  separator = false,
+  className
+}) => {
+  return /* @__PURE__ */ jsx25(
+    "dl",
+    {
+      className: cn("w-full", separator && "divide-y divide-border", className),
+      children: items.map((item) => /* @__PURE__ */ jsxs13(
+        "div",
+        {
+          className: cn(
+            itemPaddingStyles[size],
+            layout === "horizontal" ? "flex items-baseline justify-between gap-4" : "flex flex-col gap-0.5"
+          ),
+          children: [
+            /* @__PURE__ */ jsx25("dt", { className: cn("text-muted shrink-0", keySizeStyles[size]), children: item.key }),
+            /* @__PURE__ */ jsx25(
+              "dd",
+              {
+                className: cn(
+                  "font-medium",
+                  valueSizeStyles[size],
+                  toneStyles3[item.tone ?? "default"],
+                  layout === "horizontal" && "text-right"
+                ),
+                children: item.value
+              }
+            )
+          ]
+        },
+        String(item.key)
+      ))
+    }
+  );
+};
+
 // src/components/molecules/ListItem/ListItem.tsx
-import { jsx as jsx25 } from "react/jsx-runtime";
+import { jsx as jsx26 } from "react/jsx-runtime";
 var ListItem = ({
   children,
   hoverable = true,
@@ -1963,13 +1996,13 @@ var ListItem = ({
   className,
   ...props
 }) => {
-  return /* @__PURE__ */ jsx25(
+  return /* @__PURE__ */ jsx26(
     "div",
     {
       className: cn(
-        "px-4 py-3 bg-white dark:bg-gray-800 rounded-lg",
-        hoverable && "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors",
-        bordered && "border border-gray-200 dark:border-gray-700",
+        "px-4 py-3 bg-surface rounded-lg",
+        hoverable && "hover:bg-surface-raised transition-colors",
+        bordered && "border border-border",
         className
       ),
       ...props,
@@ -1980,8 +2013,8 @@ var ListItem = ({
 
 // src/components/molecules/ListLayout/ListLayout.tsx
 import React from "react";
-import { jsx as jsx26, jsxs as jsxs13 } from "react/jsx-runtime";
-var DefaultCloseIcon = () => /* @__PURE__ */ jsx26(
+import { jsx as jsx27, jsxs as jsxs14 } from "react/jsx-runtime";
+var DefaultCloseIcon = () => /* @__PURE__ */ jsx27(
   "svg",
   {
     className: "w-5 h-5",
@@ -1989,7 +2022,7 @@ var DefaultCloseIcon = () => /* @__PURE__ */ jsx26(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx26(
+    children: /* @__PURE__ */ jsx27(
       "path",
       {
         strokeLinecap: "round",
@@ -1999,7 +2032,7 @@ var DefaultCloseIcon = () => /* @__PURE__ */ jsx26(
     )
   }
 );
-var DefaultSearchIcon = () => /* @__PURE__ */ jsx26(
+var DefaultSearchIcon = () => /* @__PURE__ */ jsx27(
   "svg",
   {
     className: "w-5 h-5",
@@ -2007,7 +2040,7 @@ var DefaultSearchIcon = () => /* @__PURE__ */ jsx26(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx26(
+    children: /* @__PURE__ */ jsx27(
       "path",
       {
         strokeLinecap: "round",
@@ -2017,7 +2050,7 @@ var DefaultSearchIcon = () => /* @__PURE__ */ jsx26(
     )
   }
 );
-var DefaultFilterIcon = () => /* @__PURE__ */ jsx26(
+var DefaultFilterIcon = () => /* @__PURE__ */ jsx27(
   "svg",
   {
     className: "w-5 h-5",
@@ -2025,7 +2058,7 @@ var DefaultFilterIcon = () => /* @__PURE__ */ jsx26(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx26(
+    children: /* @__PURE__ */ jsx27(
       "path",
       {
         strokeLinecap: "round",
@@ -2035,7 +2068,7 @@ var DefaultFilterIcon = () => /* @__PURE__ */ jsx26(
     )
   }
 );
-var DefaultAddIcon = () => /* @__PURE__ */ jsx26(
+var DefaultAddIcon = () => /* @__PURE__ */ jsx27(
   "svg",
   {
     className: "w-5 h-5",
@@ -2043,7 +2076,7 @@ var DefaultAddIcon = () => /* @__PURE__ */ jsx26(
     viewBox: "0 0 24 24",
     strokeWidth: 1.5,
     stroke: "currentColor",
-    children: /* @__PURE__ */ jsx26(
+    children: /* @__PURE__ */ jsx27(
       "path",
       {
         strokeLinecap: "round",
@@ -2096,13 +2129,13 @@ var ListLayout = ({
   closeFormLabel = "Close form"
 }) => {
   const hasItems = React.Children.count(children) > 0;
-  const SearchIconComponent = searchIcon || /* @__PURE__ */ jsx26(DefaultSearchIcon, {});
-  const FilterIconComponent = filterIcon || /* @__PURE__ */ jsx26(DefaultFilterIcon, {});
-  const AddIconComponent = addIcon || /* @__PURE__ */ jsx26(DefaultAddIcon, {});
-  const CloseIconComponent = closeIcon || /* @__PURE__ */ jsx26(DefaultCloseIcon, {});
-  return /* @__PURE__ */ jsxs13("div", { className: cn("max-w-3xl mx-auto p-4", className), children: [
-    /* @__PURE__ */ jsxs13("div", { className: "flex justify-between items-center mb-4", children: [
-      /* @__PURE__ */ jsx26(
+  const SearchIconComponent = searchIcon || /* @__PURE__ */ jsx27(DefaultSearchIcon, {});
+  const FilterIconComponent = filterIcon || /* @__PURE__ */ jsx27(DefaultFilterIcon, {});
+  const AddIconComponent = addIcon || /* @__PURE__ */ jsx27(DefaultAddIcon, {});
+  const CloseIconComponent = closeIcon || /* @__PURE__ */ jsx27(DefaultCloseIcon, {});
+  return /* @__PURE__ */ jsxs14("div", { className: cn("max-w-3xl mx-auto p-4", className), children: [
+    /* @__PURE__ */ jsxs14("div", { className: "flex justify-between items-center mb-4", children: [
+      /* @__PURE__ */ jsx27(
         Heading,
         {
           as: "h1",
@@ -2111,65 +2144,70 @@ var ListLayout = ({
           children: title
         }
       ),
-      /* @__PURE__ */ jsxs13("div", { className: "flex gap-2", children: [
+      /* @__PURE__ */ jsxs14("div", { className: "flex gap-2", children: [
         customActions,
-        !showSearchForm && /* @__PURE__ */ jsx26(
+        !showSearchForm && /* @__PURE__ */ jsx27(
           "button",
           {
+            type: "button",
             onClick: () => onToggleSearch(true),
-            className: "p-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors",
+            className: "p-2 rounded-full bg-info-subtle text-info-main hover:opacity-90 transition-colors",
             "aria-label": searchButtonLabel,
             children: SearchIconComponent
           }
         ),
-        enableIncompleteFilter && /* @__PURE__ */ jsx26(
+        enableIncompleteFilter && /* @__PURE__ */ jsx27(
           "button",
           {
+            type: "button",
             onClick: () => onToggleFilter(!showFilterOptions),
             className: cn(
               "p-2 rounded-full transition-colors",
-              showFilterOptions ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-500 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800/70" : "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+              showFilterOptions ? "bg-info-subtle text-info-main hover:opacity-90" : "bg-surface-raised text-muted hover:bg-surface-sunken"
             ),
             "aria-label": filterButtonLabel,
             children: FilterIconComponent
           }
         ),
-        onToggleAddForm ? /* @__PURE__ */ jsx26(
+        onToggleAddForm ? /* @__PURE__ */ jsx27(
           "button",
           {
+            type: "button",
             onClick: () => onToggleAddForm(!showAddForm),
             className: cn(
               "p-2 rounded-full transition-colors",
-              showAddForm ? "bg-rose-100 dark:bg-rose-900/50 text-rose-500 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800/70" : "bg-rose-50 dark:bg-rose-900/30 text-rose-500 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-800/50"
+              showAddForm ? "bg-danger-subtle text-danger-main hover:opacity-90" : "bg-accent-subtle text-accent-main hover:opacity-90"
             ),
             "aria-label": showAddForm ? closeFormLabel : addButtonLabel,
             children: showAddForm ? CloseIconComponent : AddIconComponent
           }
-        ) : onAddClick && /* @__PURE__ */ jsx26(
+        ) : onAddClick && /* @__PURE__ */ jsx27(
           "button",
           {
+            type: "button",
             onClick: onAddClick,
-            className: "p-2 rounded-full bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors",
+            className: "p-2 rounded-full bg-primary-main text-inverse hover:bg-primary-light transition-colors",
             "aria-label": addButtonLabel,
             children: AddIconComponent
           }
         )
       ] })
     ] }),
-    errorMessage && onClearError && /* @__PURE__ */ jsxs13("div", { className: "bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 p-3 rounded-lg mb-4 flex justify-between items-center animate-kui-slide-down shadow-sm", children: [
-      /* @__PURE__ */ jsx26(Typography, { as: "p", tone: "danger", children: errorMessage }),
-      /* @__PURE__ */ jsx26(
+    errorMessage && onClearError && /* @__PURE__ */ jsxs14("div", { className: "bg-danger-subtle text-danger-main p-3 rounded-lg mb-4 flex justify-between items-center animate-kui-slide-down shadow-sm", children: [
+      /* @__PURE__ */ jsx27(Typography, { as: "p", tone: "danger", children: errorMessage }),
+      /* @__PURE__ */ jsx27(
         "button",
         {
+          type: "button",
           onClick: onClearError,
-          className: "text-red-500 dark:text-red-300 p-1 hover:bg-red-100 dark:hover:bg-red-800/50 rounded-full transition-colors",
+          className: "text-danger-main p-1 hover:bg-danger-subtle rounded-full transition-colors",
           children: CloseIconComponent
         }
       )
     ] }),
-    enableIncompleteFilter && showFilterOptions && /* @__PURE__ */ jsxs13("div", { className: "mb-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg shadow-sm p-3 animate-kui-slide-down", children: [
-      /* @__PURE__ */ jsxs13("div", { className: "flex justify-between items-center", children: [
-        /* @__PURE__ */ jsx26(
+    enableIncompleteFilter && showFilterOptions && /* @__PURE__ */ jsxs14("div", { className: "mb-4 bg-info-subtle rounded-lg shadow-sm p-3 animate-kui-slide-down", children: [
+      /* @__PURE__ */ jsxs14("div", { className: "flex justify-between items-center", children: [
+        /* @__PURE__ */ jsx27(
           Heading,
           {
             as: "h3",
@@ -2181,80 +2219,84 @@ var ListLayout = ({
             children: filterTitle
           }
         ),
-        /* @__PURE__ */ jsx26(
+        /* @__PURE__ */ jsx27(
           "button",
           {
+            type: "button",
             onClick: () => onToggleFilter(false),
-            className: "text-indigo-500 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-800/50 p-1 rounded-full transition-colors",
+            className: "text-info-main hover:opacity-90 p-1 rounded-full transition-colors",
             children: CloseIconComponent
           }
         )
       ] }),
-      onToggleIncomplete && /* @__PURE__ */ jsx26("div", { className: "mt-3", children: /* @__PURE__ */ jsxs13("div", { className: "flex items-center", children: [
-        /* @__PURE__ */ jsx26(
+      onToggleIncomplete && /* @__PURE__ */ jsx27("div", { className: "mt-3", children: /* @__PURE__ */ jsxs14("div", { className: "flex items-center", children: [
+        /* @__PURE__ */ jsx27(
           "input",
           {
             type: "checkbox",
             id: "showOnlyIncomplete",
             checked: showOnlyIncomplete,
             onChange: (e) => onToggleIncomplete(e.target.checked),
-            className: "h-5 w-5 text-indigo-600 dark:text-indigo-500 rounded focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700 dark:border-gray-600"
+            className: "h-5 w-5 text-primary-main rounded focus:ring-primary-main bg-surface border-border-strong"
           }
         ),
-        /* @__PURE__ */ jsx26("label", { htmlFor: "showOnlyIncomplete", className: "ml-2", children: /* @__PURE__ */ jsx26(Typography, { as: "span", children: incompleteFilterLabel }) })
+        /* @__PURE__ */ jsx27("label", { htmlFor: "showOnlyIncomplete", className: "ml-2", children: /* @__PURE__ */ jsx27(Typography, { as: "span", children: incompleteFilterLabel }) })
       ] }) })
     ] }),
-    showSearchForm && /* @__PURE__ */ jsxs13("div", { className: "mb-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 relative animate-kui-slide-down", children: [
-      /* @__PURE__ */ jsxs13("div", { className: "flex items-center", children: [
-        /* @__PURE__ */ jsx26("span", { className: "w-5 h-5 text-gray-400 dark:text-gray-500 absolute left-6", children: SearchIconComponent }),
-        /* @__PURE__ */ jsx26(
+    showSearchForm && /* @__PURE__ */ jsxs14("div", { className: "mb-4 bg-surface rounded-lg shadow-sm p-3 relative animate-kui-slide-down", children: [
+      /* @__PURE__ */ jsxs14("div", { className: "flex items-center", children: [
+        /* @__PURE__ */ jsx27("span", { className: "w-5 h-5 text-muted absolute left-6", children: SearchIconComponent }),
+        /* @__PURE__ */ jsx27(
           "input",
           {
             type: "text",
             value: searchKeyword,
             onChange: (e) => onSearchChange(e.target.value),
             placeholder: searchPlaceholder,
-            className: "w-full pl-10 pr-10 py-2 border dark:border-gray-700 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+            className: "w-full pl-10 pr-10 py-2 border border-border bg-surface-raised text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-info-main"
           }
         ),
-        searchKeyword && /* @__PURE__ */ jsx26(
+        searchKeyword && /* @__PURE__ */ jsx27(
           "button",
           {
+            type: "button",
             onClick: () => onSearchChange(""),
-            className: "absolute right-6 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition-colors",
+            className: "absolute right-6 text-muted hover:text-foreground p-1 hover:bg-surface-sunken rounded-full transition-colors",
             children: CloseIconComponent
           }
         )
       ] }),
-      /* @__PURE__ */ jsx26("div", { className: "flex justify-end mt-3", children: /* @__PURE__ */ jsx26(
+      /* @__PURE__ */ jsx27("div", { className: "flex justify-end mt-3", children: /* @__PURE__ */ jsx27(
         "button",
         {
+          type: "button",
           onClick: () => onToggleSearch(false),
-          className: "text-sm text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-3 py-1 hover:bg-blue-50 dark:hover:bg-blue-800/50 rounded-md transition-colors",
-          children: /* @__PURE__ */ jsx26(Typography, { as: "span", variant: "body-sm", tone: "info", children: closeSearchLabel })
+          className: "text-sm text-info-main px-3 py-1 hover:bg-info-subtle rounded-md transition-colors",
+          children: /* @__PURE__ */ jsx27(Typography, { as: "span", variant: "body-sm", tone: "info", children: closeSearchLabel })
         }
       ) })
     ] }),
-    showAddForm && addFormComponent && /* @__PURE__ */ jsx26("div", { className: "mb-4", children: addFormComponent }),
-    statsComponent && /* @__PURE__ */ jsx26("div", { className: "mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm", children: statsComponent }),
-    isLoading && /* @__PURE__ */ jsx26("div", { className: "flex justify-center items-center py-8", children: /* @__PURE__ */ jsx26("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400" }) }),
-    isError && onReload && /* @__PURE__ */ jsxs13("div", { className: "text-center py-8 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30 rounded-lg", children: [
-      /* @__PURE__ */ jsx26(Typography, { as: "p", tone: "danger", children: errorFetchMessage }),
-      /* @__PURE__ */ jsx26(
+    showAddForm && addFormComponent && /* @__PURE__ */ jsx27("div", { className: "mb-4", children: addFormComponent }),
+    statsComponent && /* @__PURE__ */ jsx27("div", { className: "mb-6 bg-surface p-4 rounded-lg shadow-sm", children: statsComponent }),
+    isLoading && /* @__PURE__ */ jsx27("div", { className: "flex justify-center items-center py-8", children: /* @__PURE__ */ jsx27("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-info-main" }) }),
+    isError && onReload && /* @__PURE__ */ jsxs14("div", { className: "text-center py-8 text-danger-main bg-danger-subtle rounded-lg", children: [
+      /* @__PURE__ */ jsx27(Typography, { as: "p", tone: "danger", children: errorFetchMessage }),
+      /* @__PURE__ */ jsx27(
         "button",
         {
+          type: "button",
           onClick: onReload,
-          className: "mt-2 px-4 py-2 bg-red-100 dark:bg-red-800/50 text-red-700 dark:text-red-300 rounded-md hover:bg-red-200 dark:hover:bg-red-700/50 transition-colors",
-          children: /* @__PURE__ */ jsx26(Typography, { as: "span", variant: "body-sm", tone: "danger", children: reloadLabel })
+          className: "mt-2 px-4 py-2 bg-danger-subtle text-danger-main rounded-md hover:opacity-90 transition-colors",
+          children: /* @__PURE__ */ jsx27(Typography, { as: "span", variant: "body-sm", tone: "danger", children: reloadLabel })
         }
       )
     ] }),
-    !isLoading && !isError && /* @__PURE__ */ jsx26("div", { className: "space-y-3", children: hasItems ? children : /* @__PURE__ */ jsx26("div", { className: "text-center py-8 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg animate-kui-fade-in", children: searchKeyword ? /* @__PURE__ */ jsx26(Typography, { as: "p", tone: "muted", children: noSearchResultsMessage }) : showOnlyIncomplete ? /* @__PURE__ */ jsx26(Typography, { as: "p", tone: "muted", children: noIncompleteMessage }) : /* @__PURE__ */ jsx26(Typography, { as: "p", tone: "muted", children: emptyMessage }) }) })
+    !isLoading && !isError && /* @__PURE__ */ jsx27("div", { className: "space-y-3", children: hasItems ? children : /* @__PURE__ */ jsx27("div", { className: "text-center py-8 text-muted bg-surface-raised rounded-lg animate-kui-fade-in", children: searchKeyword ? /* @__PURE__ */ jsx27(Typography, { as: "p", tone: "muted", children: noSearchResultsMessage }) : showOnlyIncomplete ? /* @__PURE__ */ jsx27(Typography, { as: "p", tone: "muted", children: noIncompleteMessage }) : /* @__PURE__ */ jsx27(Typography, { as: "p", tone: "muted", children: emptyMessage }) }) })
   ] });
 };
 
 // src/components/molecules/MonthSelector/MonthSelector.tsx
-import { jsx as jsx27, jsxs as jsxs14 } from "react/jsx-runtime";
+import { jsx as jsx28, jsxs as jsxs15 } from "react/jsx-runtime";
 var defaultFormatLabel = (year, month) => `${year}-${String(month).padStart(2, "0")}`;
 var MonthSelector = ({
   selectedMonth,
@@ -2298,21 +2340,22 @@ var MonthSelector = ({
       onMonthChange(newMonth);
     }
   };
-  return /* @__PURE__ */ jsxs14("div", { className: cn("flex items-center gap-2", className), children: [
-    /* @__PURE__ */ jsx27(
+  return /* @__PURE__ */ jsxs15("div", { className: cn("flex items-center gap-2", className), children: [
+    /* @__PURE__ */ jsx28(
       "button",
       {
+        type: "button",
         onClick: handlePrevMonth,
-        className: "p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors",
+        className: "p-2 rounded-lg hover:bg-surface-sunken transition-colors",
         "aria-label": prevLabel,
-        children: /* @__PURE__ */ jsx27(
+        children: /* @__PURE__ */ jsx28(
           "svg",
           {
             className: "w-5 h-5",
             fill: "none",
             stroke: "currentColor",
             viewBox: "0 0 24 24",
-            children: /* @__PURE__ */ jsx27(
+            children: /* @__PURE__ */ jsx28(
               "path",
               {
                 strokeLinecap: "round",
@@ -2325,29 +2368,30 @@ var MonthSelector = ({
         )
       }
     ),
-    /* @__PURE__ */ jsx27(
+    /* @__PURE__ */ jsx28(
       "select",
       {
         value: selectedMonth,
         onChange: (e) => onMonthChange(e.target.value),
-        className: "px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-        children: monthOptions.map((option) => /* @__PURE__ */ jsx27("option", { value: option.value, children: option.label }, option.value))
+        className: "px-3 py-2 border border-border-strong rounded-lg bg-surface text-foreground focus:ring-2 focus:ring-info-main focus:border-transparent",
+        children: monthOptions.map((option) => /* @__PURE__ */ jsx28("option", { value: option.value, children: option.label }, option.value))
       }
     ),
-    /* @__PURE__ */ jsx27(
+    /* @__PURE__ */ jsx28(
       "button",
       {
+        type: "button",
         onClick: handleNextMonth,
-        className: "p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors",
+        className: "p-2 rounded-lg hover:bg-surface-sunken transition-colors",
         "aria-label": nextLabel,
-        children: /* @__PURE__ */ jsx27(
+        children: /* @__PURE__ */ jsx28(
           "svg",
           {
             className: "w-5 h-5",
             fill: "none",
             stroke: "currentColor",
             viewBox: "0 0 24 24",
-            children: /* @__PURE__ */ jsx27(
+            children: /* @__PURE__ */ jsx28(
               "path",
               {
                 strokeLinecap: "round",
@@ -2364,13 +2408,13 @@ var MonthSelector = ({
 };
 
 // src/components/molecules/NavigationDrawer/NavigationDrawer.tsx
-import { Fragment as Fragment3, jsx as jsx28, jsxs as jsxs15 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsx as jsx29, jsxs as jsxs16 } from "react/jsx-runtime";
 var defaultRenderLink = ({
   href,
   children,
   className,
   onClick
-}) => /* @__PURE__ */ jsx28("a", { href, className, onClick, children });
+}) => /* @__PURE__ */ jsx29("a", { href, className, onClick, children });
 var NavigationDrawer = ({
   open,
   onClose,
@@ -2381,39 +2425,40 @@ var NavigationDrawer = ({
   renderLink = defaultRenderLink,
   closeButtonLabel = "Close"
 }) => {
-  return /* @__PURE__ */ jsxs15(Fragment3, { children: [
-    open && /* @__PURE__ */ jsx28(
+  return /* @__PURE__ */ jsxs16(Fragment3, { children: [
+    open && /* @__PURE__ */ jsx29(
       "div",
       {
-        className: "fixed inset-0 bg-black/30 z-40 transition-opacity",
+        className: "fixed inset-0 bg-[var(--kui-color-overlay)] z-40 transition-opacity",
         onClick: onClose,
         "aria-hidden": "true"
       }
     ),
-    /* @__PURE__ */ jsxs15(
+    /* @__PURE__ */ jsxs16(
       "div",
       {
         className: cn(
-          "fixed top-0 right-0 h-full bg-white dark:bg-gray-800 text-black dark:text-white z-50 transform transition-transform duration-300 ease-in-out",
+          "fixed top-0 right-0 h-full bg-surface text-foreground z-50 transform transition-transform duration-300 ease-in-out",
           open ? "translate-x-0" : "translate-x-full"
         ),
         style: { width: `${width}px` },
         children: [
-          /* @__PURE__ */ jsx28(DrawerHeader, { children: /* @__PURE__ */ jsx28(
+          /* @__PURE__ */ jsx29(DrawerHeader, { children: /* @__PURE__ */ jsx29(
             "button",
             {
+              type: "button",
               onClick: onClose,
-              className: "p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700",
+              className: "p-2 rounded-full hover:bg-surface-sunken",
               "aria-label": closeButtonLabel,
-              children: /* @__PURE__ */ jsx28(
+              children: /* @__PURE__ */ jsx29(
                 "svg",
                 {
-                  className: "w-6 h-6 dark:text-white",
+                  className: "w-6 h-6",
                   fill: "none",
                   viewBox: "0 0 24 24",
                   strokeWidth: 1.5,
                   stroke: "currentColor",
-                  children: /* @__PURE__ */ jsx28(
+                  children: /* @__PURE__ */ jsx29(
                     "path",
                     {
                       strokeLinecap: "round",
@@ -2425,25 +2470,26 @@ var NavigationDrawer = ({
               )
             }
           ) }),
-          /* @__PURE__ */ jsxs15("div", { className: "overflow-y-auto h-full pb-16", children: [
-            sections.map((section, sectionIndex) => /* @__PURE__ */ jsxs15("div", { children: [
-              /* @__PURE__ */ jsx28("div", { className: "text-sm text-gray-500 dark:text-gray-400 px-4 pt-2", children: section.title }),
-              section.items.map((item) => /* @__PURE__ */ jsx28("div", { className: "px-2", children: renderLink({
+          /* @__PURE__ */ jsxs16("div", { className: "overflow-y-auto h-full pb-16", children: [
+            sections.map((section, sectionIndex) => /* @__PURE__ */ jsxs16("div", { children: [
+              /* @__PURE__ */ jsx29("div", { className: "text-sm text-muted px-4 pt-2", children: section.title }),
+              section.items.map((item) => /* @__PURE__ */ jsx29("div", { className: "px-2", children: renderLink({
                 href: item.path,
-                className: "flex items-center px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200",
+                className: "flex items-center px-3 py-2 rounded-md hover:bg-surface-sunken text-foreground",
                 onClick: onClose,
-                children: /* @__PURE__ */ jsxs15(Fragment3, { children: [
-                  item.icon && /* @__PURE__ */ jsx28("span", { className: "text-gray-500 dark:text-gray-400 mr-3", children: item.icon }),
-                  /* @__PURE__ */ jsx28("span", { children: item.name })
+                children: /* @__PURE__ */ jsxs16(Fragment3, { children: [
+                  item.icon && /* @__PURE__ */ jsx29("span", { className: "text-muted mr-3", children: item.icon }),
+                  /* @__PURE__ */ jsx29("span", { children: item.name })
                 ] })
               }) }, item.name))
             ] }, section.title || `section-${sectionIndex}`)),
-            onLogout && /* @__PURE__ */ jsx28("div", { className: "px-2 mt-4", children: /* @__PURE__ */ jsx28(
+            onLogout && /* @__PURE__ */ jsx29("div", { className: "px-2 mt-4", children: /* @__PURE__ */ jsx29(
               "button",
               {
-                className: "w-full text-left flex items-center px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200",
+                type: "button",
+                className: "w-full text-left flex items-center px-3 py-2 rounded-md hover:bg-surface-sunken text-foreground",
                 onClick: onLogout,
-                children: /* @__PURE__ */ jsx28("span", { children: logoutLabel })
+                children: /* @__PURE__ */ jsx29("span", { children: logoutLabel })
               }
             ) })
           ] })
@@ -2454,37 +2500,37 @@ var NavigationDrawer = ({
 };
 
 // src/components/molecules/StatCards/StatCards.tsx
-import { jsx as jsx29, jsxs as jsxs16 } from "react/jsx-runtime";
+import { jsx as jsx30, jsxs as jsxs17 } from "react/jsx-runtime";
 var colorStyles2 = {
   blue: {
-    bg: "bg-blue-50 dark:bg-blue-900/20",
-    text: "text-blue-800 dark:text-blue-200",
-    border: "border-blue-200 dark:border-blue-800"
+    bg: "bg-info-subtle",
+    text: "text-info-main",
+    border: "border-info-main"
   },
   green: {
-    bg: "bg-green-50 dark:bg-green-900/20",
-    text: "text-green-800 dark:text-green-200",
-    border: "border-green-200 dark:border-green-800"
+    bg: "bg-success-subtle",
+    text: "text-success-main",
+    border: "border-success-main"
   },
   purple: {
-    bg: "bg-purple-50 dark:bg-purple-900/20",
-    text: "text-purple-800 dark:text-purple-200",
-    border: "border-purple-200 dark:border-purple-800"
+    bg: "bg-accent-subtle",
+    text: "text-accent-main",
+    border: "border-accent-main"
   },
   red: {
-    bg: "bg-red-50 dark:bg-red-900/20",
-    text: "text-red-800 dark:text-red-200",
-    border: "border-red-200 dark:border-red-800"
+    bg: "bg-danger-subtle",
+    text: "text-danger-main",
+    border: "border-danger-main"
   },
   yellow: {
-    bg: "bg-yellow-50 dark:bg-yellow-900/20",
-    text: "text-yellow-800 dark:text-yellow-200",
-    border: "border-yellow-200 dark:border-yellow-800"
+    bg: "bg-warning-subtle",
+    text: "text-warning-main",
+    border: "border-warning-main"
   },
   gray: {
-    bg: "bg-gray-50 dark:bg-gray-800",
-    text: "text-gray-800 dark:text-gray-200",
-    border: "border-gray-200 dark:border-gray-700"
+    bg: "bg-surface-raised",
+    text: "text-foreground",
+    border: "border-border"
   }
 };
 var columnStyles = {
@@ -2500,16 +2546,16 @@ var StatCards = ({
   columns = 3,
   className
 }) => {
-  return /* @__PURE__ */ jsx29("div", { className: cn("grid gap-4", columnStyles[columns], className), children: cards.map((card) => {
+  return /* @__PURE__ */ jsx30("div", { className: cn("grid gap-4", columnStyles[columns], className), children: cards.map((card) => {
     const color = card.color ?? "blue";
     const styles = colorStyles2[color];
-    return /* @__PURE__ */ jsxs16(
+    return /* @__PURE__ */ jsxs17(
       "div",
       {
         className: cn("border rounded-lg p-4", styles.bg, styles.border),
         children: [
-          /* @__PURE__ */ jsx29("h3", { className: cn("text-sm font-medium mb-1", styles.text), children: card.label }),
-          /* @__PURE__ */ jsx29("p", { className: cn("text-2xl font-bold", styles.text), children: formatValue(card.value) })
+          /* @__PURE__ */ jsx30("h3", { className: cn("text-sm font-medium mb-1", styles.text), children: card.label }),
+          /* @__PURE__ */ jsx30("p", { className: cn("text-2xl font-bold", styles.text), children: formatValue(card.value) })
         ]
       },
       card.label
@@ -2519,7 +2565,7 @@ var StatCards = ({
 
 // src/components/templates/AppLayout/AppLayout.tsx
 import { useState as useState4 } from "react";
-import { jsx as jsx30, jsxs as jsxs17 } from "react/jsx-runtime";
+import { jsx as jsx31, jsxs as jsxs18 } from "react/jsx-runtime";
 var AppLayout = ({
   children,
   appTitle,
@@ -2535,15 +2581,15 @@ var AppLayout = ({
   menuButtonLabel = "Open menu"
 }) => {
   const [drawerOpen, setDrawerOpen] = useState4(false);
-  const titleContent = /* @__PURE__ */ jsx30("span", { className: "text-xl font-bold text-primary-main dark:text-white", children: appTitle });
+  const titleContent = /* @__PURE__ */ jsx31("span", { className: "text-xl font-bold text-primary-main", children: appTitle });
   const defaultRenderLink2 = ({
     href,
     children: linkChildren
-  }) => /* @__PURE__ */ jsx30("a", { href, children: linkChildren });
+  }) => /* @__PURE__ */ jsx31("a", { href, children: linkChildren });
   const linkRenderer = renderLink || defaultRenderLink2;
-  return /* @__PURE__ */ jsxs17("div", { className: "flex min-h-screen bg-white dark:bg-gray-900", children: [
-    /* @__PURE__ */ jsx30(AppBar, { position: "fixed", color: appBarColor, className: "shadow-none", children: /* @__PURE__ */ jsxs17("div", { className: "flex items-center justify-between px-4 py-2", children: [
-      /* @__PURE__ */ jsxs17("h6", { className: "text-xl font-bold grow", children: [
+  return /* @__PURE__ */ jsxs18("div", { className: "flex min-h-screen bg-surface", children: [
+    /* @__PURE__ */ jsx31(AppBar, { position: "fixed", color: appBarColor, className: "shadow-none", children: /* @__PURE__ */ jsxs18("div", { className: "flex items-center justify-between px-4 py-2", children: [
+      /* @__PURE__ */ jsxs18("h6", { className: "text-xl font-bold grow", children: [
         linkRenderer({
           href: titleHref,
           children: titleContent,
@@ -2551,13 +2597,14 @@ var AppLayout = ({
         }),
         titleSuffix
       ] }),
-      /* @__PURE__ */ jsx30(
+      /* @__PURE__ */ jsx31(
         "button",
         {
-          className: "text-primary-main dark:text-white ml-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700",
+          type: "button",
+          className: "text-primary-main ml-2 p-2 rounded-full hover:bg-surface-sunken",
           "aria-label": menuButtonLabel,
           onClick: () => setDrawerOpen(true),
-          children: /* @__PURE__ */ jsx30(
+          children: /* @__PURE__ */ jsx31(
             "svg",
             {
               className: "w-6 h-6",
@@ -2565,7 +2612,7 @@ var AppLayout = ({
               viewBox: "0 0 24 24",
               strokeWidth: 1.5,
               stroke: "currentColor",
-              children: /* @__PURE__ */ jsx30(
+              children: /* @__PURE__ */ jsx31(
                 "path",
                 {
                   strokeLinecap: "round",
@@ -2578,7 +2625,7 @@ var AppLayout = ({
         }
       )
     ] }) }),
-    /* @__PURE__ */ jsx30(
+    /* @__PURE__ */ jsx31(
       NavigationDrawer,
       {
         open: drawerOpen,
@@ -2590,11 +2637,11 @@ var AppLayout = ({
         renderLink
       }
     ),
-    /* @__PURE__ */ jsx30(
+    /* @__PURE__ */ jsx31(
       "main",
       {
         className: cn(
-          "grow pt-16 px-4 mb-6 sm:px-[10%] bg-white dark:bg-gray-900 text-black dark:text-white transition-colors min-h-[calc(100vh-4rem)] pb-[env(safe-area-inset-bottom)]",
+          "grow pt-16 px-4 mb-6 sm:px-[10%] bg-surface text-foreground transition-colors min-h-[calc(100vh-4rem)] pb-[env(safe-area-inset-bottom)]",
           className
         ),
         children
@@ -2604,7 +2651,7 @@ var AppLayout = ({
 };
 
 // src/components/templates/EmptyState/EmptyState.tsx
-import { jsx as jsx31, jsxs as jsxs18 } from "react/jsx-runtime";
+import { jsx as jsx32, jsxs as jsxs19 } from "react/jsx-runtime";
 var containerSizeClassMap = {
   sm: "gap-2 rounded-lg px-4 py-6",
   md: "gap-3 rounded-xl px-6 py-10",
@@ -2649,7 +2696,7 @@ var EmptyState = ({
   className,
   ...props
 }) => {
-  return /* @__PURE__ */ jsxs18(
+  return /* @__PURE__ */ jsxs19(
     "div",
     {
       className: cn(
@@ -2660,7 +2707,7 @@ var EmptyState = ({
       ),
       ...props,
       children: [
-        icon ? /* @__PURE__ */ jsx31(
+        icon ? /* @__PURE__ */ jsx32(
           "div",
           {
             className: cn(
@@ -2671,8 +2718,8 @@ var EmptyState = ({
             children: icon
           }
         ) : null,
-        /* @__PURE__ */ jsx31(Heading, { as: "h2", size: headingSizeMap[size], children: title }),
-        description ? /* @__PURE__ */ jsx31(
+        /* @__PURE__ */ jsx32(Heading, { as: "h2", size: headingSizeMap[size], children: title }),
+        description ? /* @__PURE__ */ jsx32(
           Typography,
           {
             className: descriptionWidthClassMap[size],
@@ -2681,8 +2728,8 @@ var EmptyState = ({
             children: description
           }
         ) : null,
-        action && actionPlacement === "inline" ? /* @__PURE__ */ jsx31("div", { children: action }) : null,
-        action && actionPlacement === "below" ? /* @__PURE__ */ jsx31("div", { className: cn("flex w-full pt-1", actionWrapAlignClassMap[align]), children: action }) : null
+        action && actionPlacement === "inline" ? /* @__PURE__ */ jsx32("div", { children: action }) : null,
+        action && actionPlacement === "below" ? /* @__PURE__ */ jsx32("div", { className: cn("flex w-full pt-1", actionWrapAlignClassMap[align]), children: action }) : null
       ]
     }
   );
@@ -2750,6 +2797,7 @@ export {
   Heading,
   InfoTooltip,
   Input,
+  KeyValueList,
   ListItem,
   ListLayout,
   MonthSelector,

@@ -42,22 +42,22 @@ const variantStyles: Record<
   { iconBg: string; iconColor: string; buttonBg: string; buttonHover: string }
 > = {
   danger: {
-    iconBg: "bg-red-100 dark:bg-red-900/30",
-    iconColor: "text-red-600 dark:text-red-400",
-    buttonBg: "bg-red-600 dark:bg-red-700",
-    buttonHover: "hover:bg-red-700 dark:hover:bg-red-800",
+    iconBg: "bg-danger-subtle",
+    iconColor: "text-danger-main",
+    buttonBg: "bg-danger-main",
+    buttonHover: "hover:opacity-90",
   },
   warning: {
-    iconBg: "bg-yellow-100 dark:bg-yellow-900/30",
-    iconColor: "text-yellow-600 dark:text-yellow-400",
-    buttonBg: "bg-yellow-600 dark:bg-yellow-700",
-    buttonHover: "hover:bg-yellow-700 dark:hover:bg-yellow-800",
+    iconBg: "bg-warning-subtle",
+    iconColor: "text-warning-main",
+    buttonBg: "bg-warning-main",
+    buttonHover: "hover:opacity-90",
   },
   info: {
-    iconBg: "bg-blue-100 dark:bg-blue-900/30",
-    iconColor: "text-blue-600 dark:text-blue-400",
-    buttonBg: "bg-blue-600 dark:bg-blue-700",
-    buttonHover: "hover:bg-blue-700 dark:hover:bg-blue-800",
+    iconBg: "bg-info-subtle",
+    iconColor: "text-info-main",
+    buttonBg: "bg-info-main",
+    buttonHover: "hover:opacity-90",
   },
 };
 
@@ -130,17 +130,19 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 
       <div className="flex justify-end space-x-3">
         <button
+          type="button"
           onClick={onClose}
           disabled={isProcessing}
-          className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 text-sm font-medium text-foreground bg-surface-sunken hover:bg-border text rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-border-strong disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {cancelLabel}
         </button>
         <button
+          type="button"
           onClick={onConfirm}
           disabled={isProcessing}
           className={cn(
-            "px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+            "px-4 py-2 text-sm font-medium text-inverse rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
             styles.buttonBg,
             styles.buttonHover,
           )}

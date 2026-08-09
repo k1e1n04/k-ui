@@ -12,13 +12,7 @@ describe("Card", () => {
   it("デフォルトクラスが適用される", () => {
     render(<Card data-testid="card">コンテンツ</Card>);
     const card = screen.getByTestId("card");
-    expect(card).toHaveClass(
-      "bg-white",
-      "dark:bg-gray-800",
-      "rounded-lg",
-      "p-6",
-      "shadow",
-    );
+    expect(card).toHaveClass("bg-surface", "rounded-lg", "p-6", "shadow");
   });
 
   it.each([
@@ -104,11 +98,7 @@ describe("Card", () => {
       </Card>,
     );
     const card = screen.getByTestId("card");
-    expect(card).toHaveClass(
-      "border",
-      "border-gray-200",
-      "dark:border-gray-700",
-    );
+    expect(card).toHaveClass("border", "border-border");
   });
 
   it("border が false のときボーダークラスが適用されない", () => {

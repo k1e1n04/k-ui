@@ -1,7 +1,7 @@
 :root {
   /* プライマリ */
   --kui-color-primary: #525459;
-  --kui-color-primary-hover: #008db7;
+  --kui-color-primary-hover: #696c73;
 
   /* セカンダリ */
   --kui-color-secondary: #ffffff;
@@ -9,6 +9,7 @@
 
   /* アクセント */
   --kui-color-accent: #e6856a;
+  --kui-color-accent-subtle: #fff1ed;
 
   /* セマンティック */
   --kui-color-danger: #ef4444;
@@ -23,6 +24,7 @@
   /* サーフェス */
   --kui-color-surface: #ffffff;
   --kui-color-surface-raised: #f9fafb;
+  --kui-color-surface-sunken: #f3f4f6;
 
   /* テキスト */
   --kui-color-text: #171717;
@@ -39,8 +41,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --kui-color-primary: #d1d5db;
+    --kui-color-primary-hover: #f3f4f6;
+
+    --kui-color-secondary: #1f2937;
+    --kui-color-secondary-subtle: #374151;
+    --kui-color-accent-subtle: rgba(154, 52, 18, 0.3);
+
     --kui-color-surface: #1f2937;
     --kui-color-surface-raised: #111827;
+    --kui-color-surface-sunken: #374151;
 
     --kui-color-text: #f3f4f6;
     --kui-color-text-muted: #9ca3af;

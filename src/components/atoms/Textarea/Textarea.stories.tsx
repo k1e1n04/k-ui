@@ -167,7 +167,7 @@ export const KeyboardEvents: Story = {
             setValue("");
           }}
         />
-        <p className="text-sm text-gray-600 dark:text-gray-300">
+        <p className="text-sm text-muted">
           Enter: submit / Shift+Enter: newline / IME composing Enter: ignored
         </p>
         <ul className="list-disc space-y-1 pl-5 text-sm">

@@ -84,11 +84,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         aria-hidden="true"
         className={cn(
           "inline-flex items-center justify-center shrink-0 rounded border-2 transition-colors duration-150",
-          "peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 peer-focus-visible:ring-offset-2",
+          "peer-focus-visible:ring-2 peer-focus-visible:ring-info-main peer-focus-visible:ring-offset-2",
           boxSizeStyles[size],
           checked
-            ? "bg-primary-main border-primary-main dark:bg-blue-600 dark:border-blue-600"
-            : "bg-white border-gray-400 dark:bg-gray-800 dark:border-gray-500",
+            ? "bg-primary-main border-primary-main"
+            : "bg-surface border-border-strong",
         )}
       >
         {/* チェックマーク */}
@@ -101,7 +101,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
-            className={cn("text-white", checkmarkSizeStyles[size])}
+            className={cn("text-inverse", checkmarkSizeStyles[size])}
           >
             <polyline points="2,6 5,9 10,3" />
           </svg>
@@ -110,10 +110,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       {/* ラベル */}
       {label && (
         <span
-          className={cn(
-            "select-none text-gray-700 dark:text-gray-300",
-            labelSizeStyles[size],
-          )}
+          className={cn("select-none text-foreground", labelSizeStyles[size])}
         >
           {label}
         </span>
