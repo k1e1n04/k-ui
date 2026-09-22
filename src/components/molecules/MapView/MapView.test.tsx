@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MapControls } from "../MapControls";
 import { MapMarker } from "../MapMarker";
+import { useMap } from "./MapContext";
 import { MapView } from "./MapView";
 
 const rect = {
@@ -195,5 +196,33 @@ describe("MapView", () => {
     expect(screen.getByRole("button", { name: "テスト" }).style.left).not.toBe(
       before,
     );
+  });
+
+  it("ドラッグ中は地図コンテキストを参照する子要素を再レンダリングしない", () => {
+    let renders = 0;
+    const Child = () => {
+      useMap();
+      renders += 1;
+      return <span>child</span>;
+    };
+    render(
+      <MapView center={{ lat: 0, lng: 0 }} zoom={5}>
+        <Child />
+      </MapView>,
+    );
+    const initial = renders;
+    const map = screen.getByTestId("map-view");
+
+    fireEvent.pointerDown(map, {
+      clientX: 400,
+      clientY: 300,
+      pointerId: 1,
+      button: 0,
+    });
+    fireEvent.pointerMove(map, { clientX: 380, clientY: 290, pointerId: 1 });
+    fireEvent.pointerMove(map, { clientX: 360, clientY: 280, pointerId: 1 });
+    fireEvent.pointerMove(map, { clientX: 340, clientY: 270, pointerId: 1 });
+
+    expect(renders).toBe(initial);
   });
 });
