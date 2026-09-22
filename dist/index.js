@@ -5838,8 +5838,8 @@ var MapView = ({
   const tileZoom = clampZoom(Math.floor(currentZoom), 0, 19);
   const tileScale = 2 ** (currentZoom - tileZoom);
   const scaledTile = TILE_SIZE * tileScale;
-  const originX = worldCenter.x - size.width / 2 + offset2.x;
-  const originY = worldCenter.y - size.height / 2 + offset2.y;
+  const originX = worldCenter.x - size.width / 2 - offset2.x;
+  const originY = worldCenter.y - size.height / 2 - offset2.y;
   const tiles = useMemo4(() => {
     if (!resolvedTileUrl || size.width === 0 || size.height === 0) return [];
     const count = 2 ** tileZoom;

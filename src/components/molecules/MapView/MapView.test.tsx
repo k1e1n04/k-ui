@@ -225,4 +225,42 @@ describe("MapView", () => {
 
     expect(renders).toBe(initial);
   });
+
+  it("ドラッグ中は背景グリッドとマーカーが同じ方向・同じ量だけ動く", () => {
+    const { container } = render(
+      <MapView center={{ lat: 0, lng: 0 }} zoom={5} tileUrl={null}>
+        <MapMarker position={{ lat: 0, lng: 0 }} label="テスト" />
+      </MapView>,
+    );
+    const readGrid = () => {
+      const grid = container.querySelector(
+        'div[aria-hidden="true"]',
+      ) as HTMLElement;
+      const match = grid.style.backgroundPosition.match(
+        /(-?[\d.]+)px (-?[\d.]+)px/,
+      );
+      return { x: Number(match?.[1]), y: Number(match?.[2]) };
+    };
+    const before = readGrid();
+    const map = screen.getByTestId("map-view");
+
+    fireEvent.pointerDown(map, {
+      clientX: 400,
+      clientY: 300,
+      pointerId: 1,
+      button: 0,
+    });
+    fireEvent.pointerMove(map, { clientX: 340, clientY: 280, pointerId: 1 });
+
+    const after = readGrid();
+    const layer = screen
+      .getByTestId("map-content")
+      .style.transform.match(/translate3d\((-?[\d.]+)px, (-?[\d.]+)px/);
+
+    // 指の移動量(-60, -20)と同じ方向に、グリッドもマーカー層も同じ量だけ動く
+    expect(after.x - before.x).toBeCloseTo(-60, 5);
+    expect(after.y - before.y).toBeCloseTo(-20, 5);
+    expect(after.x - before.x).toBeCloseTo(Number(layer?.[1]), 5);
+    expect(after.y - before.y).toBeCloseTo(Number(layer?.[2]), 5);
+  });
 });

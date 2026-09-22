@@ -462,11 +462,13 @@ export const MapView: React.FC<MapViewProps> = ({
   };
 
   // タイルの描画範囲を計算
+  // ドラッグ中の offset は「指の移動量」で、確定後の中心は worldCenter - offset になる。
+  // プレビューを確定後と一致させる（＝離した瞬間に飛ばないようにする）ため、ここでは offset を引く。
   const tileZoom = clampZoom(Math.floor(currentZoom), 0, 19);
   const tileScale = 2 ** (currentZoom - tileZoom);
   const scaledTile = TILE_SIZE * tileScale;
-  const originX = worldCenter.x - size.width / 2 + offset.x;
-  const originY = worldCenter.y - size.height / 2 + offset.y;
+  const originX = worldCenter.x - size.width / 2 - offset.x;
+  const originY = worldCenter.y - size.height / 2 - offset.y;
 
   const tiles = useMemo(() => {
     if (!resolvedTileUrl || size.width === 0 || size.height === 0) return [];
