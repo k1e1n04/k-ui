@@ -13,3 +13,11 @@ export {
   worldXToLng,
   worldYToLat,
 } from "./geo";
+export type { TileUrlBuilder } from "./tiles";
+export {
+  GSI_ATTRIBUTION,
+  GSI_PALE_TILE_URL,
+  GSI_PHOTO_TILE_URL,
+  GSI_STANDARD_TILE_URL,
+  GSI_TILE_BASE_URL,
+} from "./tiles";

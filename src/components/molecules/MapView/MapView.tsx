@@ -12,6 +12,11 @@ import {
   TILE_SIZE,
   unproject,
 } from "../../../utils/geo";
+import {
+  GSI_ATTRIBUTION,
+  GSI_PALE_TILE_URL,
+  type TileUrlBuilder,
+} from "../../../utils/tiles";
 import { MapContext, type MapContextValue } from "./MapContext";
 
 /** 地図の中心座標の初期値（東京駅） */
@@ -39,8 +44,16 @@ export interface MapViewProps {
   onZoomChange?: (zoom: number) => void;
   /** 地図タップ時 */
   onTap?: (latlng: LatLng) => void;
-  /** タイル画像URLの生成関数（省略時はグリッド背景） */
-  tileUrl?: (x: number, y: number, z: number) => string;
+  /**
+   * タイル画像URLの生成関数。
+   * 省略時は地理院タイル（淡色）を使用し、`null` でグリッド背景になる。
+   * @default GSI_PALE_TILE_URL
+   */
+  tileUrl?: TileUrlBuilder | null;
+  /** 出典表示。省略時はタイルに応じた既定値（地理院タイルなら「国土地理院」） */
+  attribution?: React.ReactNode;
+  /** 出典表示を表示するか。 @default true */
+  showAttribution?: boolean;
   /** ドラッグ・ズーム操作を有効にするか。 @default true */
   interactive?: boolean;
   /** 高さ。 @default 400 */
@@ -90,12 +103,21 @@ export const MapView: React.FC<MapViewProps> = ({
   onZoomChange,
   onTap,
   tileUrl,
+  attribution,
+  showAttribution = true,
   interactive = true,
   height = 400,
   children,
   className,
   ariaLabel = "地図",
 }) => {
+  const resolvedTileUrl = tileUrl === undefined ? GSI_PALE_TILE_URL : tileUrl;
+  const resolvedAttribution =
+    attribution !== undefined
+      ? attribution
+      : tileUrl === undefined || tileUrl === GSI_PALE_TILE_URL
+        ? GSI_ATTRIBUTION
+        : undefined;
   const containerRef = useRef<HTMLDivElement>(null);
   const [innerCenter, setInnerCenter] = useState<LatLng>(defaultCenter);
   const [innerZoom, setInnerZoom] = useState<number>(defaultZoom);
@@ -432,7 +454,7 @@ export const MapView: React.FC<MapViewProps> = ({
   const originY = worldCenter.y - size.height / 2 + offset.y;
 
   const tiles = useMemo(() => {
-    if (!tileUrl || size.width === 0 || size.height === 0) return [];
+    if (!resolvedTileUrl || size.width === 0 || size.height === 0) return [];
     const count = 2 ** tileZoom;
     const minX = Math.floor(originX / scaledTile);
     const maxX = Math.floor((originX + size.width) / scaledTile);
@@ -446,7 +468,7 @@ export const MapView: React.FC<MapViewProps> = ({
         result.push(
           <img
             key={`${tileZoom}-${x}-${y}`}
-            src={tileUrl(wrappedX, y, tileZoom)}
+            src={resolvedTileUrl(wrappedX, y, tileZoom)}
             alt=""
             draggable={false}
             className="absolute select-none"
@@ -461,7 +483,7 @@ export const MapView: React.FC<MapViewProps> = ({
       }
     }
     return result;
-  }, [tileUrl, size, originX, originY, scaledTile, tileZoom]);
+  }, [resolvedTileUrl, size, originX, originY, scaledTile, tileZoom]);
 
   const contextValue: MapContextValue = {
     center: currentCenter,
@@ -495,8 +517,8 @@ export const MapView: React.FC<MapViewProps> = ({
           className,
         )}
       >
-        {/* 背景グリッド（タイル未指定時） */}
-        {!tileUrl && (
+        {/* 背景グリッド（タイルを null にした場合） */}
+        {!resolvedTileUrl && (
           <div
             aria-hidden="true"
             className="absolute inset-0"
@@ -514,6 +536,11 @@ export const MapView: React.FC<MapViewProps> = ({
           </div>
         )}
         <div className="absolute inset-0">{children}</div>
+        {showAttribution && resolvedTileUrl && resolvedAttribution && (
+          <div className="pointer-events-none absolute bottom-0 left-0 z-10 bg-surface/80 px-1.5 py-0.5 text-[10px] leading-tight text-muted">
+            出典: {resolvedAttribution}
+          </div>
+        )}
       </div>
     </MapContext.Provider>
   );

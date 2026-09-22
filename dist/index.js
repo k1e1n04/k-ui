@@ -5500,6 +5500,13 @@ function clampZoom(zoom, min, max) {
   return clamp2(zoom, min, max);
 }
 
+// src/utils/tiles.ts
+var GSI_TILE_BASE_URL = "https://cyberjapandata.gsi.go.jp/xyz";
+var GSI_ATTRIBUTION = "\u56FD\u571F\u5730\u7406\u9662";
+var GSI_PALE_TILE_URL = (x, y, z) => `${GSI_TILE_BASE_URL}/pale/${z}/${x}/${y}.png`;
+var GSI_STANDARD_TILE_URL = (x, y, z) => `${GSI_TILE_BASE_URL}/std/${z}/${x}/${y}.png`;
+var GSI_PHOTO_TILE_URL = (x, y, z) => `${GSI_TILE_BASE_URL}/ort/${z}/${x}/${y}.png`;
+
 // src/components/molecules/MapView/MapView.tsx
 import { jsx as jsx60, jsxs as jsxs40 } from "react/jsx-runtime";
 var DEFAULT_MAP_CENTER = { lat: 35.681236, lng: 139.767125 };
@@ -5516,12 +5523,16 @@ var MapView = ({
   onZoomChange,
   onTap,
   tileUrl,
+  attribution,
+  showAttribution = true,
   interactive = true,
   height = 400,
   children,
   className,
   ariaLabel = "\u5730\u56F3"
 }) => {
+  const resolvedTileUrl = tileUrl === void 0 ? GSI_PALE_TILE_URL : tileUrl;
+  const resolvedAttribution = attribution !== void 0 ? attribution : tileUrl === void 0 || tileUrl === GSI_PALE_TILE_URL ? GSI_ATTRIBUTION : void 0;
   const containerRef = useRef15(null);
   const [innerCenter, setInnerCenter] = useState17(defaultCenter);
   const [innerZoom, setInnerZoom] = useState17(defaultZoom);
@@ -5826,7 +5837,7 @@ var MapView = ({
   const originX = worldCenter.x - size.width / 2 + offset2.x;
   const originY = worldCenter.y - size.height / 2 + offset2.y;
   const tiles = useMemo4(() => {
-    if (!tileUrl || size.width === 0 || size.height === 0) return [];
+    if (!resolvedTileUrl || size.width === 0 || size.height === 0) return [];
     const count = 2 ** tileZoom;
     const minX = Math.floor(originX / scaledTile);
     const maxX = Math.floor((originX + size.width) / scaledTile);
@@ -5841,7 +5852,7 @@ var MapView = ({
           /* @__PURE__ */ jsx60(
             "img",
             {
-              src: tileUrl(wrappedX, y, tileZoom),
+              src: resolvedTileUrl(wrappedX, y, tileZoom),
               alt: "",
               draggable: false,
               className: "absolute select-none",
@@ -5858,7 +5869,7 @@ var MapView = ({
       }
     }
     return result;
-  }, [tileUrl, size, originX, originY, scaledTile, tileZoom]);
+  }, [resolvedTileUrl, size, originX, originY, scaledTile, tileZoom]);
   const contextValue = {
     center: currentCenter,
     zoom: currentZoom,
@@ -5890,7 +5901,7 @@ var MapView = ({
         className
       ),
       children: [
-        !tileUrl && /* @__PURE__ */ jsx60(
+        !resolvedTileUrl && /* @__PURE__ */ jsx60(
           "div",
           {
             "aria-hidden": "true",
@@ -5903,7 +5914,11 @@ var MapView = ({
           }
         ),
         tiles.length > 0 && /* @__PURE__ */ jsx60("div", { "aria-hidden": "true", className: "absolute inset-0", children: tiles }),
-        /* @__PURE__ */ jsx60("div", { className: "absolute inset-0", children })
+        /* @__PURE__ */ jsx60("div", { className: "absolute inset-0", children }),
+        showAttribution && resolvedTileUrl && resolvedAttribution && /* @__PURE__ */ jsxs40("div", { className: "pointer-events-none absolute bottom-0 left-0 z-10 bg-surface/80 px-1.5 py-0.5 text-[10px] leading-tight text-muted", children: [
+          "\u51FA\u5178: ",
+          resolvedAttribution
+        ] })
       ]
     }
   ) });
@@ -7259,6 +7274,11 @@ export {
   FileUploader,
   FilterPanel,
   FormField,
+  GSI_ATTRIBUTION,
+  GSI_PALE_TILE_URL,
+  GSI_PHOTO_TILE_URL,
+  GSI_STANDARD_TILE_URL,
+  GSI_TILE_BASE_URL,
   Heading,
   ImageGallery,
   InfoTooltip,

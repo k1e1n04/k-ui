@@ -35,6 +35,36 @@ describe("MapView", () => {
     expect(screen.getByTestId("map-view")).toBeInTheDocument();
   });
 
+  it("既定で地理院タイルと出典を表示する", () => {
+    const { container } = render(
+      <MapView center={{ lat: 0, lng: 0 }} zoom={0} />,
+    );
+    expect(
+      container.querySelector('img[src*="cyberjapandata.gsi.go.jp"]'),
+    ).not.toBeNull();
+    expect(screen.getByText(/国土地理院/)).toBeInTheDocument();
+  });
+
+  it("tileUrl=null ではタイルも出典も表示しない", () => {
+    const { container } = render(
+      <MapView center={{ lat: 0, lng: 0 }} zoom={0} tileUrl={null} />,
+    );
+    expect(container.querySelector("img")).toBeNull();
+    expect(screen.queryByText(/国土地理院/)).not.toBeInTheDocument();
+  });
+
+  it("カスタムタイルの出典を指定できる", () => {
+    render(
+      <MapView
+        center={{ lat: 0, lng: 0 }}
+        zoom={0}
+        tileUrl={() => "https://example.com/tile.png"}
+        attribution="© Example"
+      />,
+    );
+    expect(screen.getByText(/© Example/)).toBeInTheDocument();
+  });
+
   it("タップした座標を通知する", () => {
     const onTap = vi.fn();
     render(<MapView center={{ lat: 0, lng: 0 }} zoom={0} onTap={onTap} />);

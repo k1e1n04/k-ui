@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 
+import { GSI_STANDARD_TILE_URL } from "../../../utils/tiles";
 import { MapControls } from "../MapControls";
 import { MapMarker } from "../MapMarker";
 import { DEFAULT_MAP_CENTER, MapView } from "./MapView";
@@ -73,11 +74,30 @@ export const TapToAddMarker: Story = {
   },
 };
 
-export const TileSource: Story = {
+export const GridBackground: Story = {
+  args: {
+    center: DEFAULT_MAP_CENTER,
+    zoom: 14,
+    height: 420,
+    tileUrl: null,
+  },
+};
+
+export const StandardTiles: Story = {
+  args: {
+    center: DEFAULT_MAP_CENTER,
+    zoom: 14,
+    height: 420,
+    tileUrl: GSI_STANDARD_TILE_URL,
+  },
+};
+
+export const CustomTileSource: Story = {
   args: {
     center: DEFAULT_MAP_CENTER,
     zoom: 14,
     height: 420,
     tileUrl: (x, y, z) => `https://tile.openstreetmap.org/${z}/${x}/${y}.png`,
+    attribution: "© OpenStreetMap contributors",
   },
 };

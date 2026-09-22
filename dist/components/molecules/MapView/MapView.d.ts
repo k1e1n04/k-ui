@@ -1,5 +1,6 @@
 import type React from "react";
 import { type LatLng } from "../../../utils/geo";
+import { type TileUrlBuilder } from "../../../utils/tiles";
 /** 地図の中心座標の初期値（東京駅） */
 export declare const DEFAULT_MAP_CENTER: LatLng;
 export interface MapViewProps {
@@ -21,8 +22,16 @@ export interface MapViewProps {
     onZoomChange?: (zoom: number) => void;
     /** 地図タップ時 */
     onTap?: (latlng: LatLng) => void;
-    /** タイル画像URLの生成関数（省略時はグリッド背景） */
-    tileUrl?: (x: number, y: number, z: number) => string;
+    /**
+     * タイル画像URLの生成関数。
+     * 省略時は地理院タイル（淡色）を使用し、`null` でグリッド背景になる。
+     * @default GSI_PALE_TILE_URL
+     */
+    tileUrl?: TileUrlBuilder | null;
+    /** 出典表示。省略時はタイルに応じた既定値（地理院タイルなら「国土地理院」） */
+    attribution?: React.ReactNode;
+    /** 出典表示を表示するか。 @default true */
+    showAttribution?: boolean;
     /** ドラッグ・ズーム操作を有効にするか。 @default true */
     interactive?: boolean;
     /** 高さ。 @default 400 */
