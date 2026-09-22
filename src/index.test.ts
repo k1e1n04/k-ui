@@ -27,16 +27,16 @@ describe("public exports", () => {
     expect(kui.useFloatingElement).toBeTypeOf("function");
   });
 
-  it("賃貸検索向けコンポーネントをエクスポートする", () => {
-    expect(kui.PropertyCard).toBeTypeOf("function");
-    expect(kui.PropertyList).toBeTypeOf("function");
-    expect(kui.PropertyFilterPanel).toBeTypeOf("function");
+  it("汎用のメディア・フォーム系コンポーネントをエクスポートする", () => {
+    expect(kui.MediaCard).toBeTypeOf("function");
+    expect(kui.MediaList).toBeTypeOf("function");
+    expect(kui.FilterPanel).toBeTypeOf("function");
     expect(kui.ImageGallery).toBeTypeOf("function");
     expect(kui.FacilityList).toBeTypeOf("function");
-    expect(kui.InquiryForm).toBeTypeOf("function");
-    expect(kui.CompareTray).toBeTypeOf("function");
+    expect(kui.ContactForm).toBeTypeOf("function");
+    expect(kui.SelectionTray).toBeTypeOf("function");
     expect(kui.BottomSheet).toBeTypeOf("function");
-    expect(kui.MapSearchLayout).toBeTypeOf("function");
+    expect(kui.SplitPaneLayout).toBeTypeOf("function");
   });
 
   it("地図関連のコンポーネントとユーティリティをエクスポートする", () => {
