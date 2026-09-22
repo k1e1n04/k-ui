@@ -147,4 +147,53 @@ describe("MapView", () => {
     );
     expect(screen.getByRole("button", { name: "8.5万円" })).toBeInTheDocument();
   });
+
+  it("ドラッグ中はマーカーを再計算せず、マーカー層の transform で追従する", () => {
+    render(
+      <MapView center={{ lat: 0, lng: 0 }} zoom={5}>
+        <MapMarker position={{ lat: 0, lng: 0 }} label="テスト" />
+      </MapView>,
+    );
+    const marker = screen.getByRole("button", { name: "テスト" });
+    const before = marker.style.left;
+    const map = screen.getByTestId("map-view");
+
+    fireEvent.pointerDown(map, {
+      clientX: 400,
+      clientY: 300,
+      pointerId: 1,
+      button: 0,
+    });
+    fireEvent.pointerMove(map, { clientX: 340, clientY: 280, pointerId: 1 });
+
+    // マーカー自身の位置は変わらず、親レイヤーの transform だけで移動する
+    expect(marker.style.left).toBe(before);
+    expect(screen.getByTestId("map-content").style.transform).toBe(
+      "translate3d(-60px, -20px, 0)",
+    );
+
+    fireEvent.pointerUp(map, { clientX: 340, clientY: 280, pointerId: 1 });
+    expect(screen.getByTestId("map-content").style.transform).toBe(
+      "translate3d(0px, 0px, 0)",
+    );
+  });
+
+  it("中心が変わるとマーカー位置が更新される", () => {
+    const { rerender } = render(
+      <MapView center={{ lat: 0, lng: 0 }} zoom={5}>
+        <MapMarker position={{ lat: 0, lng: 0 }} label="テスト" />
+      </MapView>,
+    );
+    const before = screen.getByRole("button", { name: "テスト" }).style.left;
+
+    rerender(
+      <MapView center={{ lat: 0, lng: 1 }} zoom={5}>
+        <MapMarker position={{ lat: 0, lng: 0 }} label="テスト" />
+      </MapView>,
+    );
+
+    expect(screen.getByRole("button", { name: "テスト" }).style.left).not.toBe(
+      before,
+    );
+  });
 });

@@ -5457,7 +5457,7 @@ var MapMarker = ({
 };
 
 // src/components/molecules/MapView/MapView.tsx
-import { useCallback as useCallback4, useEffect as useEffect12, useMemo as useMemo4, useRef as useRef15, useState as useState17 } from "react";
+import { memo, useCallback as useCallback4, useEffect as useEffect12, useMemo as useMemo4, useRef as useRef15, useState as useState17 } from "react";
 
 // src/utils/geo.ts
 var TILE_SIZE = 256;
@@ -5508,10 +5508,15 @@ var GSI_STANDARD_TILE_URL = (x, y, z) => `${GSI_TILE_BASE_URL}/std/${z}/${x}/${y
 var GSI_PHOTO_TILE_URL = (x, y, z) => `${GSI_TILE_BASE_URL}/ort/${z}/${x}/${y}.png`;
 
 // src/components/molecules/MapView/MapView.tsx
-import { jsx as jsx60, jsxs as jsxs40 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx60, jsxs as jsxs40 } from "react/jsx-runtime";
 var DEFAULT_MAP_CENTER = { lat: 35.681236, lng: 139.767125 };
 var TAP_THRESHOLD = 5;
 var resolveDimension = (value) => typeof value === "number" ? `${value}px` : value;
+var MapChildren = memo(function MapChildren2({
+  children
+}) {
+  return /* @__PURE__ */ jsx60(Fragment6, { children });
+});
 var MapView = ({
   center,
   defaultCenter = DEFAULT_MAP_CENTER,
@@ -5578,10 +5583,9 @@ var MapView = ({
     const { width, height: h } = sizeRef.current;
     const wc = project(c, z);
     const wp = project(latlng, z);
-    const off = offsetRef.current;
     return {
-      x: wp.x - wc.x + width / 2 + off.x,
-      y: wp.y - wc.y + h / 2 + off.y
+      x: wp.x - wc.x + width / 2,
+      y: wp.y - wc.y + h / 2
     };
   }, []);
   const unprojectFromScreen = useCallback4((point) => {
@@ -5855,10 +5859,9 @@ var MapView = ({
               src: resolvedTileUrl(wrappedX, y, tileZoom),
               alt: "",
               draggable: false,
-              className: "absolute select-none",
+              className: "absolute left-0 top-0 select-none",
               style: {
-                left: x * scaledTile - originX,
-                top: y * scaledTile - originY,
+                transform: `translate3d(${x * scaledTile - originX}px, ${y * scaledTile - originY}px, 0)`,
                 width: scaledTile + 0.5,
                 height: scaledTile + 0.5
               }
@@ -5870,16 +5873,28 @@ var MapView = ({
     }
     return result;
   }, [resolvedTileUrl, size, originX, originY, scaledTile, tileZoom]);
-  const contextValue = {
-    center: currentCenter,
-    zoom: currentZoom,
-    size,
-    project: projectToScreen,
-    unproject: unprojectFromScreen,
-    panBy,
-    zoomBy,
-    setZoom: setZoomLevel
-  };
+  const contextValue = useMemo4(
+    () => ({
+      center: currentCenter,
+      zoom: currentZoom,
+      size,
+      project: projectToScreen,
+      unproject: unprojectFromScreen,
+      panBy,
+      zoomBy,
+      setZoom: setZoomLevel
+    }),
+    [
+      currentCenter,
+      currentZoom,
+      size,
+      projectToScreen,
+      unprojectFromScreen,
+      panBy,
+      zoomBy,
+      setZoomLevel
+    ]
+  );
   return /* @__PURE__ */ jsx60(MapContext.Provider, { value: contextValue, children: /* @__PURE__ */ jsxs40(
     "div",
     {
@@ -5913,8 +5928,25 @@ var MapView = ({
             }
           }
         ),
-        tiles.length > 0 && /* @__PURE__ */ jsx60("div", { "aria-hidden": "true", className: "absolute inset-0", children: tiles }),
-        /* @__PURE__ */ jsx60("div", { className: "absolute inset-0", children }),
+        tiles.length > 0 && /* @__PURE__ */ jsx60(
+          "div",
+          {
+            "aria-hidden": "true",
+            className: "absolute inset-0 will-change-transform",
+            children: tiles
+          }
+        ),
+        /* @__PURE__ */ jsx60(
+          "div",
+          {
+            "data-testid": "map-content",
+            className: "absolute inset-0 will-change-transform",
+            style: {
+              transform: `translate3d(${offset2.x}px, ${offset2.y}px, 0)`
+            },
+            children: /* @__PURE__ */ jsx60(MapChildren, { children })
+          }
+        ),
         showAttribution && resolvedTileUrl && resolvedAttribution && /* @__PURE__ */ jsxs40("div", { className: "pointer-events-none absolute bottom-0 left-0 z-10 bg-surface/80 px-1.5 py-0.5 text-[10px] leading-tight text-muted", children: [
           "\u51FA\u5178: ",
           resolvedAttribution
@@ -6356,7 +6388,7 @@ var MonthSelector = ({
 
 // src/components/molecules/NavigationDrawer/NavigationDrawer.tsx
 import { useRef as useRef16 } from "react";
-import { Fragment as Fragment6, jsx as jsx65, jsxs as jsxs45 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx65, jsxs as jsxs45 } from "react/jsx-runtime";
 var defaultRenderLink2 = ({
   href,
   children,
@@ -6378,7 +6410,7 @@ var NavigationDrawer = ({
   const closeButtonRef = useRef16(null);
   useEscapeKey(onClose, open);
   useFocusTrap(drawerRef, open, { initialFocusRef: closeButtonRef });
-  return /* @__PURE__ */ jsxs45(Fragment6, { children: [
+  return /* @__PURE__ */ jsxs45(Fragment7, { children: [
     open && /* @__PURE__ */ jsx65(
       "div",
       {
@@ -6437,7 +6469,7 @@ var NavigationDrawer = ({
                 href: item.path,
                 className: "flex items-center px-3 py-2 rounded-md hover:bg-surface-sunken text-foreground",
                 onClick: onClose,
-                children: /* @__PURE__ */ jsxs45(Fragment6, { children: [
+                children: /* @__PURE__ */ jsxs45(Fragment7, { children: [
                   item.icon && /* @__PURE__ */ jsx65("span", { className: "text-muted mr-3", children: item.icon }),
                   /* @__PURE__ */ jsx65("span", { children: item.name })
                 ] })
@@ -6740,7 +6772,7 @@ var StatCards = ({
 };
 
 // src/components/molecules/Stepper/Stepper.tsx
-import { Fragment as Fragment7, jsx as jsx70, jsxs as jsxs50 } from "react/jsx-runtime";
+import { Fragment as Fragment8, jsx as jsx70, jsxs as jsxs50 } from "react/jsx-runtime";
 var Stepper = ({
   steps,
   activeStep,
@@ -6754,7 +6786,7 @@ var Stepper = ({
   return /* @__PURE__ */ jsx70("ol", { className: cn("flex w-full", className), "aria-label": "\u624B\u9806", children: steps.map((step, index) => {
     const isActive = index === currentStep;
     const isCompleted = index < currentStep;
-    const content = /* @__PURE__ */ jsxs50(Fragment7, { children: [
+    const content = /* @__PURE__ */ jsxs50(Fragment8, { children: [
       /* @__PURE__ */ jsx70(
         "span",
         {

@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { cn } from "../../../utils/cn";
 import {
@@ -76,6 +76,20 @@ interface DragState {
 
 const resolveDimension = (value: number | string): string =>
   typeof value === "number" ? `${value}px` : value;
+
+/**
+ * 子要素（マーカーなど）を再レンダリングせずに親の transform だけで動かすための境界。
+ *
+ * ドラッグ中は `MapView` の offset が毎フレーム変化するが、`children` は参照が変わらないため
+ * この `memo` が再レンダリングを抑止する。マーカー層は transform でまとめて移動する。
+ */
+const MapChildren = memo(function MapChildren({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <>{children}</>;
+});
 
 /**
  * MapView コンポーネント
@@ -167,10 +181,11 @@ export const MapView: React.FC<MapViewProps> = ({
     const { width, height: h } = sizeRef.current;
     const wc = project(c, z);
     const wp = project(latlng, z);
-    const off = offsetRef.current;
+    // ドラッグ中の offset は子要素を包むレイヤーの transform で表現するため、ここでは含めない。
+    // これによりドラッグ中にマーカーを再計算せず、1つの transform で滑らかに追従できる。
     return {
-      x: wp.x - wc.x + width / 2 + off.x,
-      y: wp.y - wc.y + h / 2 + off.y,
+      x: wp.x - wc.x + width / 2,
+      y: wp.y - wc.y + h / 2,
     };
   }, []);
 
@@ -471,10 +486,11 @@ export const MapView: React.FC<MapViewProps> = ({
             src={resolvedTileUrl(wrappedX, y, tileZoom)}
             alt=""
             draggable={false}
-            className="absolute select-none"
+            className="absolute left-0 top-0 select-none"
             style={{
-              left: x * scaledTile - originX,
-              top: y * scaledTile - originY,
+              transform: `translate3d(${x * scaledTile - originX}px, ${
+                y * scaledTile - originY
+              }px, 0)`,
               width: scaledTile + 0.5,
               height: scaledTile + 0.5,
             }}
@@ -485,16 +501,28 @@ export const MapView: React.FC<MapViewProps> = ({
     return result;
   }, [resolvedTileUrl, size, originX, originY, scaledTile, tileZoom]);
 
-  const contextValue: MapContextValue = {
-    center: currentCenter,
-    zoom: currentZoom,
-    size,
-    project: projectToScreen,
-    unproject: unprojectFromScreen,
-    panBy,
-    zoomBy,
-    setZoom: setZoomLevel,
-  };
+  const contextValue = useMemo<MapContextValue>(
+    () => ({
+      center: currentCenter,
+      zoom: currentZoom,
+      size,
+      project: projectToScreen,
+      unproject: unprojectFromScreen,
+      panBy,
+      zoomBy,
+      setZoom: setZoomLevel,
+    }),
+    [
+      currentCenter,
+      currentZoom,
+      size,
+      projectToScreen,
+      unprojectFromScreen,
+      panBy,
+      zoomBy,
+      setZoomLevel,
+    ],
+  );
 
   return (
     <MapContext.Provider value={contextValue}>
@@ -531,11 +559,27 @@ export const MapView: React.FC<MapViewProps> = ({
           />
         )}
         {tiles.length > 0 && (
-          <div aria-hidden="true" className="absolute inset-0">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 will-change-transform"
+          >
             {tiles}
           </div>
         )}
-        <div className="absolute inset-0">{children}</div>
+        {/*
+          マーカーなどの子要素は offset を transform でまとめて移動する。
+          MapChildren は memo 化されているため、ドラッグ中に offset が変わっても
+          子要素は再レンダリングされず、1つの transform だけで滑らかに追従する。
+        */}
+        <div
+          data-testid="map-content"
+          className="absolute inset-0 will-change-transform"
+          style={{
+            transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
+          }}
+        >
+          <MapChildren>{children}</MapChildren>
+        </div>
         {showAttribution && resolvedTileUrl && resolvedAttribution && (
           <div className="pointer-events-none absolute bottom-0 left-0 z-10 bg-surface/80 px-1.5 py-0.5 text-[10px] leading-tight text-muted">
             出典: {resolvedAttribution}
