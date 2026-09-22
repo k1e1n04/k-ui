@@ -1,0 +1,520 @@
+"use client";
+
+import type React from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import { cn } from "../../../utils/cn";
+import {
+  clampZoom,
+  type LatLng,
+  type Point,
+  project,
+  TILE_SIZE,
+  unproject,
+} from "../../../utils/geo";
+import { MapContext, type MapContextValue } from "./MapContext";
+
+/** 地図の中心座標の初期値（東京駅） */
+export const DEFAULT_MAP_CENTER: LatLng = { lat: 35.681236, lng: 139.767125 };
+
+/** タップ判定の移動許容ピクセル */
+const TAP_THRESHOLD = 5;
+
+export interface MapViewProps {
+  /** 中心座標（制御用） */
+  center?: LatLng;
+  /** 中心座標の初期値（非制御用） */
+  defaultCenter?: LatLng;
+  /** ズームレベル（制御用） */
+  zoom?: number;
+  /** ズームレベルの初期値（非制御用） @default 14 */
+  defaultZoom?: number;
+  /** 最小ズーム。 @default 3 */
+  minZoom?: number;
+  /** 最大ズーム。 @default 19 */
+  maxZoom?: number;
+  /** 中心座標変更時 */
+  onCenterChange?: (center: LatLng) => void;
+  /** ズーム変更時 */
+  onZoomChange?: (zoom: number) => void;
+  /** 地図タップ時 */
+  onTap?: (latlng: LatLng) => void;
+  /** タイル画像URLの生成関数（省略時はグリッド背景） */
+  tileUrl?: (x: number, y: number, z: number) => string;
+  /** ドラッグ・ズーム操作を有効にするか。 @default true */
+  interactive?: boolean;
+  /** 高さ。 @default 400 */
+  height?: number | string;
+  /** マーカーなどの子要素 */
+  children?: React.ReactNode;
+  /** 追加のクラス名 */
+  className?: string;
+  /** アクセシブルなラベル。 @default "地図" */
+  ariaLabel?: string;
+}
+
+interface DragState {
+  pointerId: number;
+  startX: number;
+  startY: number;
+  startOffset: Point;
+  moved: boolean;
+}
+
+const resolveDimension = (value: number | string): string =>
+  typeof value === "number" ? `${value}px` : value;
+
+/**
+ * MapView コンポーネント
+ *
+ * 依存ライブラリなしで動作する地図キャンバス。
+ * ドラッグでの移動（なぞる）、タップでの座標取得、ズーム操作に対応する。
+ * 子要素に MapMarker を配置すると、緯度経度に追従して表示される。
+ *
+ * @example
+ * <MapView
+ *   center={{ lat: 35.68, lng: 139.76 }}
+ *   onTap={(latlng) => console.log(latlng)}
+ * >
+ *   <MapMarker position={{ lat: 35.68, lng: 139.76 }} label="8.5万円" />
+ * </MapView>
+ */
+export const MapView: React.FC<MapViewProps> = ({
+  center,
+  defaultCenter = DEFAULT_MAP_CENTER,
+  zoom,
+  defaultZoom = 14,
+  minZoom = 3,
+  maxZoom = 19,
+  onCenterChange,
+  onZoomChange,
+  onTap,
+  tileUrl,
+  interactive = true,
+  height = 400,
+  children,
+  className,
+  ariaLabel = "地図",
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [innerCenter, setInnerCenter] = useState<LatLng>(defaultCenter);
+  const [innerZoom, setInnerZoom] = useState<number>(defaultZoom);
+  const [size, setSize] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+  const [offset, setOffset] = useState<Point>({ x: 0, y: 0 });
+
+  const centerControlled = center !== undefined;
+  const zoomControlled = zoom !== undefined;
+  const currentCenter = center ?? innerCenter;
+  const currentZoom = zoom ?? innerZoom;
+  const centerControlledRef = useRef(centerControlled);
+  centerControlledRef.current = centerControlled;
+  const zoomControlledRef = useRef(zoomControlled);
+  zoomControlledRef.current = zoomControlled;
+
+  const viewRef = useRef({ center: currentCenter, zoom: currentZoom });
+  viewRef.current = { center: currentCenter, zoom: currentZoom };
+  const sizeRef = useRef(size);
+  sizeRef.current = size;
+  const offsetRef = useRef(offset);
+  offsetRef.current = offset;
+  const dragRef = useRef<DragState | null>(null);
+  const pointersRef = useRef<Map<number, Point>>(new Map());
+  const pinchRef = useRef<{ distance: number; zoom: number } | null>(null);
+  const boundsRef = useRef({ minZoom, maxZoom });
+  boundsRef.current = { minZoom, maxZoom };
+  const callbacksRef = useRef({
+    onCenterChange,
+    onZoomChange,
+    onTap,
+    interactive,
+  });
+  callbacksRef.current = { onCenterChange, onZoomChange, onTap, interactive };
+
+  const worldCenter = useMemo(
+    () => project(currentCenter, currentZoom),
+    [currentCenter, currentZoom],
+  );
+  const worldCenterRef = useRef(worldCenter);
+  worldCenterRef.current = worldCenter;
+
+  const projectToScreen = useCallback((latlng: LatLng): Point => {
+    const { center: c, zoom: z } = viewRef.current;
+    const { width, height: h } = sizeRef.current;
+    const wc = project(c, z);
+    const wp = project(latlng, z);
+    const off = offsetRef.current;
+    return {
+      x: wp.x - wc.x + width / 2 + off.x,
+      y: wp.y - wc.y + h / 2 + off.y,
+    };
+  }, []);
+
+  const unprojectFromScreen = useCallback((point: Point): LatLng => {
+    const { center: c, zoom: z } = viewRef.current;
+    const { width, height: h } = sizeRef.current;
+    const wc = project(c, z);
+    const off = offsetRef.current;
+    return unproject(
+      {
+        x: wc.x + point.x - width / 2 - off.x,
+        y: wc.y + point.y - h / 2 - off.y,
+      },
+      z,
+    );
+  }, []);
+
+  const commitView = useCallback(
+    (nextCenter: LatLng | null, nextZoom: number | null) => {
+      const { center: c, zoom: z } = viewRef.current;
+      if (nextZoom !== null && nextZoom !== z && Number.isFinite(nextZoom)) {
+        if (!zoomControlledRef.current) setInnerZoom(nextZoom);
+        callbacksRef.current.onZoomChange?.(nextZoom);
+      }
+      if (
+        nextCenter &&
+        (nextCenter.lat !== c.lat || nextCenter.lng !== c.lng)
+      ) {
+        if (!centerControlledRef.current) setInnerCenter(nextCenter);
+        callbacksRef.current.onCenterChange?.(nextCenter);
+      }
+    },
+    [],
+  );
+
+  const panBy = useCallback(
+    (dx: number, dy: number) => {
+      const { center: c, zoom: z } = viewRef.current;
+      const wc = project(c, z);
+      const next = unproject({ x: wc.x + dx, y: wc.y + dy }, z);
+      commitView(next, null);
+    },
+    [commitView],
+  );
+
+  const zoomAt = useCallback(
+    (anchor: Point, nextZoomRaw: number) => {
+      const { zoom: z } = viewRef.current;
+      const { width, height: h } = sizeRef.current;
+      const { minZoom: min, maxZoom: max } = boundsRef.current;
+      const nextZoom = clampZoom(nextZoomRaw, min, max);
+      if (nextZoom === z) return;
+      const anchorLatLng = unprojectFromScreen(anchor);
+      const anchorWorld = project(anchorLatLng, nextZoom);
+      const nextCenter = unproject(
+        {
+          x: anchorWorld.x + width / 2 - anchor.x,
+          y: anchorWorld.y + h / 2 - anchor.y,
+        },
+        nextZoom,
+      );
+      commitView(nextCenter, nextZoom);
+    },
+    [commitView, unprojectFromScreen],
+  );
+
+  const zoomBy = useCallback(
+    (delta: number) => {
+      const { zoom: z } = viewRef.current;
+      const { width, height: h } = sizeRef.current;
+      zoomAt({ x: width / 2, y: h / 2 }, z + delta);
+    },
+    [zoomAt],
+  );
+
+  const setZoomLevel = useCallback(
+    (next: number) => {
+      const { width, height: h } = sizeRef.current;
+      zoomAt({ x: width / 2, y: h / 2 }, next);
+    },
+    [zoomAt],
+  );
+
+  // 表示サイズの計測
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+    const update = () => {
+      const rect = element.getBoundingClientRect();
+      setSize((prev) =>
+        prev.width === rect.width && prev.height === rect.height
+          ? prev
+          : { width: rect.width, height: rect.height },
+      );
+    };
+    update();
+    if (typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver(update);
+      observer.observe(element);
+      return () => observer.disconnect();
+    }
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // ホイールズーム（passive:false で登録する）
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element || !interactive) return;
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const rect = element.getBoundingClientRect();
+      const anchor = {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+      };
+      const { zoom: z } = viewRef.current;
+      zoomAt(anchor, z + (event.deltaY < 0 ? 1 : -1));
+    };
+    element.addEventListener("wheel", handleWheel, { passive: false });
+    return () => element.removeEventListener("wheel", handleWheel);
+  }, [interactive, zoomAt]);
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!interactive) return;
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    pointersRef.current.set(event.pointerId, {
+      x: event.clientX,
+      y: event.clientY,
+    });
+    if (pointersRef.current.size === 2) {
+      const [a, b] = Array.from(pointersRef.current.values());
+      // 進行中のドラッグ移動量を中心座標へ確定してからピンチを開始する
+      const pending = offsetRef.current;
+      if (pending.x !== 0 || pending.y !== 0) {
+        const wc = worldCenterRef.current;
+        commitView(
+          unproject(
+            { x: wc.x - pending.x, y: wc.y - pending.y },
+            viewRef.current.zoom,
+          ),
+          null,
+        );
+        offsetRef.current = { x: 0, y: 0 };
+        setOffset({ x: 0, y: 0 });
+      }
+      pinchRef.current = {
+        distance: Math.hypot(a.x - b.x, a.y - b.y),
+        zoom: viewRef.current.zoom,
+      };
+      dragRef.current = null;
+      return;
+    }
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      startOffset: { ...offsetRef.current },
+      moved: false,
+    };
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (pointersRef.current.has(event.pointerId)) {
+      pointersRef.current.set(event.pointerId, {
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+    // ピンチズーム
+    if (pointersRef.current.size === 2 && pinchRef.current) {
+      const [a, b] = Array.from(pointersRef.current.values());
+      const nextDistance = Math.hypot(a.x - b.x, a.y - b.y);
+      if (pinchRef.current.distance > 0) {
+        const ratio = nextDistance / pinchRef.current.distance;
+        const rect = containerRef.current?.getBoundingClientRect();
+        const anchor = {
+          x: (a.x + b.x) / 2 - (rect?.left ?? 0),
+          y: (a.y + b.y) / 2 - (rect?.top ?? 0),
+        };
+        zoomAt(anchor, pinchRef.current.zoom + Math.log2(ratio));
+      }
+      return;
+    }
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    const dx = event.clientX - drag.startX;
+    const dy = event.clientY - drag.startY;
+    if (Math.hypot(dx, dy) > TAP_THRESHOLD) drag.moved = true;
+    const nextOffset = {
+      x: drag.startOffset.x + dx,
+      y: drag.startOffset.y + dy,
+    };
+    offsetRef.current = nextOffset;
+    setOffset(nextOffset);
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    pointersRef.current.delete(event.pointerId);
+    if (pointersRef.current.size < 2) pinchRef.current = null;
+
+    if (!drag || drag.pointerId !== event.pointerId) {
+      dragRef.current = null;
+      if (offsetRef.current.x !== 0 || offsetRef.current.y !== 0) {
+        offsetRef.current = { x: 0, y: 0 };
+        setOffset({ x: 0, y: 0 });
+      }
+      return;
+    }
+    dragRef.current = null;
+    const currentOffset = offsetRef.current;
+    offsetRef.current = { x: 0, y: 0 };
+    setOffset({ x: 0, y: 0 });
+
+    if (drag.moved) {
+      const wc = worldCenterRef.current;
+      commitView(
+        unproject(
+          { x: wc.x - currentOffset.x, y: wc.y - currentOffset.y },
+          viewRef.current.zoom,
+        ),
+        null,
+      );
+      return;
+    }
+    // タップ判定
+    if (!callbacksRef.current.interactive) return;
+    const rect = containerRef.current?.getBoundingClientRect();
+    const point = {
+      x: event.clientX - (rect?.left ?? 0),
+      y: event.clientY - (rect?.top ?? 0),
+    };
+    callbacksRef.current.onTap?.(unprojectFromScreen(point));
+  };
+
+  const handlePointerCancel = (event: React.PointerEvent<HTMLDivElement>) => {
+    pointersRef.current.delete(event.pointerId);
+    if (pointersRef.current.size < 2) pinchRef.current = null;
+    dragRef.current = null;
+    offsetRef.current = { x: 0, y: 0 };
+    setOffset({ x: 0, y: 0 });
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!interactive) return;
+    const step = 100;
+    switch (event.key) {
+      case "ArrowUp":
+        panBy(0, -step);
+        break;
+      case "ArrowDown":
+        panBy(0, step);
+        break;
+      case "ArrowLeft":
+        panBy(-step, 0);
+        break;
+      case "ArrowRight":
+        panBy(step, 0);
+        break;
+      case "+":
+      case "=":
+        zoomBy(1);
+        break;
+      case "-":
+      case "_":
+        zoomBy(-1);
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+  };
+
+  // タイルの描画範囲を計算
+  const tileZoom = clampZoom(Math.floor(currentZoom), 0, 19);
+  const tileScale = 2 ** (currentZoom - tileZoom);
+  const scaledTile = TILE_SIZE * tileScale;
+  const originX = worldCenter.x - size.width / 2 + offset.x;
+  const originY = worldCenter.y - size.height / 2 + offset.y;
+
+  const tiles = useMemo(() => {
+    if (!tileUrl || size.width === 0 || size.height === 0) return [];
+    const count = 2 ** tileZoom;
+    const minX = Math.floor(originX / scaledTile);
+    const maxX = Math.floor((originX + size.width) / scaledTile);
+    const minY = Math.floor(originY / scaledTile);
+    const maxY = Math.floor((originY + size.height) / scaledTile);
+    const result: React.ReactNode[] = [];
+    for (let y = minY; y <= maxY; y += 1) {
+      if (y < 0 || y >= count) continue;
+      for (let x = minX; x <= maxX; x += 1) {
+        const wrappedX = ((x % count) + count) % count;
+        result.push(
+          <img
+            key={`${tileZoom}-${x}-${y}`}
+            src={tileUrl(wrappedX, y, tileZoom)}
+            alt=""
+            draggable={false}
+            className="absolute select-none"
+            style={{
+              left: x * scaledTile - originX,
+              top: y * scaledTile - originY,
+              width: scaledTile + 0.5,
+              height: scaledTile + 0.5,
+            }}
+          />,
+        );
+      }
+    }
+    return result;
+  }, [tileUrl, size, originX, originY, scaledTile, tileZoom]);
+
+  const contextValue: MapContextValue = {
+    center: currentCenter,
+    zoom: currentZoom,
+    size,
+    project: projectToScreen,
+    unproject: unprojectFromScreen,
+    panBy,
+    zoomBy,
+    setZoom: setZoomLevel,
+  };
+
+  return (
+    <MapContext.Provider value={contextValue}>
+      <div
+        ref={containerRef}
+        role="application"
+        aria-label={ariaLabel}
+        tabIndex={interactive ? 0 : -1}
+        data-testid="map-view"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onKeyDown={handleKeyDown}
+        style={{ height: resolveDimension(height) }}
+        className={cn(
+          "relative w-full select-none overflow-hidden bg-surface-sunken outline-none",
+          "focus-visible:ring-2 focus-visible:ring-info-main",
+          interactive ? "cursor-grab touch-none" : "cursor-default",
+          className,
+        )}
+      >
+        {/* 背景グリッド（タイル未指定時） */}
+        {!tileUrl && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(var(--kui-color-border) 1px, transparent 1px), linear-gradient(90deg, var(--kui-color-border) 1px, transparent 1px)",
+              backgroundSize: "64px 64px",
+              backgroundPosition: `${-originX}px ${-originY}px`,
+            }}
+          />
+        )}
+        {tiles.length > 0 && (
+          <div aria-hidden="true" className="absolute inset-0">
+            {tiles}
+          </div>
+        )}
+        <div className="absolute inset-0">{children}</div>
+      </div>
+    </MapContext.Provider>
+  );
+};

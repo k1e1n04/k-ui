@@ -19,6 +19,11 @@ export { Divider } from "./Divider";
 export type { DrawerHeaderProps } from "./DrawerHeader";
 export { DrawerHeader } from "./DrawerHeader";
 export type {
+  FavoriteButtonProps,
+  FavoriteButtonSize,
+} from "./FavoriteButton";
+export { FavoriteButton } from "./FavoriteButton";
+export type {
   FormFieldProps,
   FormFieldRenderProps,
   FormFieldSize,
@@ -33,6 +38,8 @@ export type {
 export { Heading } from "./Heading";
 export type { InputProps, InputSize, InputType } from "./Input";
 export { Input } from "./Input";
+export type { MapPinProps, MapPinSize, MapPinTone } from "./MapPin";
+export { MapPin } from "./MapPin";
 export type {
   NumberInputEmptyBehavior,
   NumberInputProps,
@@ -41,10 +48,16 @@ export type {
 export { NumberInput } from "./NumberInput";
 export type { PasswordInputProps } from "./PasswordInput";
 export { PasswordInput } from "./PasswordInput";
+export type { PriceFormat, PriceProps, PriceSize, PriceTone } from "./Price";
+export { formatManYen, formatYen, Price } from "./Price";
 export type { ProgressBarProps, ProgressBarSize } from "./ProgressBar";
 export { ProgressBar } from "./ProgressBar";
 export type { RadioGroupOption, RadioGroupProps } from "./RadioGroup";
 export { RadioGroup } from "./RadioGroup";
+export type { RangeSliderProps, RangeSliderValue } from "./RangeSlider";
+export { RangeSlider } from "./RangeSlider";
+export type { RatingProps, RatingSize } from "./Rating";
+export { Rating } from "./Rating";
 export type { SearchInputProps } from "./SearchInput";
 export { SearchInput } from "./SearchInput";
 export type {

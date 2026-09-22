@@ -67,6 +67,7 @@
     --kui-color-overlay: rgba(0, 0, 0, 0.3);
   }
 }
+
 :root {
   /* スペーシング */
   --kui-space-0: 0;
@@ -88,6 +89,7 @@
   --kui-radius-xl: 0.75rem;
   --kui-radius-full: 9999px;
 }
+
 :root {
   /* フォントサイズ */
   --kui-font-size-xs: 0.75rem;
@@ -108,6 +110,7 @@
   --kui-line-height-normal: 1.5;
   --kui-line-height-relaxed: 1.75;
 }
+
 :root {
   --kui-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --kui-shadow-md:
@@ -117,6 +120,7 @@
   --kui-shadow-xl:
     0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
+
 @keyframes kui-fade-in {
   from {
     opacity: 0;
@@ -156,6 +160,7 @@
     transform: rotate(360deg);
   }
 }
+
 @theme {
   /* カラー */
   --color-primary-main: var(--kui-color-primary);
@@ -187,6 +192,7 @@
   --animate-kui-slide-up: kui-slide-up 0.3s ease-in-out;
   --animate-kui-spin: kui-spin 1s linear infinite;
 }
+
 :root {
   --kui-z-dropdown: 30;
   --kui-z-drawer: 40;

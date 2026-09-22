@@ -11,4 +11,4 @@ export {
 } from "./hooks";
 
 // ユーティリティ
-export { cn } from "./utils";
+export * from "./utils";
