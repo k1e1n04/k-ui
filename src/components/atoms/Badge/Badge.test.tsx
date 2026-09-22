@@ -11,9 +11,7 @@ describe("Badge", () => {
 
   it("デフォルトで info バリアントのスタイルが適用される", () => {
     render(<Badge>Info</Badge>);
-    expect(screen.getByText("Info")).toHaveClass(
-      "bg-[--kui-color-info-subtle]",
-    );
+    expect(screen.getByText("Info")).toHaveClass("bg-info-subtle");
   });
 
   it.each(["info", "success", "warning", "danger", "neutral"] as const)(
@@ -26,30 +24,22 @@ describe("Badge", () => {
 
   it("variant=success のとき success スタイルが適用される", () => {
     render(<Badge variant="success">Success</Badge>);
-    expect(screen.getByText("Success")).toHaveClass(
-      "bg-[--kui-color-success-subtle]",
-    );
+    expect(screen.getByText("Success")).toHaveClass("bg-success-subtle");
   });
 
   it("variant=warning のとき warning スタイルが適用される", () => {
     render(<Badge variant="warning">Warning</Badge>);
-    expect(screen.getByText("Warning")).toHaveClass(
-      "bg-[--kui-color-warning-subtle]",
-    );
+    expect(screen.getByText("Warning")).toHaveClass("bg-warning-subtle");
   });
 
   it("variant=danger のとき danger スタイルが適用される", () => {
     render(<Badge variant="danger">Danger</Badge>);
-    expect(screen.getByText("Danger")).toHaveClass(
-      "bg-[--kui-color-danger-subtle]",
-    );
+    expect(screen.getByText("Danger")).toHaveClass("bg-danger-subtle");
   });
 
   it("variant=neutral のとき neutral スタイルが適用される", () => {
     render(<Badge variant="neutral">Neutral</Badge>);
-    expect(screen.getByText("Neutral")).toHaveClass(
-      "bg-[--kui-color-surface-raised]",
-    );
+    expect(screen.getByText("Neutral")).toHaveClass("bg-surface-raised");
   });
 
   it("className が渡される", () => {

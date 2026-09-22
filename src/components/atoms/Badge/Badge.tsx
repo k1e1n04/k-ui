@@ -27,12 +27,11 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  info: "bg-[--kui-color-info-subtle] text-[--kui-color-info]",
-  success: "bg-[--kui-color-success-subtle] text-[--kui-color-success]",
-  warning: "bg-[--kui-color-warning-subtle] text-[--kui-color-warning]",
-  danger: "bg-[--kui-color-danger-subtle] text-[--kui-color-danger]",
-  neutral:
-    "bg-[--kui-color-surface-raised] text-[--kui-color-text-muted] border border-[--kui-color-border]",
+  info: "bg-info-subtle text-info-main",
+  success: "bg-success-subtle text-success-main",
+  warning: "bg-warning-subtle text-warning-main",
+  danger: "bg-danger-subtle text-danger-main",
+  neutral: "bg-surface-raised text-muted border border-border",
 };
 
 /**

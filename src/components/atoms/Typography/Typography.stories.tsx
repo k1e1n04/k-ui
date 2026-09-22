@@ -58,7 +58,7 @@ export const Tones: Story = {
       <Typography tone="success">Success tone</Typography>
       <Typography tone="info">Info tone</Typography>
       <Typography tone="warning">Warning tone</Typography>
-      <div className="rounded-md bg-[--kui-color-text] p-3">
+      <div className="rounded-md bg-foreground p-3">
         <Typography tone="inverse">Inverse tone</Typography>
       </div>
     </div>
@@ -78,7 +78,7 @@ export const Truncate: Story = {
 export const LightDarkComparison: Story = {
   render: () => (
     <div className="grid gap-4 md:grid-cols-2">
-      <div className="rounded-md border border-[--kui-color-border] bg-[--kui-color-surface] p-4">
+      <div className="rounded-md border border-border bg-surface p-4">
         <Typography as="div" variant="label">
           Light
         </Typography>

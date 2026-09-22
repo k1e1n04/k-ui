@@ -63,10 +63,10 @@ const descriptionWidthClassMap: Record<EmptyStateSize, string> = {
   lg: "max-w-lg",
 };
 
-const iconSizeClassMap: Record<EmptyStateSize, string> = {
-  sm: "h-10 w-10",
-  md: "h-12 w-12",
-  lg: "h-14 w-14",
+const iconWrapClassMap: Record<EmptyStateSize, string> = {
+  sm: "h-12 w-12 p-3",
+  md: "h-14 w-14 p-3.5",
+  lg: "h-16 w-16 p-4",
 };
 
 const contentAlignClassMap: Record<EmptyStateAlign, string> = {
@@ -101,7 +101,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div
       className={cn(
-        "flex w-full flex-col justify-center border border-[--kui-color-border] bg-[--kui-color-surface]",
+        "flex w-full flex-col justify-center border border-dashed border-border-strong bg-surface-raised",
         containerSizeClassMap[size],
         contentAlignClassMap[align],
         className,
@@ -111,8 +111,8 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       {icon ? (
         <div
           className={cn(
-            "flex items-center justify-center text-[--kui-color-text-muted]",
-            iconSizeClassMap[size],
+            "flex items-center justify-center rounded-full bg-surface-sunken text-muted [&_svg]:h-full [&_svg]:w-full",
+            iconWrapClassMap[size],
           )}
           aria-hidden="true"
         >
