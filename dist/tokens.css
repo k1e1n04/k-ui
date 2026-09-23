@@ -1,3 +1,21 @@
+/*
+ * 入力コントロールのモバイル向けベーススタイル
+ *
+ * iOS Safari は font-size が 16px 未満の入力欄にフォーカスすると、勝手に
+ * ページを拡大する（フォーカスが外れても元に戻らない）。入力系コントロールは
+ * モバイルで 16px を下回らないようにして、意図しないズームを防ぐ。
+ *
+ * Tailwind の utilities は @layer utilities に入るため、レイヤー外である
+ * このファイルの宣言の方が優先される（!important は不要）。
+ * デスクトップでは各コンポーネントの text-sm / text-xs がそのまま効く。
+ */
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
 :root {
   /* プライマリ */
   --kui-color-primary: #4f5157;
