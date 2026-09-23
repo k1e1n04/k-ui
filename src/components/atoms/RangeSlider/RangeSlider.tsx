@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useId, useMemo, useRef } from "react";
+import { useEffect, useId, useMemo, useRef } from "react";
 
 import { cn } from "../../../utils/cn";
 import { mergeRefs } from "../../../utils/mergeRefs";
@@ -13,8 +13,15 @@ export type RangeSliderValue = [number, number];
 export interface RangeSliderProps {
   /** 現在の値 */
   value: RangeSliderValue;
-  /** 値変更時の処理 */
+  /** 値変更時の処理（ドラッグ中は pointermove ごとに呼ばれる） */
   onChange: (value: RangeSliderValue) => void;
+  /**
+   * 操作が確定したときの処理。ドラッグ終了（pointerup / pointercancel）や
+   * キーボード操作の確定時に、最終的な値で1回だけ呼ばれる。
+   * 重い処理（URL 更新・API 呼び出しなど）をここに寄せると、ドラッグ中の
+   * 大量リクエストを避けられる。
+   */
+  onChangeEnd?: (value: RangeSliderValue) => void;
   /** 最小値。 @default 0 */
   min?: number;
   /** 最大値。 @default 100 */
@@ -69,6 +76,7 @@ const snap = (
 export const RangeSlider: React.FC<RangeSliderProps> = ({
   value,
   onChange,
+  onChangeEnd,
   min = 0,
   max = 100,
   step = 1,
@@ -84,6 +92,10 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   const trackRef = useRef<HTMLDivElement>(null);
   const mergedTrackRef = useMemo(() => mergeRefs(trackRef, ref), [ref]);
   const draggingRef = useRef<0 | 1 | null>(null);
+  // ドラッグ開始時の値。確定時に「変化したか」を判定するために保持する
+  const dragStartRef = useRef<RangeSliderValue | null>(null);
+  // 最後に通知した値。controlled な value の反映を待たずに確定値を渡せるようにする
+  const latestRef = useRef<RangeSliderValue>(value);
 
   const [lower, upper] = value;
   const span = max - min || 1;
@@ -91,14 +103,29 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
 
   const format = (v: number) => (formatValue ? formatValue(v) : String(v));
 
+  useEffect(() => {
+    latestRef.current = value;
+  }, [value]);
+
   const commit = (index: 0 | 1, next: number) => {
     if (disabled) return;
     const snapped = snap(next, min, max, step);
-    if (index === 0) {
-      onChange([clamp(snapped, min, upper), upper]);
-    } else {
-      onChange([lower, clamp(snapped, lower, max)]);
-    }
+    const nextValue: RangeSliderValue =
+      index === 0
+        ? [clamp(snapped, min, upper), upper]
+        : [lower, clamp(snapped, lower, max)];
+    latestRef.current = nextValue;
+    onChange(nextValue);
+  };
+
+  const beginDrag = (
+    index: 0 | 1,
+    pointerId: number,
+    currentTarget: Element,
+  ) => {
+    draggingRef.current = index;
+    dragStartRef.current = latestRef.current;
+    currentTarget.setPointerCapture?.(pointerId);
   };
 
   const valueFromClientX = (clientX: number): number => {
@@ -115,8 +142,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
     const next = valueFromClientX(event.clientX);
     const index: 0 | 1 =
       Math.abs(next - lower) <= Math.abs(next - upper) ? 0 : 1;
-    draggingRef.current = index;
-    event.currentTarget.setPointerCapture?.(event.pointerId);
+    beginDrag(index, event.pointerId, event.currentTarget);
     commit(index, next);
   };
 
@@ -127,7 +153,14 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   };
 
   const endDrag = () => {
+    if (draggingRef.current === null) return;
     draggingRef.current = null;
+    const start = dragStartRef.current;
+    dragStartRef.current = null;
+    const latest = latestRef.current;
+    if (start && (start[0] !== latest[0] || start[1] !== latest[1])) {
+      onChangeEnd?.(latest);
+    }
   };
 
   const handleKeyDown = (
@@ -163,6 +196,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
     }
     event.preventDefault();
     commit(index, next);
+    onChangeEnd?.(latestRef.current);
   };
 
   const thumbClass = cn(
@@ -188,8 +222,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
       onKeyDown={(event) => handleKeyDown(index, event)}
       onPointerDown={(event) => {
         if (disabled) return;
-        draggingRef.current = index;
-        event.currentTarget.setPointerCapture?.(event.pointerId);
+        beginDrag(index, event.pointerId, event.currentTarget);
         event.stopPropagation();
       }}
       style={{ left: `calc(${percent(current)}% - 0.5rem)` }}

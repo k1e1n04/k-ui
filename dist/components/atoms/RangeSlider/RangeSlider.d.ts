@@ -4,8 +4,15 @@ export type RangeSliderValue = [number, number];
 export interface RangeSliderProps {
     /** 現在の値 */
     value: RangeSliderValue;
-    /** 値変更時の処理 */
+    /** 値変更時の処理（ドラッグ中は pointermove ごとに呼ばれる） */
     onChange: (value: RangeSliderValue) => void;
+    /**
+     * 操作が確定したときの処理。ドラッグ終了（pointerup / pointercancel）や
+     * キーボード操作の確定時に、最終的な値で1回だけ呼ばれる。
+     * 重い処理（URL 更新・API 呼び出しなど）をここに寄せると、ドラッグ中の
+     * 大量リクエストを避けられる。
+     */
+    onChangeEnd?: (value: RangeSliderValue) => void;
     /** 最小値。 @default 0 */
     min?: number;
     /** 最大値。 @default 100 */

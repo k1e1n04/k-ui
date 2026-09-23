@@ -1452,7 +1452,7 @@ function RadioGroup({
 }
 
 // src/components/atoms/RangeSlider/RangeSlider.tsx
-import { useId as useId7, useMemo as useMemo2, useRef as useRef2 } from "react";
+import { useEffect, useId as useId7, useMemo as useMemo2, useRef as useRef2 } from "react";
 import { jsx as jsx22, jsxs as jsxs11 } from "react/jsx-runtime";
 var clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 var snap = (value, min, max, step) => {
@@ -1462,6 +1462,7 @@ var snap = (value, min, max, step) => {
 var RangeSlider = ({
   value,
   onChange,
+  onChangeEnd,
   min = 0,
   max = 100,
   step = 1,
@@ -1477,18 +1478,26 @@ var RangeSlider = ({
   const trackRef = useRef2(null);
   const mergedTrackRef = useMemo2(() => mergeRefs(trackRef, ref), [ref]);
   const draggingRef = useRef2(null);
+  const dragStartRef = useRef2(null);
+  const latestRef = useRef2(value);
   const [lower, upper] = value;
   const span = max - min || 1;
   const percent = (v) => clamp((v - min) / span * 100, 0, 100);
   const format = (v) => formatValue ? formatValue(v) : String(v);
+  useEffect(() => {
+    latestRef.current = value;
+  }, [value]);
   const commit = (index, next) => {
     if (disabled) return;
     const snapped = snap(next, min, max, step);
-    if (index === 0) {
-      onChange([clamp(snapped, min, upper), upper]);
-    } else {
-      onChange([lower, clamp(snapped, lower, max)]);
-    }
+    const nextValue = index === 0 ? [clamp(snapped, min, upper), upper] : [lower, clamp(snapped, lower, max)];
+    latestRef.current = nextValue;
+    onChange(nextValue);
+  };
+  const beginDrag = (index, pointerId, currentTarget) => {
+    draggingRef.current = index;
+    dragStartRef.current = latestRef.current;
+    currentTarget.setPointerCapture?.(pointerId);
   };
   const valueFromClientX = (clientX) => {
     const rect = trackRef.current?.getBoundingClientRect();
@@ -1500,8 +1509,7 @@ var RangeSlider = ({
     if (disabled) return;
     const next = valueFromClientX(event.clientX);
     const index = Math.abs(next - lower) <= Math.abs(next - upper) ? 0 : 1;
-    draggingRef.current = index;
-    event.currentTarget.setPointerCapture?.(event.pointerId);
+    beginDrag(index, event.pointerId, event.currentTarget);
     commit(index, next);
   };
   const handlePointerMove = (event) => {
@@ -1510,7 +1518,14 @@ var RangeSlider = ({
     commit(index, valueFromClientX(event.clientX));
   };
   const endDrag = () => {
+    if (draggingRef.current === null) return;
     draggingRef.current = null;
+    const start = dragStartRef.current;
+    dragStartRef.current = null;
+    const latest = latestRef.current;
+    if (start && (start[0] !== latest[0] || start[1] !== latest[1])) {
+      onChangeEnd?.(latest);
+    }
   };
   const handleKeyDown = (index, event) => {
     if (disabled) return;
@@ -1542,6 +1557,7 @@ var RangeSlider = ({
     }
     event.preventDefault();
     commit(index, next);
+    onChangeEnd?.(latestRef.current);
   };
   const thumbClass = cn(
     "absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border-2 border-surface bg-primary-main shadow-sm",
@@ -1565,8 +1581,7 @@ var RangeSlider = ({
       onKeyDown: (event) => handleKeyDown(index, event),
       onPointerDown: (event) => {
         if (disabled) return;
-        draggingRef.current = index;
-        event.currentTarget.setPointerCapture?.(event.pointerId);
+        beginDrag(index, event.pointerId, event.currentTarget);
         event.stopPropagation();
       },
       style: { left: `calc(${percent(current)}% - 0.5rem)` },
@@ -2624,7 +2639,7 @@ function AvatarGroup({ avatars, max, className }) {
 }
 
 // src/components/molecules/BottomSheet/BottomSheet.tsx
-import { useEffect, useId as useId13, useRef as useRef5, useState as useState5 } from "react";
+import { useEffect as useEffect2, useId as useId13, useRef as useRef5, useState as useState5 } from "react";
 import { jsx as jsx37, jsxs as jsxs22 } from "react/jsx-runtime";
 var getViewportHeight = () => typeof window === "undefined" ? 800 : window.innerHeight || 800;
 var BottomSheet = ({
@@ -2644,7 +2659,7 @@ var BottomSheet = ({
   const [snapIndex, setSnapIndex] = useState5(defaultSnapIndex);
   const [dragFraction, setDragFraction] = useState5(null);
   const dragRef = useRef5(null);
-  useEffect(() => {
+  useEffect2(() => {
     if (open) setSnapIndex(defaultSnapIndex);
   }, [open, defaultSnapIndex]);
   if (!open) return null;
@@ -2795,16 +2810,16 @@ import {
 import {
   cloneElement,
   isValidElement,
-  useEffect as useEffect5,
+  useEffect as useEffect6,
   useRef as useRef7,
   useState as useState7
 } from "react";
 import { createPortal } from "react-dom";
 
 // src/hooks/useEscapeKey.ts
-import { useEffect as useEffect2 } from "react";
+import { useEffect as useEffect3 } from "react";
 function useEscapeKey(handler, enabled = true) {
-  useEffect2(() => {
+  useEffect3(() => {
     if (!enabled) return;
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -2874,7 +2889,7 @@ function useFloatingElement(options = {}) {
 }
 
 // src/hooks/useFocusTrap.ts
-import { useEffect as useEffect3, useRef as useRef6 } from "react";
+import { useEffect as useEffect4, useRef as useRef6 } from "react";
 var focusableSelector = [
   "a[href]",
   "button:not([disabled])",
@@ -2889,7 +2904,7 @@ var getFocusableElements = (container) => Array.from(container.querySelectorAll(
 function useFocusTrap(containerRef, active, options = {}) {
   const previouslyFocusedElementRef = useRef6(null);
   const { initialFocusRef, returnFocusOnDeactivate = true } = options;
-  useEffect3(() => {
+  useEffect4(() => {
     if (!active || typeof document === "undefined") return;
     previouslyFocusedElementRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const container = containerRef.current;
@@ -2937,14 +2952,14 @@ function useFocusTrap(containerRef, active, options = {}) {
 }
 
 // src/hooks/usePortalContainer.ts
-import { useEffect as useEffect4, useState as useState6 } from "react";
+import { useEffect as useEffect5, useState as useState6 } from "react";
 var hookCreatedPortalContainer = null;
 var portalContainerLeaseCount = 0;
 function usePortalContainer(providedContainer) {
   const [container, setContainer] = useState6(
     providedContainer ?? null
   );
-  useEffect4(() => {
+  useEffect5(() => {
     if (providedContainer) {
       setContainer(providedContainer);
       return;
@@ -2999,7 +3014,7 @@ var Popover = ({
     if (!nextOpen) triggerRef.current?.focus();
   };
   useEscapeKey(() => setOpen(false), open && closeOnEscape);
-  useEffect5(() => {
+  useEffect6(() => {
     if (!open || !closeOnOutsideClick) return;
     const onPointerDown = (event) => {
       const target = event.target;
@@ -3235,7 +3250,7 @@ var Breadcrumb = ({
 };
 
 // src/components/molecules/Calendar/Calendar.tsx
-import { useEffect as useEffect6, useState as useState9 } from "react";
+import { useEffect as useEffect7, useState as useState9 } from "react";
 import { jsx as jsx41, jsxs as jsxs25 } from "react/jsx-runtime";
 var weekLabels = ["\u65E5", "\u6708", "\u706B", "\u6C34", "\u6728", "\u91D1", "\u571F"];
 var toDateKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
@@ -3251,7 +3266,7 @@ var Calendar = ({
   className
 }) => {
   const [month, setMonth] = useState9(() => toMonthDate(value ?? defaultMonth));
-  useEffect6(() => {
+  useEffect7(() => {
     if (value) setMonth(toMonthDate(value));
   }, [value]);
   const year = month.getFullYear();
@@ -3342,7 +3357,7 @@ var Calendar = ({
 // src/components/molecules/Combobox/Combobox.tsx
 import {
   useCallback as useCallback2,
-  useEffect as useEffect7,
+  useEffect as useEffect8,
   useId as useId14,
   useMemo as useMemo4,
   useRef as useRef9,
@@ -3376,11 +3391,11 @@ var Combobox = ({
     (option) => multiple ? selected.includes(option.value) : selected === option.value
   );
   const selectedSingleLabel = multiple ? "" : selectedOptions[0]?.label ?? (freeSolo && typeof value === "string" ? value : "");
-  useEffect7(() => {
+  useEffect8(() => {
     if (multiple) return;
     setQuery(selectedSingleLabel);
   }, [multiple, selectedSingleLabel]);
-  useEffect7(() => {
+  useEffect8(() => {
     const closeOnOutsidePointerDown = (event) => {
       if (!rootRef.current?.contains(event.target)) {
         closeOptions();
@@ -3527,7 +3542,7 @@ var Combobox = ({
 };
 
 // src/components/molecules/Dialog/Dialog.tsx
-import { useEffect as useEffect8, useId as useId15, useRef as useRef10 } from "react";
+import { useEffect as useEffect9, useId as useId15, useRef as useRef10 } from "react";
 import { jsx as jsx43, jsxs as jsxs27 } from "react/jsx-runtime";
 var maxWidthClasses = {
   sm: "max-w-sm",
@@ -3572,7 +3587,7 @@ var Dialog = ({
   const titleId = useId15();
   useEscapeKey(onClose, open);
   useFocusTrap(dialogRef, open, { initialFocusRef: closeButtonRef });
-  useEffect8(() => {
+  useEffect9(() => {
     if (!open) return;
     return lockBodyScroll();
   }, [open]);
@@ -4238,7 +4253,7 @@ var DatePicker = ({
 };
 
 // src/components/molecules/Drawer/Drawer.tsx
-import { useEffect as useEffect9, useId as useId16, useRef as useRef11 } from "react";
+import { useEffect as useEffect10, useId as useId16, useRef as useRef11 } from "react";
 import { createPortal as createPortal2 } from "react-dom";
 import { jsx as jsx48, jsxs as jsxs32 } from "react/jsx-runtime";
 var placementClasses = {
@@ -4266,7 +4281,7 @@ var Drawer = ({
   const container = usePortalContainer();
   useEscapeKey(onClose, open);
   useFocusTrap(drawerRef, open, { initialFocusRef: closeButtonRef });
-  useEffect9(() => {
+  useEffect10(() => {
     if (!open || !container) return;
     const backgroundElements = Array.from(document.body.children).filter(
       (element) => element instanceof HTMLElement && element !== container
@@ -4867,12 +4882,12 @@ var ImageGallery = ({
 };
 
 // src/components/molecules/Tooltip/Tooltip.tsx
-import { useCallback as useCallback3, useEffect as useEffect11, useRef as useRef14, useState as useState16 } from "react";
+import { useCallback as useCallback3, useEffect as useEffect12, useRef as useRef14, useState as useState16 } from "react";
 
 // src/hooks/useClickOutside.ts
-import { useEffect as useEffect10 } from "react";
+import { useEffect as useEffect11 } from "react";
 function useClickOutside(ref, handler, enabled = true) {
-  useEffect10(() => {
+  useEffect11(() => {
     if (!enabled) return;
     const handleClick = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -4928,7 +4943,7 @@ var Tooltip = ({
       setTooltipPosition("center");
     }
   }, []);
-  useEffect11(() => {
+  useEffect12(() => {
     if (!isOpen || !buttonRef.current) return;
     animationFrameRef.current = requestAnimationFrame(() => {
       animationFrameRef.current = null;
@@ -4942,7 +4957,7 @@ var Tooltip = ({
     };
   }, [isOpen, updateTooltipPosition]);
   useClickOutside(tooltipRef, () => setIsOpen(false), isOpen);
-  useEffect11(() => {
+  useEffect12(() => {
     const handleResize = () => {
       if (isOpen) {
         updateTooltipPosition();
@@ -5580,7 +5595,7 @@ var MapMarker = ({
 };
 
 // src/components/molecules/MapView/MapView.tsx
-import { memo, useCallback as useCallback4, useEffect as useEffect12, useMemo as useMemo6, useRef as useRef15, useState as useState17 } from "react";
+import { memo, useCallback as useCallback4, useEffect as useEffect13, useMemo as useMemo6, useRef as useRef15, useState as useState17 } from "react";
 
 // src/utils/geo.ts
 var TILE_SIZE = 256;
@@ -5782,7 +5797,7 @@ var MapView = ({
     },
     [zoomAt]
   );
-  useEffect12(() => {
+  useEffect13(() => {
     const element = containerRef.current;
     if (!element) return;
     const update = () => {
@@ -5800,7 +5815,7 @@ var MapView = ({
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
-  useEffect12(() => {
+  useEffect13(() => {
     const element = containerRef.current;
     if (!element || !interactive) return;
     const handleWheel = (event) => {
@@ -7096,7 +7111,7 @@ import {
   createContext as createContext2,
   useCallback as useCallback5,
   useContext as useContext2,
-  useEffect as useEffect13,
+  useEffect as useEffect14,
   useMemo as useMemo7,
   useRef as useRef17,
   useState as useState19
@@ -7200,7 +7215,7 @@ function ToastProvider({
     },
     [startTimer]
   );
-  useEffect13(
+  useEffect14(
     () => () => {
       timers.current.forEach(clearTimeout);
       timers.current.clear();
@@ -7399,10 +7414,10 @@ var SplitPaneLayout = ({
 };
 
 // src/hooks/useMediaQuery.ts
-import { useEffect as useEffect14, useState as useState21 } from "react";
+import { useEffect as useEffect15, useState as useState21 } from "react";
 function useMediaQuery(query) {
   const [matches, setMatches] = useState21(false);
-  useEffect14(() => {
+  useEffect15(() => {
     const mediaQuery = window.matchMedia(query);
     setMatches(mediaQuery.matches);
     const handler = (event) => {
