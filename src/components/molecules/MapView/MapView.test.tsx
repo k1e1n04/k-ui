@@ -179,6 +179,38 @@ describe("MapView", () => {
     );
   });
 
+  it("ドラッグ中はタイルを再配置せず、タイル層の transform で追従する", () => {
+    render(
+      <MapView
+        center={{ lat: 0, lng: 0 }}
+        zoom={5}
+        tileUrl={() => "https://example.com/tile.png"}
+      />,
+    );
+    const layer = screen.getByTestId("map-tiles");
+    const tile = layer.querySelector("img") as HTMLImageElement;
+    const tileLeft = tile.style.left;
+    const tileTop = tile.style.top;
+    const before = layer.style.transform;
+
+    const map = screen.getByTestId("map-view");
+    fireEvent.pointerDown(map, {
+      clientX: 400,
+      clientY: 300,
+      pointerId: 1,
+      button: 0,
+    });
+    fireEvent.pointerMove(map, { clientX: 340, clientY: 280, pointerId: 1 });
+
+    // タイル自身は再配置されず、タイル層の transform だけが指の移動量ぶん動く
+    expect(tile.style.left).toBe(tileLeft);
+    expect(tile.style.top).toBe(tileTop);
+    expect(layer.style.transform).not.toBe(before);
+    expect(layer.style.transform).toBe("translate3d(-172px, -232px, 0)");
+
+    fireEvent.pointerUp(map, { clientX: 340, clientY: 280, pointerId: 1 });
+  });
+
   it("中心が変わるとマーカー位置が更新される", () => {
     const { rerender } = render(
       <MapView center={{ lat: 0, lng: 0 }} zoom={5}>

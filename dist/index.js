@@ -5840,17 +5840,21 @@ var MapView = ({
   const scaledTile = TILE_SIZE * tileScale;
   const originX = worldCenter.x - size.width / 2 - offset2.x;
   const originY = worldCenter.y - size.height / 2 - offset2.y;
+  const minTileX = Math.floor(originX / scaledTile);
+  const minTileY = Math.floor(originY / scaledTile);
+  const tileLayerX = minTileX * scaledTile - originX;
+  const tileLayerY = minTileY * scaledTile - originY;
+  const tileCols = Math.ceil(size.width / scaledTile) + 1;
+  const tileRows = Math.ceil(size.height / scaledTile) + 1;
   const tiles = useMemo4(() => {
     if (!resolvedTileUrl || size.width === 0 || size.height === 0) return [];
     const count = 2 ** tileZoom;
-    const minX = Math.floor(originX / scaledTile);
-    const maxX = Math.floor((originX + size.width) / scaledTile);
-    const minY = Math.floor(originY / scaledTile);
-    const maxY = Math.floor((originY + size.height) / scaledTile);
     const result = [];
-    for (let y = minY; y <= maxY; y += 1) {
+    for (let row = 0; row < tileRows; row += 1) {
+      const y = minTileY + row;
       if (y < 0 || y >= count) continue;
-      for (let x = minX; x <= maxX; x += 1) {
+      for (let col = 0; col < tileCols; col += 1) {
+        const x = minTileX + col;
         const wrappedX = (x % count + count) % count;
         result.push(
           /* @__PURE__ */ jsx60(
@@ -5859,9 +5863,10 @@ var MapView = ({
               src: resolvedTileUrl(wrappedX, y, tileZoom),
               alt: "",
               draggable: false,
-              className: "absolute left-0 top-0 select-none",
+              className: "absolute select-none",
               style: {
-                transform: `translate3d(${x * scaledTile - originX}px, ${y * scaledTile - originY}px, 0)`,
+                left: col * scaledTile,
+                top: row * scaledTile,
                 width: scaledTile + 0.5,
                 height: scaledTile + 0.5
               }
@@ -5872,7 +5877,17 @@ var MapView = ({
       }
     }
     return result;
-  }, [resolvedTileUrl, size, originX, originY, scaledTile, tileZoom]);
+  }, [
+    resolvedTileUrl,
+    size.width,
+    size.height,
+    tileCols,
+    tileRows,
+    minTileX,
+    minTileY,
+    scaledTile,
+    tileZoom
+  ]);
   const contextValue = useMemo4(
     () => ({
       center: currentCenter,
@@ -5931,8 +5946,12 @@ var MapView = ({
         tiles.length > 0 && /* @__PURE__ */ jsx60(
           "div",
           {
+            "data-testid": "map-tiles",
             "aria-hidden": "true",
             className: "absolute inset-0 will-change-transform",
+            style: {
+              transform: `translate3d(${tileLayerX}px, ${tileLayerY}px, 0)`
+            },
             children: tiles
           }
         ),

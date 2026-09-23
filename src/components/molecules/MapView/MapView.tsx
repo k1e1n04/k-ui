@@ -470,17 +470,26 @@ export const MapView: React.FC<MapViewProps> = ({
   const originX = worldCenter.x - size.width / 2 - offset.x;
   const originY = worldCenter.y - size.height / 2 - offset.y;
 
+  // タイル層の原点を直近のタイル境界へスナップする。
+  // 各タイルは層の中で常に scaledTile の整数倍に並ぶため、隣接タイルが同じラスタライズ
+  // 文脈に載り、小数座標に起因する境界の継ぎ目（スマホ/PWA で縦線に見える）が出ない。
+  // 移動は層全体の transform 1つだけで表現するので、境界をまたぐまでタイルは再配置されない。
+  const minTileX = Math.floor(originX / scaledTile);
+  const minTileY = Math.floor(originY / scaledTile);
+  const tileLayerX = minTileX * scaledTile - originX;
+  const tileLayerY = minTileY * scaledTile - originY;
+  const tileCols = Math.ceil(size.width / scaledTile) + 1;
+  const tileRows = Math.ceil(size.height / scaledTile) + 1;
+
   const tiles = useMemo(() => {
     if (!resolvedTileUrl || size.width === 0 || size.height === 0) return [];
     const count = 2 ** tileZoom;
-    const minX = Math.floor(originX / scaledTile);
-    const maxX = Math.floor((originX + size.width) / scaledTile);
-    const minY = Math.floor(originY / scaledTile);
-    const maxY = Math.floor((originY + size.height) / scaledTile);
     const result: React.ReactNode[] = [];
-    for (let y = minY; y <= maxY; y += 1) {
+    for (let row = 0; row < tileRows; row += 1) {
+      const y = minTileY + row;
       if (y < 0 || y >= count) continue;
-      for (let x = minX; x <= maxX; x += 1) {
+      for (let col = 0; col < tileCols; col += 1) {
+        const x = minTileX + col;
         const wrappedX = ((x % count) + count) % count;
         result.push(
           <img
@@ -488,11 +497,10 @@ export const MapView: React.FC<MapViewProps> = ({
             src={resolvedTileUrl(wrappedX, y, tileZoom)}
             alt=""
             draggable={false}
-            className="absolute left-0 top-0 select-none"
+            className="absolute select-none"
             style={{
-              transform: `translate3d(${x * scaledTile - originX}px, ${
-                y * scaledTile - originY
-              }px, 0)`,
+              left: col * scaledTile,
+              top: row * scaledTile,
               width: scaledTile + 0.5,
               height: scaledTile + 0.5,
             }}
@@ -501,7 +509,17 @@ export const MapView: React.FC<MapViewProps> = ({
       }
     }
     return result;
-  }, [resolvedTileUrl, size, originX, originY, scaledTile, tileZoom]);
+  }, [
+    resolvedTileUrl,
+    size.width,
+    size.height,
+    tileCols,
+    tileRows,
+    minTileX,
+    minTileY,
+    scaledTile,
+    tileZoom,
+  ]);
 
   const contextValue = useMemo<MapContextValue>(
     () => ({
@@ -562,8 +580,12 @@ export const MapView: React.FC<MapViewProps> = ({
         )}
         {tiles.length > 0 && (
           <div
+            data-testid="map-tiles"
             aria-hidden="true"
             className="absolute inset-0 will-change-transform"
+            style={{
+              transform: `translate3d(${tileLayerX}px, ${tileLayerY}px, 0)`,
+            }}
           >
             {tiles}
           </div>
