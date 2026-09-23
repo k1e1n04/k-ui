@@ -1597,7 +1597,7 @@ var RangeSlider = ({
             onPointerUp: endDrag,
             onPointerCancel: endDrag,
             className: cn(
-              "relative h-1.5 w-full rounded-full bg-surface-sunken",
+              "relative h-1.5 w-full touch-none rounded-full bg-surface-sunken",
               disabled && "opacity-50"
             ),
             children: [

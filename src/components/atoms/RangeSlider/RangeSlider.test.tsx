@@ -77,4 +77,9 @@ describe("RangeSlider", () => {
     });
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it("トラックのタッチ操作を無効化し、ドラッグ中に背面がスクロールしない", () => {
+    render(<RangeSlider value={[20, 80]} onChange={vi.fn()} label="賃料" />);
+    expect(screen.getByTestId("range-slider-track")).toHaveClass("touch-none");
+  });
 });
