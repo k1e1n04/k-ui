@@ -206,9 +206,93 @@ describe("MapView", () => {
     expect(tile.style.left).toBe(tileLeft);
     expect(tile.style.top).toBe(tileTop);
     expect(layer.style.transform).not.toBe(before);
-    expect(layer.style.transform).toBe("translate3d(-172px, -232px, 0)");
+    expect(layer.style.transform).toBe(
+      "translate3d(-172px, -232px, 0) scale(1)",
+    );
 
     fireEvent.pointerUp(map, { clientX: 340, clientY: 280, pointerId: 1 });
+  });
+
+  it("タイルは常に 256px 固定で、拡大縮小は層の scale で表現する", () => {
+    render(
+      <MapView
+        center={{ lat: 0, lng: 0 }}
+        zoom={5.4}
+        tileUrl={() => "https://example.com/tile.png"}
+      />,
+    );
+    const layer = screen.getByTestId("map-tiles");
+    const tile = layer.querySelector("img") as HTMLImageElement;
+    // 小数ズームでもタイル自身は拡大縮小されない（旧実装は scaledTile を再計算していた）
+    expect(tile.style.width).toBe("256px");
+    expect(tile.style.height).toBe("256px");
+    expect(tile.style.left).toBe("0px");
+    expect(tile.style.top).toBe("0px");
+    // 小数ズームは層の scale に集約される
+    expect(layer.style.transform).toMatch(/scale\(/);
+    expect(layer.style.transformOrigin).toBe("0 0");
+  });
+
+  it("ピンチ中もタイルを再配置せず、タイル層の scale だけで拡大縮小する", () => {
+    render(
+      <MapView
+        defaultCenter={{ lat: 0, lng: 0 }}
+        defaultZoom={5}
+        tileUrl={() => "https://example.com/tile.png"}
+      />,
+    );
+    const layer = screen.getByTestId("map-tiles");
+    const tile = layer.querySelector("img") as HTMLImageElement;
+    const before = {
+      left: tile.style.left,
+      top: tile.style.top,
+      width: tile.style.width,
+      height: tile.style.height,
+    };
+    const map = screen.getByTestId("map-view");
+
+    fireEvent.pointerDown(map, {
+      clientX: 300,
+      clientY: 300,
+      pointerId: 1,
+      button: 0,
+    });
+    fireEvent.pointerDown(map, {
+      clientX: 500,
+      clientY: 300,
+      pointerId: 2,
+      button: 0,
+    });
+    fireEvent.pointerMove(map, { clientX: 250, clientY: 300, pointerId: 1 });
+    fireEvent.pointerMove(map, { clientX: 550, clientY: 300, pointerId: 2 });
+
+    // タイル自身の寸法・位置はピンチ中に変化しない（コンポジタの transform だけで動く）
+    expect(tile.style.left).toBe(before.left);
+    expect(tile.style.top).toBe(before.top);
+    expect(tile.style.width).toBe(before.width);
+    expect(tile.style.height).toBe(before.height);
+    // 代わりに層の scale が変わる
+    expect(layer.style.transform).not.toMatch(/scale\(1\)/);
+
+    fireEvent.pointerUp(map, { clientX: 250, clientY: 300, pointerId: 1 });
+    fireEvent.pointerUp(map, { clientX: 550, clientY: 300, pointerId: 2 });
+  });
+
+  it("下位ズームのタイルを下敷きに描いて白抜けを埋める", () => {
+    render(
+      <MapView
+        center={{ lat: 0, lng: 0 }}
+        zoom={5}
+        tileUrl={(x, y, z) => `https://example.com/${z}/${x}/${y}.png`}
+      />,
+    );
+    const base = screen.getByTestId("map-tiles-base");
+    const detail = screen.getByTestId("map-tiles");
+    const baseTile = base.querySelector("img") as HTMLImageElement;
+    const detailTile = detail.querySelector("img") as HTMLImageElement;
+    // 下敷きは 1 段低いズームのタイルを使う
+    expect(baseTile.src).toContain("example.com/4/");
+    expect(detailTile.src).toContain("example.com/5/");
   });
 
   it("中心が変わるとマーカー位置が更新される", () => {

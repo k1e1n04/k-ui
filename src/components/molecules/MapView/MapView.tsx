@@ -91,6 +91,114 @@ const MapChildren = memo(function MapChildren({
   return <>{children}</>;
 });
 
+interface TileLayerGeometry {
+  tileZoom: number;
+  scale: number;
+  minTileX: number;
+  minTileY: number;
+  layerX: number;
+  layerY: number;
+  cols: number;
+  rows: number;
+}
+
+/**
+ * タイル層の配置を計算する。
+ *
+ * タイルは常に TILE_SIZE(256px) の等身で層内に並べ、拡大縮小は層全体の `scale()` に任せる。
+ * 各タイルを毎フレーム拡大縮小（小数px の width/height/left/top）していた旧実装では、
+ * ピンチ中に「レイヤーの transform（コンポジタ）」と「タイルの再配置（メインスレッド）」が
+ * 1 フレームずれて、高解像度のスマホ/PWA でタイルが裂ける・白く抜ける・縮尺が飛ぶ問題があった。
+ */
+function computeTileLayerGeometry(
+  tileZoom: number,
+  currentZoom: number,
+  originX: number,
+  originY: number,
+  width: number,
+  height: number,
+): TileLayerGeometry {
+  const scale = 2 ** (currentZoom - tileZoom);
+  const scaledTile = TILE_SIZE * scale;
+  const minTileX = Math.floor(originX / scaledTile);
+  const minTileY = Math.floor(originY / scaledTile);
+  return {
+    tileZoom,
+    scale,
+    minTileX,
+    minTileY,
+    layerX: minTileX * scaledTile - originX,
+    layerY: minTileY * scaledTile - originY,
+    cols: Math.ceil(width / scaledTile) + 1,
+    rows: Math.ceil(height / scaledTile) + 1,
+  };
+}
+
+/**
+ * タイル画像を 1 枚の GPU レイヤーに並べる。
+ *
+ * - タイル自身は 256px 固定。拡大縮小は親の `translate3d(...) scale(...)` 1つで表現する。
+ * - `pointer-events: none` と `-webkit-touch-callout: none` で、iOS の画像長押し
+ *   （保存メニュー）によるジェスチャ中断（pointercancel）を防ぐ。
+ */
+const TileLayer = memo(function TileLayer({
+  url,
+  geometry,
+  testId,
+}: {
+  url: TileUrlBuilder;
+  geometry: TileLayerGeometry;
+  testId: string;
+}) {
+  const { tileZoom, scale, minTileX, minTileY, layerX, layerY, cols, rows } =
+    geometry;
+
+  const tiles = useMemo(() => {
+    const count = 2 ** tileZoom;
+    const result: React.ReactNode[] = [];
+    for (let row = 0; row < rows; row += 1) {
+      const y = minTileY + row;
+      if (y < 0 || y >= count) continue;
+      for (let col = 0; col < cols; col += 1) {
+        const x = minTileX + col;
+        const wrappedX = ((x % count) + count) % count;
+        result.push(
+          <img
+            key={`${tileZoom}-${x}-${y}`}
+            src={url(wrappedX, y, tileZoom)}
+            alt=""
+            draggable={false}
+            className="pointer-events-none absolute select-none [-webkit-touch-callout:none]"
+            style={{
+              left: col * TILE_SIZE,
+              top: row * TILE_SIZE,
+              width: TILE_SIZE,
+              height: TILE_SIZE,
+            }}
+          />,
+        );
+      }
+    }
+    return result;
+  }, [url, tileZoom, minTileX, minTileY, cols, rows]);
+
+  if (tiles.length === 0) return null;
+
+  return (
+    <div
+      data-testid={testId}
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 will-change-transform"
+      style={{
+        transform: `translate3d(${layerX}px, ${layerY}px, 0) scale(${scale})`,
+        transformOrigin: "0 0",
+      }}
+    >
+      {tiles}
+    </div>
+  );
+});
+
 /**
  * MapView コンポーネント
  *
@@ -464,62 +572,35 @@ export const MapView: React.FC<MapViewProps> = ({
   // タイルの描画範囲を計算
   // ドラッグ中の offset は「指の移動量」で、確定後の中心は worldCenter - offset になる。
   // プレビューを確定後と一致させる（＝離した瞬間に飛ばないようにする）ため、ここでは offset を引く。
-  const tileZoom = clampZoom(Math.floor(currentZoom), 0, 19);
-  const tileScale = 2 ** (currentZoom - tileZoom);
-  const scaledTile = TILE_SIZE * tileScale;
   const originX = worldCenter.x - size.width / 2 - offset.x;
   const originY = worldCenter.y - size.height / 2 - offset.y;
 
-  // タイル層の原点を直近のタイル境界へスナップする。
-  // 各タイルは層の中で常に scaledTile の整数倍に並ぶため、隣接タイルが同じラスタライズ
-  // 文脈に載り、小数座標に起因する境界の継ぎ目（スマホ/PWA で縦線に見える）が出ない。
-  // 移動は層全体の transform 1つだけで表現するので、境界をまたぐまでタイルは再配置されない。
-  const minTileX = Math.floor(originX / scaledTile);
-  const minTileY = Math.floor(originY / scaledTile);
-  const tileLayerX = minTileX * scaledTile - originX;
-  const tileLayerY = minTileY * scaledTile - originY;
-  const tileCols = Math.ceil(size.width / scaledTile) + 1;
-  const tileRows = Math.ceil(size.height / scaledTile) + 1;
-
-  const tiles = useMemo(() => {
-    if (!resolvedTileUrl || size.width === 0 || size.height === 0) return [];
-    const count = 2 ** tileZoom;
-    const result: React.ReactNode[] = [];
-    for (let row = 0; row < tileRows; row += 1) {
-      const y = minTileY + row;
-      if (y < 0 || y >= count) continue;
-      for (let col = 0; col < tileCols; col += 1) {
-        const x = minTileX + col;
-        const wrappedX = ((x % count) + count) % count;
-        result.push(
-          <img
-            key={`${tileZoom}-${x}-${y}`}
-            src={resolvedTileUrl(wrappedX, y, tileZoom)}
-            alt=""
-            draggable={false}
-            className="absolute select-none"
-            style={{
-              left: col * scaledTile,
-              top: row * scaledTile,
-              width: scaledTile + 0.5,
-              height: scaledTile + 0.5,
-            }}
-          />,
-        );
-      }
-    }
-    return result;
-  }, [
-    resolvedTileUrl,
-    size.width,
-    size.height,
-    tileCols,
-    tileRows,
-    minTileX,
-    minTileY,
-    scaledTile,
-    tileZoom,
-  ]);
+  // タイルの解像度は最寄りの整数ズーム。小数ズームは層全体の scale で表現する。
+  const tileZoom = clampZoom(Math.round(currentZoom), 0, 19);
+  const baseTileZoom = Math.max(0, tileZoom - 1);
+  const hasSize = size.width > 0 && size.height > 0;
+  const detailLayer = hasSize
+    ? computeTileLayerGeometry(
+        tileZoom,
+        currentZoom,
+        originX,
+        originY,
+        size.width,
+        size.height,
+      )
+    : null;
+  // 1 段低いズームを下敷きに描く。上位ズームのタイルが届くまでの一瞬の白抜けを埋める。
+  const baseLayer =
+    hasSize && baseTileZoom < tileZoom
+      ? computeTileLayerGeometry(
+          baseTileZoom,
+          currentZoom,
+          originX,
+          originY,
+          size.width,
+          size.height,
+        )
+      : null;
 
   const contextValue = useMemo<MapContextValue>(
     () => ({
@@ -560,6 +641,7 @@ export const MapView: React.FC<MapViewProps> = ({
         style={{ height: resolveDimension(height) }}
         className={cn(
           "relative w-full select-none overflow-hidden bg-surface-sunken outline-none",
+          "[-webkit-touch-callout:none]",
           "focus-visible:ring-2 focus-visible:ring-info-main",
           interactive ? "cursor-grab touch-none" : "cursor-default",
           className,
@@ -578,17 +660,19 @@ export const MapView: React.FC<MapViewProps> = ({
             }}
           />
         )}
-        {tiles.length > 0 && (
-          <div
-            data-testid="map-tiles"
-            aria-hidden="true"
-            className="absolute inset-0 will-change-transform"
-            style={{
-              transform: `translate3d(${tileLayerX}px, ${tileLayerY}px, 0)`,
-            }}
-          >
-            {tiles}
-          </div>
+        {resolvedTileUrl && baseLayer && (
+          <TileLayer
+            url={resolvedTileUrl}
+            geometry={baseLayer}
+            testId="map-tiles-base"
+          />
+        )}
+        {resolvedTileUrl && detailLayer && (
+          <TileLayer
+            url={resolvedTileUrl}
+            geometry={detailLayer}
+            testId="map-tiles"
+          />
         )}
         {/*
           マーカーなどの子要素は offset を transform でまとめて移動する。

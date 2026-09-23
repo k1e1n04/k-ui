@@ -5655,6 +5655,74 @@ var MapChildren = memo(function MapChildren2({
 }) {
   return /* @__PURE__ */ jsx60(Fragment6, { children });
 });
+function computeTileLayerGeometry(tileZoom, currentZoom, originX, originY, width, height) {
+  const scale = 2 ** (currentZoom - tileZoom);
+  const scaledTile = TILE_SIZE * scale;
+  const minTileX = Math.floor(originX / scaledTile);
+  const minTileY = Math.floor(originY / scaledTile);
+  return {
+    tileZoom,
+    scale,
+    minTileX,
+    minTileY,
+    layerX: minTileX * scaledTile - originX,
+    layerY: minTileY * scaledTile - originY,
+    cols: Math.ceil(width / scaledTile) + 1,
+    rows: Math.ceil(height / scaledTile) + 1
+  };
+}
+var TileLayer = memo(function TileLayer2({
+  url,
+  geometry,
+  testId
+}) {
+  const { tileZoom, scale, minTileX, minTileY, layerX, layerY, cols, rows } = geometry;
+  const tiles = useMemo6(() => {
+    const count = 2 ** tileZoom;
+    const result = [];
+    for (let row = 0; row < rows; row += 1) {
+      const y = minTileY + row;
+      if (y < 0 || y >= count) continue;
+      for (let col = 0; col < cols; col += 1) {
+        const x = minTileX + col;
+        const wrappedX = (x % count + count) % count;
+        result.push(
+          /* @__PURE__ */ jsx60(
+            "img",
+            {
+              src: url(wrappedX, y, tileZoom),
+              alt: "",
+              draggable: false,
+              className: "pointer-events-none absolute select-none [-webkit-touch-callout:none]",
+              style: {
+                left: col * TILE_SIZE,
+                top: row * TILE_SIZE,
+                width: TILE_SIZE,
+                height: TILE_SIZE
+              }
+            },
+            `${tileZoom}-${x}-${y}`
+          )
+        );
+      }
+    }
+    return result;
+  }, [url, tileZoom, minTileX, minTileY, cols, rows]);
+  if (tiles.length === 0) return null;
+  return /* @__PURE__ */ jsx60(
+    "div",
+    {
+      "data-testid": testId,
+      "aria-hidden": "true",
+      className: "pointer-events-none absolute inset-0 will-change-transform",
+      style: {
+        transform: `translate3d(${layerX}px, ${layerY}px, 0) scale(${scale})`,
+        transformOrigin: "0 0"
+      },
+      children: tiles
+    }
+  );
+});
 var MapView = ({
   center,
   defaultCenter = DEFAULT_MAP_CENTER,
@@ -5973,59 +6041,27 @@ var MapView = ({
     }
     event.preventDefault();
   };
-  const tileZoom = clampZoom(Math.floor(currentZoom), 0, 19);
-  const tileScale = 2 ** (currentZoom - tileZoom);
-  const scaledTile = TILE_SIZE * tileScale;
   const originX = worldCenter.x - size2.width / 2 - offset2.x;
   const originY = worldCenter.y - size2.height / 2 - offset2.y;
-  const minTileX = Math.floor(originX / scaledTile);
-  const minTileY = Math.floor(originY / scaledTile);
-  const tileLayerX = minTileX * scaledTile - originX;
-  const tileLayerY = minTileY * scaledTile - originY;
-  const tileCols = Math.ceil(size2.width / scaledTile) + 1;
-  const tileRows = Math.ceil(size2.height / scaledTile) + 1;
-  const tiles = useMemo6(() => {
-    if (!resolvedTileUrl || size2.width === 0 || size2.height === 0) return [];
-    const count = 2 ** tileZoom;
-    const result = [];
-    for (let row = 0; row < tileRows; row += 1) {
-      const y = minTileY + row;
-      if (y < 0 || y >= count) continue;
-      for (let col = 0; col < tileCols; col += 1) {
-        const x = minTileX + col;
-        const wrappedX = (x % count + count) % count;
-        result.push(
-          /* @__PURE__ */ jsx60(
-            "img",
-            {
-              src: resolvedTileUrl(wrappedX, y, tileZoom),
-              alt: "",
-              draggable: false,
-              className: "absolute select-none",
-              style: {
-                left: col * scaledTile,
-                top: row * scaledTile,
-                width: scaledTile + 0.5,
-                height: scaledTile + 0.5
-              }
-            },
-            `${tileZoom}-${x}-${y}`
-          )
-        );
-      }
-    }
-    return result;
-  }, [
-    resolvedTileUrl,
+  const tileZoom = clampZoom(Math.round(currentZoom), 0, 19);
+  const baseTileZoom = Math.max(0, tileZoom - 1);
+  const hasSize = size2.width > 0 && size2.height > 0;
+  const detailLayer = hasSize ? computeTileLayerGeometry(
+    tileZoom,
+    currentZoom,
+    originX,
+    originY,
     size2.width,
-    size2.height,
-    tileCols,
-    tileRows,
-    minTileX,
-    minTileY,
-    scaledTile,
-    tileZoom
-  ]);
+    size2.height
+  ) : null;
+  const baseLayer = hasSize && baseTileZoom < tileZoom ? computeTileLayerGeometry(
+    baseTileZoom,
+    currentZoom,
+    originX,
+    originY,
+    size2.width,
+    size2.height
+  ) : null;
   const contextValue = useMemo6(
     () => ({
       center: currentCenter,
@@ -6064,6 +6100,7 @@ var MapView = ({
       style: { height: resolveDimension(height) },
       className: cn(
         "relative w-full select-none overflow-hidden bg-surface-sunken outline-none",
+        "[-webkit-touch-callout:none]",
         "focus-visible:ring-2 focus-visible:ring-info-main",
         interactive ? "cursor-grab touch-none" : "cursor-default",
         className
@@ -6081,16 +6118,20 @@ var MapView = ({
             }
           }
         ),
-        tiles.length > 0 && /* @__PURE__ */ jsx60(
-          "div",
+        resolvedTileUrl && baseLayer && /* @__PURE__ */ jsx60(
+          TileLayer,
           {
-            "data-testid": "map-tiles",
-            "aria-hidden": "true",
-            className: "absolute inset-0 will-change-transform",
-            style: {
-              transform: `translate3d(${tileLayerX}px, ${tileLayerY}px, 0)`
-            },
-            children: tiles
+            url: resolvedTileUrl,
+            geometry: baseLayer,
+            testId: "map-tiles-base"
+          }
+        ),
+        resolvedTileUrl && detailLayer && /* @__PURE__ */ jsx60(
+          TileLayer,
+          {
+            url: resolvedTileUrl,
+            geometry: detailLayer,
+            testId: "map-tiles"
           }
         ),
         /* @__PURE__ */ jsx60(
