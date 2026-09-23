@@ -1,5 +1,5 @@
 import type React from "react";
-export interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DrawerHeaderProps extends React.ComponentPropsWithRef<"div"> {
     /** 追加のクラス名 */
     className?: string;
 }

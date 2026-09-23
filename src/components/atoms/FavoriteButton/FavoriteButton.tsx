@@ -20,6 +20,8 @@ export interface FavoriteButtonProps {
   disabled?: boolean;
   /** 追加のクラス名 */
   className?: string;
+  /** ボタン要素への ref */
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
 const sizeStyles: Record<FavoriteButtonSize, string> = {
@@ -49,10 +51,12 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   size = "md",
   disabled = false,
   className,
+  ref,
 }) => {
   return (
     <button
       type="button"
+      ref={ref}
       aria-label={label}
       aria-pressed={favorite}
       disabled={disabled}

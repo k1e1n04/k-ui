@@ -20,8 +20,7 @@ export type ButtonSize = "small" | "medium" | "large";
 /** ボタンのトーン */
 export type ButtonTone = "solid" | "plain" | "subtle";
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ComponentPropsWithRef<"button"> {
   /** ボタンの種類 */
   variant?: ButtonVariant;
   /** ボタンのサイズ */

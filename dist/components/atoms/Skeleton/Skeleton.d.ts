@@ -1,3 +1,4 @@
+import type React from "react";
 /** スケルトンのプロパティ。 @default undefined */
 export interface SkeletonProps {
     /** 形状。 @default "text" */
@@ -10,7 +11,9 @@ export interface SkeletonProps {
     height?: string | number;
     /** 追加のクラス名。 @default undefined */
     className?: string;
+    /** ルート要素への ref。 @default undefined */
+    ref?: React.Ref<HTMLOutputElement>;
 }
 /** 読み込み中のプレースホルダー。 @default undefined */
-export declare function Skeleton({ variant, animation, width, height, className, }: SkeletonProps): import("react").JSX.Element;
+export declare function Skeleton({ variant, animation, width, height, className, ref, }: SkeletonProps): React.JSX.Element;
 //# sourceMappingURL=Skeleton.d.ts.map

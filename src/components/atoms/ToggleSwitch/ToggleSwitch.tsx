@@ -20,6 +20,8 @@ export interface ToggleSwitchProps {
   size?: ToggleSwitchSize;
   /** 追加のクラス名 */
   className?: string;
+  /** 隠し input 要素への ref */
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 /** トラックのサイズスタイル */
@@ -62,6 +64,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   label,
   size = "medium",
   className,
+  ref,
 }) => {
   return (
     <label
@@ -75,6 +78,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
       <input
         type="checkbox"
         role="switch"
+        ref={ref}
         checked={checked}
         aria-checked={checked}
         onChange={(e) => onChange(e.target.checked)}

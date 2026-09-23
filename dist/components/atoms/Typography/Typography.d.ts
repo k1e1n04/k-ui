@@ -3,7 +3,7 @@ export type TypographyAs = "p" | "span" | "div" | "label" | "small";
 export type TypographyVariant = "body-sm" | "body-md" | "body-lg" | "caption" | "label";
 export type TypographyTone = "default" | "muted" | "inverse" | "danger" | "success" | "info" | "warning";
 export type TypographyWeight = "normal" | "medium" | "semibold" | "bold";
-export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
+export interface TypographyProps extends React.ComponentPropsWithRef<"p"> {
     /** レンダリングするHTML要素 */
     as?: TypographyAs;
     /** タイポグラフィの種別 */

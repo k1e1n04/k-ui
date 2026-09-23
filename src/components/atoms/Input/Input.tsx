@@ -21,7 +21,7 @@ export type InputSize = "small" | "medium" | "large";
 
 export interface InputProps
   extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
+    React.ComponentPropsWithRef<"input">,
     "type" | "size" | "onChange" | "value" | "className"
   > {
   /** インプットのタイプ */

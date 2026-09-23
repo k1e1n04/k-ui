@@ -20,6 +20,8 @@ export interface PriceProps {
     caption?: React.ReactNode;
     /** 追加のクラス名 */
     className?: string;
+    /** ルート要素への ref */
+    ref?: React.Ref<HTMLSpanElement>;
 }
 /** 金額を「万円」表記へ変換する */
 export declare function formatManYen(value: number): string;

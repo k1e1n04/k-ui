@@ -1,3 +1,4 @@
+import type React from "react";
 /** アバターのサイズ。 @default undefined */
 export type AvatarSize = "small" | "medium" | "large";
 /** アバターのプロパティ。 @default undefined */
@@ -14,7 +15,9 @@ export interface AvatarProps {
     shape?: "circle" | "square";
     /** 追加のクラス名。 @default undefined */
     className?: string;
+    /** ルート要素への ref。 @default undefined */
+    ref?: React.Ref<HTMLElement>;
 }
 /** アバターを表示するコンポーネント。 @default undefined */
-export declare function Avatar({ src, name, alt, size, shape, className, }: AvatarProps): import("react").JSX.Element;
+export declare function Avatar({ src, name, alt, size, shape, className, ref, }: AvatarProps): React.JSX.Element;
 //# sourceMappingURL=Avatar.d.ts.map

@@ -26,6 +26,8 @@ export interface FormFieldProps {
     className?: string;
     /** 既存の aria-describedby（内部IDとマージされる） */
     "aria-describedby"?: string;
+    /** ルート要素への ref */
+    ref?: React.Ref<HTMLDivElement>;
     /** フィールド本体 */
     children: React.ReactNode | ((props: FormFieldRenderProps) => React.ReactNode);
 }

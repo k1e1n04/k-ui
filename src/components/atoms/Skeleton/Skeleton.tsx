@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { cn } from "../../../utils/cn";
 /** スケルトンのプロパティ。 @default undefined */
 export interface SkeletonProps {
@@ -12,6 +13,8 @@ export interface SkeletonProps {
   height?: string | number;
   /** 追加のクラス名。 @default undefined */
   className?: string;
+  /** ルート要素への ref。 @default undefined */
+  ref?: React.Ref<HTMLOutputElement>;
 }
 /** 読み込み中のプレースホルダー。 @default undefined */
 export function Skeleton({
@@ -20,10 +23,12 @@ export function Skeleton({
   width,
   height,
   className,
+  ref,
 }: SkeletonProps) {
   return (
     <output
       aria-label="Loading"
+      ref={ref}
       style={{ width, height }}
       className={cn(
         "block bg-surface-sunken",

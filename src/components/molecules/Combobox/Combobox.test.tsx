@@ -201,4 +201,73 @@ describe("Combobox", () => {
     await user.tab();
     expect(screen.getByRole("option", { name: "選択可能" })).toHaveFocus();
   });
+
+  it("label を指定すると入力欄に紐づく", () => {
+    render(<Combobox label="駅名" options={[]} onChange={vi.fn()} />);
+    expect(screen.getByLabelText("駅名")).toBe(screen.getByRole("combobox"));
+  });
+
+  it("freeSolo では入力した文字列をそのまま値として返す", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    const Controlled = () => {
+      const [value, setValue] = useState("");
+      return (
+        <Combobox
+          freeSolo
+          options={[
+            { label: "静岡駅", value: "静岡駅" },
+            { label: "安倍川駅", value: "安倍川駅" },
+          ]}
+          value={value}
+          onChange={(next) => {
+            setValue(next as string);
+            onChange(next);
+          }}
+        />
+      );
+    };
+    render(<Controlled />);
+
+    const input = screen.getByRole("combobox");
+    await user.type(input, "静岡");
+
+    expect(onChange).toHaveBeenLastCalledWith("静岡");
+    expect(input).toHaveValue("静岡");
+  });
+
+  it("freeSolo では候補選択時に候補の値を返す", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(
+      <Combobox
+        freeSolo
+        options={[
+          { label: "静岡駅", value: "静岡駅" },
+          { label: "安倍川駅", value: "安倍川駅" },
+        ]}
+        onChange={onChange}
+      />,
+    );
+
+    await user.type(screen.getByRole("combobox"), "安倍");
+    await user.click(screen.getByRole("option", { name: "安倍川駅" }));
+
+    expect(onChange).toHaveBeenLastCalledWith("安倍川駅");
+  });
+
+  it("freeSolo でない場合は入力だけでは値を返さない", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(
+      <Combobox
+        options={[{ label: "静岡駅", value: "静岡駅" }]}
+        onChange={onChange}
+      />,
+    );
+
+    await user.type(screen.getByRole("combobox"), "静岡");
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
 });

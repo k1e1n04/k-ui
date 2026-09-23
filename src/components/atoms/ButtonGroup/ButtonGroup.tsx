@@ -2,7 +2,7 @@
 import type React from "react";
 import { cn } from "../../../utils/cn";
 /** ボタングループのプロパティ。 @default undefined */
-export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ButtonGroupProps extends React.ComponentPropsWithRef<"div"> {
   /** 並びの方向。 @default "horizontal" */
   orientation?: "horizontal" | "vertical";
   /** 幅いっぱいに表示するか。 @default false */

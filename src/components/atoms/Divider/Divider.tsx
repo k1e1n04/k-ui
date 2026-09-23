@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { cn } from "../../../utils/cn";
 /** 区切り線のプロパティ。 @default undefined */
 export interface DividerProps {
@@ -10,6 +11,8 @@ export interface DividerProps {
   label?: string;
   /** 追加のクラス名。 @default undefined */
   className?: string;
+  /** ルート要素への ref。 @default undefined */
+  ref?: React.Ref<HTMLDivElement>;
 }
 /** 内容を視覚的に分ける区切り線。 @default undefined */
 export function Divider({
@@ -17,15 +20,16 @@ export function Divider({
   variant = "solid",
   label,
   className,
+  ref,
 }: DividerProps) {
   if (orientation === "vertical")
     return (
-      // biome-ignore lint/a11y/useFocusableInteractive: 区切り線は非操作要素
       // biome-ignore lint/a11y/useSemanticElements: 縦方向区切り線を表現するため
       <div
         role="separator"
         aria-orientation="vertical"
         aria-valuenow={0}
+        ref={ref}
         className={cn(
           "self-stretch border-l border-border",
           variant === "dashed" && "border-dashed",
@@ -34,12 +38,12 @@ export function Divider({
       />
     );
   return (
-    // biome-ignore lint/a11y/useFocusableInteractive: 区切り線は非操作要素
     // biome-ignore lint/a11y/useSemanticElements: ラベルを含む横方向区切り線を表現するため
     <div
       role="separator"
       aria-orientation="horizontal"
       aria-valuenow={0}
+      ref={ref}
       className={cn("flex items-center gap-3", className)}
     >
       <span

@@ -28,6 +28,13 @@ export interface ComboboxProps {
     onQuery?: (query: string) => void;
     /** 複数選択を有効にするか。 @default false */
     multiple?: boolean;
+    /**
+     * 候補に一致しない自由入力を許可するか（単一選択のみ）。
+     * 入力した文字列がそのまま値として onChange に渡る。 @default false
+     */
+    freeSolo?: boolean;
+    /** 入力欄のラベルテキスト。 @default undefined */
+    label?: string;
     /** 値が未選択のときに表示する文言。 @default "選択してください" */
     placeholder?: string;
     /** コンボボックス全体を無効化するか。 @default false */

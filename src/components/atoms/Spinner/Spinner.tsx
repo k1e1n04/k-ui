@@ -14,6 +14,8 @@ export interface SpinnerProps {
   label?: string;
   /** 追加のクラス名 */
   className?: string;
+  /** ルート要素への ref */
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 /** サイズに応じたスタイル */
@@ -30,9 +32,11 @@ export const Spinner: React.FC<SpinnerProps> = ({
   size = "medium",
   label,
   className,
+  ref,
 }) => {
   return (
     <div
+      ref={ref}
       className={cn(
         "flex items-center justify-center h-full min-h-[200px]",
         className,

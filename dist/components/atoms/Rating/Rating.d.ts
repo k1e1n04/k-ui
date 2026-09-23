@@ -18,6 +18,8 @@ export interface RatingProps {
     showValue?: boolean;
     /** 追加のクラス名 */
     className?: string;
+    /** ルート要素への ref */
+    ref?: React.Ref<HTMLElement>;
 }
 /**
  * Rating コンポーネント

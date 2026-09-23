@@ -10,7 +10,7 @@ export interface SelectOption {
     /** 無効状態 */
     disabled?: boolean;
 }
-export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange" | "size" | "value"> {
+export interface SelectProps extends Omit<React.ComponentPropsWithRef<"select">, "onChange" | "size" | "value"> {
     /** 選択肢リスト */
     options: SelectOption[];
     /** ラベルテキスト */

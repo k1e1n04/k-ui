@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { useState } from "react";
 import { cn } from "../../../utils/cn";
 /** アバターのサイズ。 @default undefined */
@@ -17,6 +18,8 @@ export interface AvatarProps {
   shape?: "circle" | "square";
   /** 追加のクラス名。 @default undefined */
   className?: string;
+  /** ルート要素への ref。 @default undefined */
+  ref?: React.Ref<HTMLElement>;
 }
 const sizeStyles: Record<AvatarSize, string> = {
   small: "h-8 w-8 text-xs",
@@ -31,6 +34,7 @@ export function Avatar({
   size = "medium",
   shape = "circle",
   className,
+  ref,
 }: AvatarProps) {
   const [failed, setFailed] = useState(false);
   const initials =
@@ -52,12 +56,18 @@ export function Avatar({
       <img
         src={src}
         alt={alt}
+        ref={ref as React.Ref<HTMLImageElement>}
         onError={() => setFailed(true)}
         className={common}
       />
     );
   return (
-    <span role="img" aria-label={alt} className={common}>
+    <span
+      role="img"
+      aria-label={alt}
+      ref={ref as React.Ref<HTMLSpanElement>}
+      className={common}
+    >
       {initials}
     </span>
   );

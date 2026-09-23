@@ -10,7 +10,7 @@ import { FormField } from "../FormField";
 export type TextareaSize = "small" | "medium" | "large";
 
 export interface TextareaProps
-  extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange"> {
+  extends Omit<React.ComponentPropsWithRef<"textarea">, "onChange"> {
   /** ラベルテキスト */
   label?: string;
   /** エラーメッセージ（指定されるとエラー状態を表示する） */

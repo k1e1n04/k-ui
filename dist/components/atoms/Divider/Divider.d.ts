@@ -1,3 +1,4 @@
+import type React from "react";
 /** 区切り線のプロパティ。 @default undefined */
 export interface DividerProps {
     /** 方向。 @default "horizontal" */
@@ -8,7 +9,9 @@ export interface DividerProps {
     label?: string;
     /** 追加のクラス名。 @default undefined */
     className?: string;
+    /** ルート要素への ref。 @default undefined */
+    ref?: React.Ref<HTMLDivElement>;
 }
 /** 内容を視覚的に分ける区切り線。 @default undefined */
-export declare function Divider({ orientation, variant, label, className, }: DividerProps): import("react").JSX.Element;
+export declare function Divider({ orientation, variant, label, className, ref, }: DividerProps): React.JSX.Element;
 //# sourceMappingURL=Divider.d.ts.map

@@ -7,7 +7,7 @@ import { cn } from "../../../utils/cn";
 /** プログレスバーのサイズ */
 export type ProgressBarSize = "sm" | "md" | "lg";
 
-export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ProgressBarProps extends React.ComponentPropsWithRef<"div"> {
   /** 現在の進捗値 */
   value: number;
   /** 進捗の最大値 */

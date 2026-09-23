@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { useId } from "react";
 import { cn } from "../../../utils/cn";
 import { FormField } from "../FormField";
@@ -37,6 +38,8 @@ export interface RadioGroupProps {
   name?: string;
   /** 追加のクラス名。 @default undefined */
   className?: string;
+  /** ルート要素への ref。 @default undefined */
+  ref?: React.Ref<HTMLDivElement>;
 }
 /** 選択肢から一つを選ぶラジオグループ。 @default undefined */
 export function RadioGroup({
@@ -52,6 +55,7 @@ export function RadioGroup({
   disabled = false,
   name,
   className,
+  ref,
 }: RadioGroupProps) {
   const id = useId();
   return (
@@ -66,6 +70,7 @@ export function RadioGroup({
       {({ describedBy }) => (
         <div
           role="radiogroup"
+          ref={ref}
           aria-label={label}
           aria-describedby={describedBy}
           className={cn(

@@ -7,7 +7,7 @@ import { cn } from "../../../utils/cn";
 export type PaddingSize = "none" | "sm" | "md" | "lg";
 export type ShadowSize = "none" | "sm" | "md";
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends React.ComponentPropsWithRef<"div"> {
   /**
    * パディングのサイズ
    * @default 'md'

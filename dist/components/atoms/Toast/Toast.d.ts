@@ -30,7 +30,9 @@ export interface ToastProps {
     onBlur?: React.FocusEventHandler<HTMLOutputElement>;
     /** 追加のクラス名。 @default undefined */
     className?: string;
+    /** ルート要素への ref。 @default undefined */
+    ref?: React.Ref<HTMLOutputElement>;
 }
 /** 一時的な通知を表示するトースト。 @default undefined */
-export declare function Toast({ variant, title, message, onDismiss, action, className, ...events }: ToastProps): React.JSX.Element;
+export declare function Toast({ variant, title, message, onDismiss, action, className, ref, ...events }: ToastProps): React.JSX.Element;
 //# sourceMappingURL=Toast.d.ts.map

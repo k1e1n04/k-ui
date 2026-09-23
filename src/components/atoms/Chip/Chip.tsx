@@ -25,6 +25,8 @@ export interface ChipProps {
   disabled?: boolean;
   /** 追加のクラス名。 @default undefined */
   className?: string;
+  /** ルート要素への ref。 @default undefined */
+  ref?: React.Ref<HTMLSpanElement>;
 }
 const styles: Record<ChipVariant, string> = {
   default: "bg-surface-sunken text-foreground",
@@ -43,6 +45,7 @@ export function Chip({
   onDelete,
   disabled = false,
   className,
+  ref,
 }: ChipProps) {
   const content = <span className={className}>{children}</span>;
   const deleteButton = onDelete && (
@@ -59,6 +62,7 @@ export function Chip({
   if (onClick && onDelete)
     return (
       <span
+        ref={ref}
         className={cn(
           "inline-flex items-center rounded-full px-3 py-1 text-sm",
           styles[variant],
@@ -81,6 +85,7 @@ export function Chip({
   if (onClick)
     return (
       <span
+        ref={ref}
         className={cn(
           "inline-flex items-center rounded-full px-3 py-1 text-sm",
           styles[variant],
@@ -101,6 +106,7 @@ export function Chip({
     );
   return (
     <span
+      ref={ref}
       className={cn(
         "inline-flex items-center rounded-full px-3 py-1 text-sm",
         styles[variant],

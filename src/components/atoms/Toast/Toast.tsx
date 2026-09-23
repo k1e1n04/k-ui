@@ -32,6 +32,8 @@ export interface ToastProps {
   onBlur?: React.FocusEventHandler<HTMLOutputElement>;
   /** 追加のクラス名。 @default undefined */
   className?: string;
+  /** ルート要素への ref。 @default undefined */
+  ref?: React.Ref<HTMLOutputElement>;
 }
 const toastStyles: Record<ToastVariant, string> = {
   success: "border-success-main bg-success-subtle",
@@ -47,11 +49,13 @@ export function Toast({
   onDismiss,
   action,
   className,
+  ref,
   ...events
 }: ToastProps) {
   return (
     <output
       {...events}
+      ref={ref}
       className={cn(
         "flex min-w-72 items-start gap-3 rounded-md border p-3 text-foreground shadow-lg",
         toastStyles[variant],

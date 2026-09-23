@@ -3,7 +3,7 @@ import type React from "react";
 export type InputType = "text" | "number" | "date" | "time" | "url" | "month" | "hidden";
 /** インプットのサイズ */
 export type InputSize = "small" | "medium" | "large";
-export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size" | "onChange" | "value" | "className"> {
+export interface InputProps extends Omit<React.ComponentPropsWithRef<"input">, "type" | "size" | "onChange" | "value" | "className"> {
     /** インプットのタイプ */
     type?: InputType;
     /** ラベルテキスト */

@@ -1,3 +1,4 @@
+import type React from "react";
 /** セグメントの選択肢。 @default undefined */
 export interface SegmentedControlOption {
     /** 表示名。 @default undefined */
@@ -25,7 +26,9 @@ export interface SegmentedControlProps {
     "aria-labelledby"?: string;
     /** 追加のクラス名。 @default undefined */
     className?: string;
+    /** ルート要素への ref。 @default undefined */
+    ref?: React.Ref<HTMLDivElement>;
 }
 /** 選択肢を横並びのセグメントとして表示するコントロール。 @default undefined */
-export declare function SegmentedControl({ options, value, onChange, fullWidth, disabled, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, className, }: SegmentedControlProps): import("react").JSX.Element;
+export declare function SegmentedControl({ options, value, onChange, fullWidth, disabled, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, className, ref, }: SegmentedControlProps): React.JSX.Element;
 //# sourceMappingURL=SegmentedControl.d.ts.map

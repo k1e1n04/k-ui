@@ -8,7 +8,9 @@ import {
   offset,
   type Placement,
   type ShiftOptions,
+  type SizeOptions,
   shift,
+  size,
   useFloating,
 } from "@floating-ui/react-dom";
 import { type CSSProperties, type RefCallback, useMemo } from "react";
@@ -23,6 +25,11 @@ export interface UseFloatingElementOptions {
   flip?: boolean;
   /** 画面端からずらして収める設定。 @default { padding: 8 } */
   shift?: boolean | ShiftOptions | Middleware;
+  /**
+   * 利用可能領域に応じてフローティング要素のサイズを調整するか。
+   * `true` を指定すると基準要素の幅に合わせる。 @default false
+   */
+  size?: boolean | SizeOptions;
   /** 要素位置の変化を自動追従するか。 @default true */
   autoUpdate?: boolean;
 }
@@ -59,6 +66,7 @@ export function useFloatingElement(
     offset: offsetValue = 8,
     flip: enableFlip = true,
     shift: shiftOption,
+    size: sizeOption = false,
     autoUpdate: enableAutoUpdate = true,
   } = options;
   const middleware = useMemo(() => {
@@ -75,12 +83,30 @@ export function useFloatingElement(
               ),
             ];
 
+    const sizeMiddleware =
+      sizeOption === false
+        ? []
+        : [
+            size(
+              sizeOption === true
+                ? {
+                    apply({ rects, elements }) {
+                      Object.assign(elements.floating.style, {
+                        width: `${rects.reference.width}px`,
+                      });
+                    },
+                  }
+                : sizeOption,
+            ),
+          ];
+
     return [
       offset(offsetValue),
       ...(enableFlip ? [flip()] : []),
       ...shiftMiddleware,
+      ...sizeMiddleware,
     ];
-  }, [enableFlip, offsetValue, shiftOption]);
+  }, [enableFlip, offsetValue, shiftOption, sizeOption]);
   const { floatingStyles, refs, update } = useFloating({
     middleware,
     placement,

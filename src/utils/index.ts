@@ -13,6 +13,7 @@ export {
   worldXToLng,
   worldYToLat,
 } from "./geo";
+export { mergeRefs } from "./mergeRefs";
 export type { TileUrlBuilder } from "./tiles";
 export {
   GSI_ATTRIBUTION,

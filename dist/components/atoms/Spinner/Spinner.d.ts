@@ -8,6 +8,8 @@ export interface SpinnerProps {
     label?: string;
     /** 追加のクラス名 */
     className?: string;
+    /** ルート要素への ref */
+    ref?: React.Ref<HTMLDivElement>;
 }
 /**
  * ローディングスピナーコンポーネント

@@ -22,3 +22,23 @@ export const Default: StoryObj<typeof meta> = {
     );
   },
 };
+
+export const FreeSolo: StoryObj<typeof meta> = {
+  render: () => {
+    const [value, setValue] = useState<string | string[]>("");
+    return (
+      <Combobox
+        freeSolo
+        label="駅名"
+        placeholder="駅名を入力"
+        value={value}
+        onChange={setValue}
+        options={[
+          { label: "静岡駅", value: "静岡駅" },
+          { label: "新静岡駅", value: "新静岡駅" },
+          { label: "安倍川駅", value: "安倍川駅" },
+        ]}
+      />
+    );
+  },
+};

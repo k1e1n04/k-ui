@@ -6,7 +6,7 @@ import { cn } from "../../../utils/cn";
 
 export interface SearchInputProps
   extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
+    React.ComponentPropsWithRef<"input">,
     "type" | "onChange" | "value" | "className"
   > {
   /** 現在の検索キーワード */

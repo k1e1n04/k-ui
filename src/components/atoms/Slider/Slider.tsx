@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { useId } from "react";
 import { cn } from "../../../utils/cn";
 import { FormField } from "../FormField";
@@ -28,6 +29,8 @@ export interface SliderProps {
   disabled?: boolean;
   /** 追加のクラス名。 @default undefined */
   className?: string;
+  /** 先頭の input 要素への ref。 @default undefined */
+  ref?: React.Ref<HTMLInputElement>;
 }
 /** 数値または範囲を選択するスライダー。 @default undefined */
 export function Slider({
@@ -42,6 +45,7 @@ export function Slider({
   error,
   disabled = false,
   className,
+  ref,
 }: SliderProps) {
   const id = useId();
   const range = Array.isArray(value);
@@ -68,6 +72,7 @@ export function Slider({
             <input
               key={range ? (index === 0 ? "minimum" : "maximum") : "value"}
               id={`${id}-${index}`}
+              ref={index === 0 ? ref : undefined}
               type="range"
               min={min}
               max={max}

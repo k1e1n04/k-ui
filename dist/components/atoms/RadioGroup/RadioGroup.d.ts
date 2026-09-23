@@ -1,3 +1,4 @@
+import type React from "react";
 /** ラジオグループの選択肢。 @default undefined */
 export interface RadioGroupOption {
     /** 表示名。 @default undefined */
@@ -33,7 +34,9 @@ export interface RadioGroupProps {
     name?: string;
     /** 追加のクラス名。 @default undefined */
     className?: string;
+    /** ルート要素への ref。 @default undefined */
+    ref?: React.Ref<HTMLDivElement>;
 }
 /** 選択肢から一つを選ぶラジオグループ。 @default undefined */
-export declare function RadioGroup({ options, value, onChange, label, description, error, required, orientation, size, disabled, name, className, }: RadioGroupProps): import("react").JSX.Element;
+export declare function RadioGroup({ options, value, onChange, label, description, error, required, orientation, size, disabled, name, className, ref, }: RadioGroupProps): React.JSX.Element;
 //# sourceMappingURL=RadioGroup.d.ts.map

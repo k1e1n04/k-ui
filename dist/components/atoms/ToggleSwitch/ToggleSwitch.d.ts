@@ -14,6 +14,8 @@ export interface ToggleSwitchProps {
     size?: ToggleSwitchSize;
     /** 追加のクラス名 */
     className?: string;
+    /** 隠し input 要素への ref */
+    ref?: React.Ref<HTMLInputElement>;
 }
 /**
  * トグルスイッチコンポーネント

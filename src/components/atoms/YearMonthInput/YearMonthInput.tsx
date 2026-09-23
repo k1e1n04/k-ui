@@ -42,6 +42,8 @@ export interface YearMonthInputProps {
   "aria-invalid"?: boolean;
   /** aria-describedby の上書き */
   "aria-describedby"?: string;
+  /** input 要素への ref */
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 /** インプットのサイズスタイル */
@@ -81,6 +83,7 @@ export const YearMonthInput: React.FC<YearMonthInputProps> = ({
   name,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedBy,
+  ref,
 }) => {
   const baseId = useId();
   const inputId = id ?? `${baseId}-year-month-input`;
@@ -112,6 +115,7 @@ export const YearMonthInput: React.FC<YearMonthInputProps> = ({
         <div className="relative flex items-center">
           <input
             id={inputId}
+            ref={ref}
             type="month"
             name={name}
             value={value ?? ""}

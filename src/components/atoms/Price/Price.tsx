@@ -28,6 +28,8 @@ export interface PriceProps {
   caption?: React.ReactNode;
   /** 追加のクラス名 */
   className?: string;
+  /** ルート要素への ref */
+  ref?: React.Ref<HTMLSpanElement>;
 }
 
 const sizeStyles: Record<PriceSize, string> = {
@@ -76,11 +78,12 @@ export const Price: React.FC<PriceProps> = ({
   unit,
   caption,
   className,
+  ref,
 }) => {
   const formatted = format === "yen" ? formatYen(value) : formatManYen(value);
 
   return (
-    <span className={cn("inline-flex flex-col", className)}>
+    <span ref={ref} className={cn("inline-flex flex-col", className)}>
       <span
         className={cn(
           "font-bold tabular-nums leading-tight",

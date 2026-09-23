@@ -1,3 +1,4 @@
+import type React from "react";
 /** スライダー値。 @default undefined */
 export type SliderValue = number | [number, number];
 /** スライダーのプロパティ。 @default undefined */
@@ -24,7 +25,9 @@ export interface SliderProps {
     disabled?: boolean;
     /** 追加のクラス名。 @default undefined */
     className?: string;
+    /** 先頭の input 要素への ref。 @default undefined */
+    ref?: React.Ref<HTMLInputElement>;
 }
 /** 数値または範囲を選択するスライダー。 @default undefined */
-export declare function Slider({ value, onChange, min, max, step, marks, label, description, error, disabled, className, }: SliderProps): import("react").JSX.Element;
+export declare function Slider({ value, onChange, min, max, step, marks, label, description, error, disabled, className, ref, }: SliderProps): React.JSX.Element;
 //# sourceMappingURL=Slider.d.ts.map

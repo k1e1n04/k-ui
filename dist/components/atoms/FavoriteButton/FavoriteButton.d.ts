@@ -14,6 +14,8 @@ export interface FavoriteButtonProps {
     disabled?: boolean;
     /** 追加のクラス名 */
     className?: string;
+    /** ボタン要素への ref */
+    ref?: React.Ref<HTMLButtonElement>;
 }
 /**
  * FavoriteButton コンポーネント

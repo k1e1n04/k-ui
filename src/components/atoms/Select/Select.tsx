@@ -21,7 +21,7 @@ export interface SelectOption {
 
 export interface SelectProps
   extends Omit<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
+    React.ComponentPropsWithRef<"select">,
     "onChange" | "size" | "value"
   > {
   /** 選択肢リスト */

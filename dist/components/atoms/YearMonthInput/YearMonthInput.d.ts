@@ -34,6 +34,8 @@ export interface YearMonthInputProps {
     "aria-invalid"?: boolean;
     /** aria-describedby の上書き */
     "aria-describedby"?: string;
+    /** input 要素への ref */
+    ref?: React.Ref<HTMLInputElement>;
 }
 /**
  * 年月入力コンポーネント

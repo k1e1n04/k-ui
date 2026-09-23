@@ -1,5 +1,5 @@
 import type React from "react";
-export interface SearchInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange" | "value" | "className"> {
+export interface SearchInputProps extends Omit<React.ComponentPropsWithRef<"input">, "type" | "onChange" | "value" | "className"> {
     /** 現在の検索キーワード */
     value?: string;
     /** 変更ハンドラー（入力値のみを受け取る） */

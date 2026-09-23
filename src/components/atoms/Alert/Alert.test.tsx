@@ -11,18 +11,12 @@ describe("Alert", () => {
     expect(alert).toHaveTextContent("テストメッセージ");
   });
 
-  it("デフォルトで info バリアントのスタイルが適用される", () => {
+  it("デフォルトで info バリアントの配色が適用される", () => {
     render(<Alert message="テスト" />);
     const alert = screen.getByRole("alert");
-    expect(alert.getAttribute("style")).toContain(
-      "background-color: var(--kui-color-info-subtle);",
-    );
-    expect(alert.getAttribute("style")).toContain(
-      "border-color: var(--kui-color-info);",
-    );
-    expect(alert.getAttribute("style")).toContain(
-      "color: var(--kui-color-info);",
-    );
+    expect(alert).toHaveClass("bg-info-subtle");
+    expect(alert).toHaveClass("border-info-main/25");
+    expect(alert).toHaveClass("border-l-info-main");
     expect(alert).toHaveClass("border-l-4");
   });
 
@@ -34,46 +28,24 @@ describe("Alert", () => {
     },
   );
 
-  it("variant=error のとき danger スタイルが適用される", () => {
-    render(<Alert message="テスト" variant="error" />);
-    const alert = screen.getByRole("alert");
-    expect(alert.getAttribute("style")).toContain(
-      "background-color: var(--kui-color-danger-subtle);",
-    );
-    expect(alert.getAttribute("style")).toContain(
-      "border-color: var(--kui-color-danger);",
-    );
-    expect(alert.getAttribute("style")).toContain(
-      "color: var(--kui-color-danger);",
-    );
-  });
+  it.each([
+    ["success", "bg-success-subtle", "border-l-success-main"],
+    ["info", "bg-info-subtle", "border-l-info-main"],
+    ["warning", "bg-warning-subtle", "border-l-warning-main"],
+    ["error", "bg-danger-subtle", "border-l-danger-main"],
+  ] as const)(
+    "variant=%s のとき対応する配色が適用される",
+    (variant, background, accent) => {
+      render(<Alert message="テスト" variant={variant} />);
+      const alert = screen.getByRole("alert");
+      expect(alert).toHaveClass(background);
+      expect(alert).toHaveClass(accent);
+    },
+  );
 
-  it("variant=success のとき success スタイルが適用される", () => {
-    render(<Alert message="テスト" variant="success" />);
-    const alert = screen.getByRole("alert");
-    expect(alert.getAttribute("style")).toContain(
-      "background-color: var(--kui-color-success-subtle);",
-    );
-    expect(alert.getAttribute("style")).toContain(
-      "border-color: var(--kui-color-success);",
-    );
-    expect(alert.getAttribute("style")).toContain(
-      "color: var(--kui-color-success);",
-    );
-  });
-
-  it("variant=warning のとき warning スタイルが適用される", () => {
-    render(<Alert message="テスト" variant="warning" />);
-    const alert = screen.getByRole("alert");
-    expect(alert.getAttribute("style")).toContain(
-      "background-color: var(--kui-color-warning-subtle);",
-    );
-    expect(alert.getAttribute("style")).toContain(
-      "border-color: var(--kui-color-warning);",
-    );
-    expect(alert.getAttribute("style")).toContain(
-      "color: var(--kui-color-warning);",
-    );
+  it("バリアントごとのアイコンを表示する", () => {
+    const { container } = render(<Alert message="テスト" variant="warning" />);
+    expect(container.querySelector("svg")).toBeInTheDocument();
   });
 
   it("className が渡される", () => {

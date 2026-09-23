@@ -9,6 +9,7 @@ const floatingMocks = vi.hoisted(() => ({
   flip: vi.fn((options?: unknown) => ({ name: "flip", options })),
   offset: vi.fn((options?: unknown) => ({ name: "offset", options })),
   shift: vi.fn((options?: unknown) => ({ name: "shift", options })),
+  size: vi.fn((options?: unknown) => ({ name: "size", options })),
   update: vi.fn(),
   useFloating: vi.fn(),
 }));
@@ -19,6 +20,7 @@ vi.mock("@floating-ui/react-dom", () => ({
   flip: floatingMocks.flip,
   offset: floatingMocks.offset,
   shift: floatingMocks.shift,
+  size: floatingMocks.size,
   useFloating: floatingMocks.useFloating,
 }));
 
@@ -30,6 +32,7 @@ interface FloatingElementFixtureProps {
   offset?: number;
   placement?: "bottom-start" | "top-end";
   shift?: boolean | { padding: number };
+  size?: boolean | { padding: number };
 }
 
 const FloatingElementFixture = (options: FloatingElementFixtureProps) => {
@@ -100,5 +103,26 @@ describe("useFloatingElement", () => {
       placement: "top-end",
       whileElementsMounted: undefined,
     });
+  });
+
+  it("size=true で基準要素の幅に合わせる size ミドルウェアを追加する", () => {
+    render(<FloatingElementFixture size />);
+
+    expect(floatingMocks.size).toHaveBeenCalledWith(
+      expect.objectContaining({ apply: expect.any(Function) }),
+    );
+    expect(floatingMocks.useFloating).toHaveBeenCalledWith(
+      expect.objectContaining({
+        middleware: expect.arrayContaining([
+          { name: "size", options: expect.anything() },
+        ]),
+      }),
+    );
+  });
+
+  it("size にオプションを渡すとそのまま size ミドルウェアへ渡す", () => {
+    render(<FloatingElementFixture size={{ padding: 12 }} />);
+
+    expect(floatingMocks.size).toHaveBeenCalledWith({ padding: 12 });
   });
 });

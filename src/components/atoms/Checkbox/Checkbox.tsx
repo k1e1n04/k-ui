@@ -21,6 +21,8 @@ export interface CheckboxProps {
   size?: CheckboxSize;
   /** 追加のクラス名 */
   className?: string;
+  /** 隠し input 要素への ref */
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 /** ボックスのサイズスタイル */
@@ -56,6 +58,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   label,
   size = "medium",
   className,
+  ref,
 }) => {
   const id = useId();
 
@@ -71,6 +74,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       {/* 隠しチェックボックス（アクセシビリティ対応） */}
       <input
         id={id}
+        ref={ref}
         type="checkbox"
         checked={checked}
         aria-checked={checked}

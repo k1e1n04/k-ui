@@ -1,6 +1,6 @@
 import type React from "react";
 /** パスワード入力のプロパティ。 @default undefined */
-export interface PasswordInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size" | "value" | "onChange"> {
+export interface PasswordInputProps extends Omit<React.ComponentPropsWithRef<"input">, "type" | "size" | "value" | "onChange"> {
     /** 現在値。 @default undefined */
     value?: string;
     /** 値変更時の処理。 @default undefined */

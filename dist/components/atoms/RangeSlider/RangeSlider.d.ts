@@ -24,6 +24,8 @@ export interface RangeSliderProps {
     formatValue?: (value: number) => string;
     /** 追加のクラス名 */
     className?: string;
+    /** トラック要素への ref */
+    ref?: React.Ref<HTMLDivElement>;
 }
 /**
  * RangeSlider コンポーネント

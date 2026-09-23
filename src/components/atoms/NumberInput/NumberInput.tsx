@@ -1,9 +1,10 @@
 "use client";
 
 import type React from "react";
-import { useCallback, useId, useRef, useState } from "react";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
 
 import { cn } from "../../../utils/cn";
+import { mergeRefs } from "../../../utils/mergeRefs";
 import { FormField } from "../FormField";
 
 /** NumberInput のサイズ */
@@ -55,6 +56,8 @@ export interface NumberInputProps {
   "aria-invalid"?: boolean;
   /** aria-describedby の上書き */
   "aria-describedby"?: string;
+  /** input 要素への ref */
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 /** インプットのサイズスタイル */
@@ -99,11 +102,13 @@ export const NumberInput: React.FC<NumberInputProps> = ({
   name,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedBy,
+  ref,
 }) => {
   const baseId = useId();
   const inputId = id ?? `${baseId}-number-input`;
   const resolvedAriaInvalid = error ? true : (ariaInvalid ?? false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const mergedInputRef = useMemo(() => mergeRefs(inputRef, ref), [ref]);
 
   /** 数値を表示用文字列に変換 */
   const formatValue = useCallback(
@@ -211,7 +216,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
           {name && <input type="hidden" name={name} value={hiddenValue} />}
           <div className="relative flex items-center">
             <input
-              ref={inputRef}
+              ref={mergedInputRef}
               id={inputId}
               type="text"
               inputMode="decimal"

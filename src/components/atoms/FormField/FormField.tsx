@@ -34,6 +34,8 @@ export interface FormFieldProps {
   className?: string;
   /** 既存の aria-describedby（内部IDとマージされる） */
   "aria-describedby"?: string;
+  /** ルート要素への ref */
+  ref?: React.Ref<HTMLDivElement>;
   /** フィールド本体 */
   children:
     | React.ReactNode
@@ -73,6 +75,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   size = "medium",
   className,
   "aria-describedby": ariaDescribedBy,
+  ref,
   children,
 }) => {
   const baseId = useId();
@@ -97,7 +100,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       : children;
 
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div ref={ref} className={cn("flex flex-col", className)}>
       {label && (
         <label
           htmlFor={htmlFor}

@@ -17,7 +17,9 @@ export interface ChipProps {
     disabled?: boolean;
     /** 追加のクラス名。 @default undefined */
     className?: string;
+    /** ルート要素への ref。 @default undefined */
+    ref?: React.Ref<HTMLSpanElement>;
 }
 /** 選択・削除操作を提供できるチップ。 @default undefined */
-export declare function Chip({ children, variant, selected, onClick, onDelete, disabled, className, }: ChipProps): React.JSX.Element;
+export declare function Chip({ children, variant, selected, onClick, onDelete, disabled, className, ref, }: ChipProps): React.JSX.Element;
 //# sourceMappingURL=Chip.d.ts.map

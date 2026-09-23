@@ -24,6 +24,8 @@ export interface RatingProps {
   showValue?: boolean;
   /** 追加のクラス名 */
   className?: string;
+  /** ルート要素への ref */
+  ref?: React.Ref<HTMLElement>;
 }
 
 const sizeStyles: Record<RatingSize, string> = {
@@ -78,6 +80,7 @@ export const Rating: React.FC<RatingProps> = ({
   label = "評価",
   showValue = false,
   className,
+  ref,
 }) => {
   const interactive = Boolean(onChange) && !readOnly;
   const stars = Array.from({ length: max }, (_, index) => index + 1);
@@ -127,6 +130,7 @@ export const Rating: React.FC<RatingProps> = ({
   if (interactive) {
     return (
       <fieldset
+        ref={ref as React.Ref<HTMLFieldSetElement>}
         className={cn(
           "m-0 inline-flex items-center gap-1 border-0 p-0",
           className,
@@ -141,6 +145,7 @@ export const Rating: React.FC<RatingProps> = ({
 
   return (
     <span
+      ref={ref as React.Ref<HTMLSpanElement>}
       className={cn("inline-flex items-center gap-1", className)}
       role="img"
       aria-label={`${label} ${value} / ${max}`}

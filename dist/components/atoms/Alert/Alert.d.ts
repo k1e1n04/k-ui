@@ -3,7 +3,7 @@ import type React from "react";
  * Alertコンポーネントのバリアント
  */
 export type AlertVariant = "success" | "info" | "warning" | "error";
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AlertProps extends React.ComponentPropsWithRef<"div"> {
     /**
      * アラートの種別
      * @default 'info'

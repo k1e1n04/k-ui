@@ -1,7 +1,7 @@
 import type React from "react";
 /** テキストエリアのサイズ */
 export type TextareaSize = "small" | "medium" | "large";
-export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange"> {
+export interface TextareaProps extends Omit<React.ComponentPropsWithRef<"textarea">, "onChange"> {
     /** ラベルテキスト */
     label?: string;
     /** エラーメッセージ（指定されるとエラー状態を表示する） */

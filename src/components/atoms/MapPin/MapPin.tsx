@@ -21,6 +21,8 @@ export interface MapPinProps {
   selected?: boolean;
   /** 追加のクラス名 */
   className?: string;
+  /** ルート要素への ref */
+  ref?: React.Ref<HTMLSpanElement>;
 }
 
 const toneStyles: Record<MapPinTone, string> = {
@@ -65,9 +67,11 @@ export const MapPin: React.FC<MapPinProps> = ({
   size = "md",
   selected = false,
   className,
+  ref,
 }) => {
   return (
     <span
+      ref={ref}
       className={cn("relative inline-flex flex-col items-center", className)}
     >
       <span

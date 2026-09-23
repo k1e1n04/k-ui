@@ -14,6 +14,8 @@ export interface MapPinProps {
     selected?: boolean;
     /** 追加のクラス名 */
     className?: string;
+    /** ルート要素への ref */
+    ref?: React.Ref<HTMLSpanElement>;
 }
 /**
  * MapPin コンポーネント

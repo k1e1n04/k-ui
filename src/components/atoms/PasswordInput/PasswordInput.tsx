@@ -6,7 +6,7 @@ import { FormField } from "../FormField";
 /** パスワード入力のプロパティ。 @default undefined */
 export interface PasswordInputProps
   extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
+    React.ComponentPropsWithRef<"input">,
     "type" | "size" | "value" | "onChange"
   > {
   /** 現在値。 @default undefined */

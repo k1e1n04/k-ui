@@ -35,39 +35,30 @@ export interface StatCardsProps {
 }
 
 /** カラーに応じたスタイル */
-const colorStyles: Record<
-  StatCardColor,
-  { bg: string; text: string; border: string }
-> = {
+const colorStyles: Record<StatCardColor, { bg: string; accent: string }> = {
   blue: {
     bg: "bg-info-subtle",
-    text: "text-info-main",
-    border: "border-info-main",
+    accent: "border-l-info-main",
   },
   green: {
     bg: "bg-success-subtle",
-    text: "text-success-main",
-    border: "border-success-main",
+    accent: "border-l-success-main",
   },
   purple: {
     bg: "bg-accent-subtle",
-    text: "text-accent-main",
-    border: "border-accent-main",
+    accent: "border-l-accent-main",
   },
   red: {
     bg: "bg-danger-subtle",
-    text: "text-danger-main",
-    border: "border-danger-main",
+    accent: "border-l-danger-main",
   },
   yellow: {
     bg: "bg-warning-subtle",
-    text: "text-warning-main",
-    border: "border-warning-main",
+    accent: "border-l-warning-main",
   },
   gray: {
     bg: "bg-surface-raised",
-    text: "text-foreground",
-    border: "border-border",
+    accent: "border-l-border-strong",
   },
 };
 
@@ -99,12 +90,16 @@ export const StatCards: React.FC<StatCardsProps> = ({
         return (
           <div
             key={card.label}
-            className={cn("border rounded-lg p-4", styles.bg, styles.border)}
+            className={cn(
+              "rounded-lg border border-border border-l-4 p-4",
+              styles.bg,
+              styles.accent,
+            )}
           >
-            <h3 className={cn("text-sm font-medium mb-1", styles.text)}>
+            <h3 className="mb-1 text-sm font-medium text-muted">
               {card.label}
             </h3>
-            <p className={cn("text-2xl font-bold", styles.text)}>
+            <p className="text-2xl font-bold text-foreground">
               {formatValue(card.value)}
             </p>
           </div>

@@ -14,7 +14,7 @@ export type BadgeVariant =
   | "danger"
   | "neutral";
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps extends React.ComponentPropsWithRef<"span"> {
   /**
    * バッジの種別
    * @default 'info'

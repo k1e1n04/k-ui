@@ -9,7 +9,7 @@ import { Typography } from "../Typography";
  */
 export type AlertVariant = "success" | "info" | "warning" | "error";
 
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AlertProps extends React.ComponentPropsWithRef<"div"> {
   /**
    * アラートの種別
    * @default 'info'
@@ -21,41 +21,76 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   message: string;
 }
 
-const variantStyles: Record<AlertVariant, React.CSSProperties> = {
-  error: {
-    backgroundColor: "var(--kui-color-danger-subtle)",
-    borderColor: "var(--kui-color-danger)",
-    borderLeftColor: "var(--kui-color-danger)",
-    color: "var(--kui-color-danger)",
-  },
-  warning: {
-    backgroundColor: "var(--kui-color-warning-subtle)",
-    borderColor: "var(--kui-color-warning)",
-    borderLeftColor: "var(--kui-color-warning)",
-    color: "var(--kui-color-warning)",
-  },
-  info: {
-    backgroundColor: "var(--kui-color-info-subtle)",
-    borderColor: "var(--kui-color-info)",
-    borderLeftColor: "var(--kui-color-info)",
-    color: "var(--kui-color-info)",
-  },
-  success: {
-    backgroundColor: "var(--kui-color-success-subtle)",
-    borderColor: "var(--kui-color-success)",
-    borderLeftColor: "var(--kui-color-success)",
-    color: "var(--kui-color-success)",
-  },
+/**
+ * バリアントごとの配色。
+ * 背景は subtle、枠はメインカラーを薄く、左のアクセントだけメインカラーを効かせる。
+ * 本文は foreground にして可読性と落ち着きを優先する。
+ */
+const variantStyles: Record<AlertVariant, string> = {
+  success:
+    "border-success-main/25 border-l-success-main bg-success-subtle text-foreground",
+  info: "border-info-main/25 border-l-info-main bg-info-subtle text-foreground",
+  warning:
+    "border-warning-main/25 border-l-warning-main bg-warning-subtle text-foreground",
+  error:
+    "border-danger-main/25 border-l-danger-main bg-danger-subtle text-foreground",
 };
 
-const variantToneMap: Record<
-  AlertVariant,
-  "danger" | "warning" | "info" | "success"
-> = {
-  error: "danger",
-  warning: "warning",
-  info: "info",
-  success: "success",
+const iconColorStyles: Record<AlertVariant, string> = {
+  success: "text-success-main",
+  info: "text-info-main",
+  warning: "text-warning-main",
+  error: "text-danger-main",
+};
+
+const AlertIcon: React.FC<{
+  variant: AlertVariant;
+  className?: string;
+}> = ({ variant, className }) => {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+    className,
+  };
+
+  if (variant === "success") {
+    return (
+      <svg {...common}>
+        <circle cx="12" cy="12" r="9" />
+        <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+      </svg>
+    );
+  }
+  if (variant === "warning") {
+    return (
+      <svg {...common}>
+        <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+        <path d="M12 9v4" />
+        <path d="M12 17h.01" />
+      </svg>
+    );
+  }
+  if (variant === "error") {
+    return (
+      <svg {...common}>
+        <circle cx="12" cy="12" r="9" />
+        <path d="m15 9-6 6" />
+        <path d="m9 9 6 6" />
+      </svg>
+    );
+  }
+  return (
+    <svg {...common}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5" />
+      <path d="M12 8h.01" />
+    </svg>
+  );
 };
 
 /**
@@ -79,11 +114,19 @@ export const Alert: React.FC<AlertProps> = ({
   return (
     <div
       role="alert"
-      className={cn("rounded-md border border-l-4 px-4 py-3", className)}
-      style={{ ...variantStyles[variant], ...style }}
+      className={cn(
+        "flex items-start gap-3 rounded-lg border border-l-4 px-4 py-3",
+        variantStyles[variant],
+        className,
+      )}
+      style={style}
       {...props}
     >
-      <Typography as="span" variant="body-sm" tone={variantToneMap[variant]}>
+      <AlertIcon
+        variant={variant}
+        className={cn("mt-0.5 h-5 w-5 shrink-0", iconColorStyles[variant])}
+      />
+      <Typography as="span" variant="body-sm">
         {message}
       </Typography>
     </div>

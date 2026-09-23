@@ -1,9 +1,10 @@
 "use client";
 
 import type React from "react";
-import { useId, useRef } from "react";
+import { useId, useMemo, useRef } from "react";
 
 import { cn } from "../../../utils/cn";
+import { mergeRefs } from "../../../utils/mergeRefs";
 import { FormField } from "../FormField";
 
 /** 範囲スライダーの値（[下限, 上限]） */
@@ -32,6 +33,8 @@ export interface RangeSliderProps {
   formatValue?: (value: number) => string;
   /** 追加のクラス名 */
   className?: string;
+  /** トラック要素への ref */
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 const clamp = (value: number, min: number, max: number): number =>
@@ -75,9 +78,11 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   disabled = false,
   formatValue,
   className,
+  ref,
 }) => {
   const baseId = useId();
   const trackRef = useRef<HTMLDivElement>(null);
+  const mergedTrackRef = useMemo(() => mergeRefs(trackRef, ref), [ref]);
   const draggingRef = useRef<0 | 1 | null>(null);
 
   const [lower, upper] = value;
@@ -207,7 +212,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
             <span aria-hidden="true">{format(upper)}</span>
           </div>
           <div
-            ref={trackRef}
+            ref={mergedTrackRef}
             data-testid="range-slider-track"
             onPointerDown={handleTrackPointerDown}
             onPointerMove={handlePointerMove}

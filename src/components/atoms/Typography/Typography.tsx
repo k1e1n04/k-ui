@@ -21,7 +21,7 @@ export type TypographyTone =
   | "warning";
 export type TypographyWeight = "normal" | "medium" | "semibold" | "bold";
 
-export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
+export interface TypographyProps extends React.ComponentPropsWithRef<"p"> {
   /** レンダリングするHTML要素 */
   as?: TypographyAs;
   /** タイポグラフィの種別 */

@@ -41,6 +41,13 @@ export interface ComboboxProps {
   onQuery?: (query: string) => void;
   /** 複数選択を有効にするか。 @default false */
   multiple?: boolean;
+  /**
+   * 候補に一致しない自由入力を許可するか（単一選択のみ）。
+   * 入力した文字列がそのまま値として onChange に渡る。 @default false
+   */
+  freeSolo?: boolean;
+  /** 入力欄のラベルテキスト。 @default undefined */
+  label?: string;
   /** 値が未選択のときに表示する文言。 @default "選択してください" */
   placeholder?: string;
   /** コンボボックス全体を無効化するか。 @default false */
@@ -60,6 +67,8 @@ export const Combobox: React.FC<ComboboxProps> = ({
   onChange,
   onQuery,
   multiple = false,
+  freeSolo = false,
+  label,
   placeholder = "選択してください",
   disabled = false,
   className,
@@ -68,6 +77,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const inputId = useId();
   const listId = useId();
   const closeOptions = useCallback(() => {
     setOpen(false);
@@ -85,7 +95,10 @@ export const Combobox: React.FC<ComboboxProps> = ({
       ? (selected as string[]).includes(option.value)
       : selected === option.value,
   );
-  const selectedSingleLabel = multiple ? "" : (selectedOptions[0]?.label ?? "");
+  const selectedSingleLabel = multiple
+    ? ""
+    : (selectedOptions[0]?.label ??
+      (freeSolo && typeof value === "string" ? value : ""));
 
   useEffect(() => {
     if (multiple) return;
@@ -145,6 +158,14 @@ export const Combobox: React.FC<ComboboxProps> = ({
   };
   return (
     <div ref={rootRef} className={cn("relative", className)}>
+      {label && (
+        <label
+          htmlFor={inputId}
+          className="mb-1 block text-sm font-medium text-foreground"
+        >
+          {label}
+        </label>
+      )}
       {multiple && selectedOptions.length > 0 && (
         <div className="mb-1 flex flex-wrap gap-1">
           {selectedOptions.map((option) => (
@@ -158,6 +179,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
         </div>
       )}
       <input
+        id={inputId}
         role="combobox"
         aria-controls={listId}
         aria-expanded={open}
@@ -171,10 +193,14 @@ export const Combobox: React.FC<ComboboxProps> = ({
         value={query}
         onFocus={() => setOpen(true)}
         onChange={(event) => {
-          setQuery(event.target.value);
+          const nextQuery = event.target.value;
+          setQuery(nextQuery);
           setActiveIndex(null);
           setOpen(true);
-          onQuery?.(event.target.value);
+          onQuery?.(nextQuery);
+          if (freeSolo && !multiple) {
+            onChange(nextQuery);
+          }
         }}
         onKeyDown={(event) => {
           if (event.key === "Escape") {

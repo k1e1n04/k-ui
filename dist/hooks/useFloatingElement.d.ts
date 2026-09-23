@@ -1,4 +1,4 @@
-import { type Middleware, type OffsetOptions, type Placement, type ShiftOptions } from "@floating-ui/react-dom";
+import { type Middleware, type OffsetOptions, type Placement, type ShiftOptions, type SizeOptions } from "@floating-ui/react-dom";
 import { type CSSProperties, type RefCallback } from "react";
 /** フローティング要素の設定。 @default undefined */
 export interface UseFloatingElementOptions {
@@ -10,6 +10,11 @@ export interface UseFloatingElementOptions {
     flip?: boolean;
     /** 画面端からずらして収める設定。 @default { padding: 8 } */
     shift?: boolean | ShiftOptions | Middleware;
+    /**
+     * 利用可能領域に応じてフローティング要素のサイズを調整するか。
+     * `true` を指定すると基準要素の幅に合わせる。 @default false
+     */
+    size?: boolean | SizeOptions;
     /** 要素位置の変化を自動追従するか。 @default true */
     autoUpdate?: boolean;
 }

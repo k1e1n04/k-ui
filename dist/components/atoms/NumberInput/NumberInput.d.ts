@@ -46,6 +46,8 @@ export interface NumberInputProps {
     "aria-invalid"?: boolean;
     /** aria-describedby の上書き */
     "aria-describedby"?: string;
+    /** input 要素への ref */
+    ref?: React.Ref<HTMLInputElement>;
 }
 /**
  * 数値入力コンポーネント

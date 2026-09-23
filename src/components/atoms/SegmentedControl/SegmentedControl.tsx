@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { useRef } from "react";
 import { cn } from "../../../utils/cn";
 /** セグメントの選択肢。 @default undefined */
@@ -28,6 +29,8 @@ export interface SegmentedControlProps {
   "aria-labelledby"?: string;
   /** 追加のクラス名。 @default undefined */
   className?: string;
+  /** ルート要素への ref。 @default undefined */
+  ref?: React.Ref<HTMLDivElement>;
 }
 /** 選択肢を横並びのセグメントとして表示するコントロール。 @default undefined */
 export function SegmentedControl({
@@ -39,6 +42,7 @@ export function SegmentedControl({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
   className,
+  ref,
 }: SegmentedControlProps) {
   const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const enabledIndexes = options
@@ -63,6 +67,7 @@ export function SegmentedControl({
   return (
     <div
       role="radiogroup"
+      ref={ref}
       aria-label={
         ariaLabel ?? (ariaLabelledBy ? undefined : "Segmented control")
       }
