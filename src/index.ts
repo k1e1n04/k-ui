@@ -8,6 +8,7 @@ export {
   useFocusTrap,
   useMediaQuery,
   usePortalContainer,
+  useReducedMotion,
 } from "./hooks";
 
 // ユーティリティ

@@ -23,6 +23,8 @@ export interface StepperProps {
   activeStep: number;
   /** 手順クリック時の処理。 @default undefined */
   onStepClick?: (step: number) => void;
+  /** 説明を省いた小さい表示にする。 @default false */
+  compact?: boolean;
   /** 追加のクラス名。 @default undefined */
   className?: string;
 }
@@ -32,6 +34,7 @@ export const Stepper: React.FC<StepperProps> = ({
   steps,
   activeStep,
   onStepClick,
+  compact = false,
   className,
 }) => {
   const currentStep = Math.min(
@@ -48,7 +51,8 @@ export const Stepper: React.FC<StepperProps> = ({
             <span
               aria-hidden="true"
               className={cn(
-                "flex size-7 shrink-0 items-center justify-center rounded-full border text-sm font-medium",
+                "flex shrink-0 items-center justify-center rounded-full border font-medium",
+                compact ? "size-5 text-xs" : "size-7 text-sm",
                 isActive || isCompleted
                   ? "border-primary-main bg-primary-main text-inverse"
                   : "border-border-strong bg-surface text-muted",
@@ -57,10 +61,15 @@ export const Stepper: React.FC<StepperProps> = ({
               {isCompleted ? "✓" : index + 1}
             </span>
             <span className="min-w-0 text-left">
-              <span className="block text-sm font-medium text-foreground">
+              <span
+                className={cn(
+                  "block font-medium text-foreground",
+                  compact ? "text-xs" : "text-sm",
+                )}
+              >
                 {step.label}
               </span>
-              {step.description && (
+              {!compact && step.description && (
                 <span className="block text-xs text-muted">
                   {step.description}
                 </span>
@@ -89,7 +98,10 @@ export const Stepper: React.FC<StepperProps> = ({
             {index < steps.length - 1 && (
               <span
                 aria-hidden="true"
-                className="mx-3 mt-3 h-px min-w-3 flex-1 bg-border"
+                className={cn(
+                  "h-px min-w-3 flex-1 bg-border",
+                  compact ? "mx-2 mt-2.5" : "mx-3 mt-3",
+                )}
               />
             )}
           </li>

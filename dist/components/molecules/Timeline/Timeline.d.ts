@@ -1,4 +1,5 @@
 import type React from "react";
+import { type TimelineSlot } from "../../../utils/travel";
 /** タイムライン項目。 @default undefined */
 export interface TimelineItem {
     /** 項目の一意な識別子。 @default undefined */
@@ -11,6 +12,8 @@ export interface TimelineItem {
     content?: React.ReactNode;
     /** アイコン。 @default undefined */
     icon?: React.ReactNode;
+    /** ざっくりしおりの時間帯。 @default undefined */
+    slot?: TimelineSlot;
 }
 /** タイムライン項目の配置。 @default undefined */
 export type TimelineAlign = "left" | "right" | "alternate";
@@ -20,6 +23,12 @@ export interface TimelineProps {
     items: TimelineItem[];
     /** 項目の配置。 @default "left" */
     align?: TimelineAlign;
+    /** 時間帯ごとにまとめて見出しを付ける。 @default false */
+    groupBySlot?: boolean;
+    /** 並べ替え用のハンドルを表示する。 @default false */
+    showHandles?: boolean;
+    /** ハンドルを押した時の処理。 @default undefined */
+    onHandlePointerDown?: (index: number, event: React.PointerEvent<HTMLButtonElement>) => void;
     /** 追加のクラス名。 @default undefined */
     className?: string;
 }

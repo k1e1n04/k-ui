@@ -123,6 +123,9 @@
   --kui-font-size-lg: 1.125rem;
   --kui-font-size-xl: 1.25rem;
   --kui-font-size-2xl: 1.5rem;
+  --kui-font-size-3xl: 1.875rem;
+  --kui-font-size-4xl: 2.25rem;
+  --kui-font-size-5xl: 3rem;
 
   /* フォントウェイト */
   --kui-font-weight-normal: 400;
@@ -210,12 +213,44 @@
   --color-warning-subtle: var(--kui-color-warning-subtle);
   --color-accent-main: var(--kui-color-accent);
   --color-accent-subtle: var(--kui-color-accent-subtle);
+  --color-cat-move: var(--kui-color-cat-move);
+  --color-cat-move-subtle: var(--kui-color-cat-move-subtle);
+  --color-cat-meal: var(--kui-color-cat-meal);
+  --color-cat-meal-subtle: var(--kui-color-cat-meal-subtle);
+  --color-cat-sight: var(--kui-color-cat-sight);
+  --color-cat-sight-subtle: var(--kui-color-cat-sight-subtle);
+  --color-cat-activity: var(--kui-color-cat-activity);
+  --color-cat-activity-subtle: var(--kui-color-cat-activity-subtle);
+  --color-cat-shopping: var(--kui-color-cat-shopping);
+  --color-cat-shopping-subtle: var(--kui-color-cat-shopping-subtle);
+  --color-cat-stay: var(--kui-color-cat-stay);
+  --color-cat-stay-subtle: var(--kui-color-cat-stay-subtle);
+  --color-cat-free: var(--kui-color-cat-free);
+  --color-cat-free-subtle: var(--kui-color-cat-free-subtle);
+  --color-diff-add: var(--kui-color-diff-add);
+  --color-diff-add-subtle: var(--kui-color-diff-add-subtle);
+  --color-diff-change: var(--kui-color-diff-change);
+  --color-diff-change-subtle: var(--kui-color-diff-change-subtle);
+  --color-diff-remove: var(--kui-color-diff-remove);
+  --color-diff-remove-subtle: var(--kui-color-diff-remove-subtle);
+  --color-me: var(--kui-color-me);
+  --color-partner: var(--kui-color-partner);
+
+  /* フォントサイズ（大きい見出し・カウントダウン用） */
+  --text-3xl: var(--kui-font-size-3xl);
+  --text-4xl: var(--kui-font-size-4xl);
+  --text-5xl: var(--kui-font-size-5xl);
 
   /* アニメーション */
   --animate-kui-fade-in: kui-fade-in 0.3s ease-in-out;
   --animate-kui-slide-down: kui-slide-down 0.3s ease-in-out;
   --animate-kui-slide-up: kui-slide-up 0.3s ease-in-out;
   --animate-kui-spin: kui-spin 1s linear infinite;
+
+  /* イージング（§7.2 の演出基準） */
+  --ease-standard: var(--kui-ease-standard);
+  --ease-decelerate: var(--kui-ease-decelerate);
+  --ease-accelerate: var(--kui-ease-accelerate);
 }
 
 :root {
@@ -226,4 +261,125 @@
   --kui-z-popover: 60;
   --kui-z-toast: 70;
   --kui-z-tooltip: 80;
+}
+
+:root {
+  /*
+   * 旅行機能で使う色。
+   * カテゴリと差分は色だけに意味を持たせず、必ずアイコンとラベルを添える前提。
+   * 色は彩度を落とした既存トーンに合わせ、ライトでは subtle を淡い背景色にする。
+   */
+
+  /* 予定カテゴリ */
+  --kui-color-cat-move: #4a6fa5;
+  --kui-color-cat-move-subtle: #eef2f8;
+  --kui-color-cat-meal: #a8761b;
+  --kui-color-cat-meal-subtle: #faf4e8;
+  --kui-color-cat-sight: #4f7a5c;
+  --kui-color-cat-sight-subtle: #eef4ef;
+  --kui-color-cat-activity: #7a5c96;
+  --kui-color-cat-activity-subtle: #f3eef7;
+  --kui-color-cat-shopping: #b25578;
+  --kui-color-cat-shopping-subtle: #fbeef3;
+  --kui-color-cat-stay: #6b6250;
+  --kui-color-cat-stay-subtle: #f3f0e9;
+  --kui-color-cat-free: #6f6a63;
+  --kui-color-cat-free-subtle: #f2f0ec;
+
+  /* 差分（追加・変更・削除） */
+  --kui-color-diff-add: #4f7a5c;
+  --kui-color-diff-add-subtle: #eef4ef;
+  --kui-color-diff-change: #4a6fa5;
+  --kui-color-diff-change-subtle: #eef2f8;
+  --kui-color-diff-remove: #c2543f;
+  --kui-color-diff-remove-subtle: #fbf1ee;
+
+  /* 二人の識別色 */
+  --kui-color-me: #4a6fa5;
+  --kui-color-partner: #d97757;
+
+  /* 写真の上に重ねる文字用のスクリム */
+  --kui-scrim-image: linear-gradient(
+    to top,
+    rgba(18, 17, 15, 0.72),
+    rgba(18, 17, 15, 0.32) 45%,
+    rgba(18, 17, 15, 0)
+  );
+
+  /* ホームインジケータを避けるための余白 */
+  --kui-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --kui-color-cat-move: #93b3dd;
+    --kui-color-cat-move-subtle: rgba(74, 111, 165, 0.24);
+    --kui-color-cat-meal: #d9b45f;
+    --kui-color-cat-meal-subtle: rgba(168, 118, 27, 0.24);
+    --kui-color-cat-sight: #8ab696;
+    --kui-color-cat-sight-subtle: rgba(79, 122, 92, 0.24);
+    --kui-color-cat-activity: #bca0d6;
+    --kui-color-cat-activity-subtle: rgba(122, 92, 150, 0.24);
+    --kui-color-cat-shopping: #e0a0bd;
+    --kui-color-cat-shopping-subtle: rgba(178, 85, 120, 0.24);
+    --kui-color-cat-stay: #c9bda3;
+    --kui-color-cat-stay-subtle: rgba(107, 98, 80, 0.28);
+    --kui-color-cat-free: #a8a29a;
+    --kui-color-cat-free-subtle: rgba(111, 106, 99, 0.24);
+
+    --kui-color-diff-add: #8ab696;
+    --kui-color-diff-add-subtle: rgba(79, 122, 92, 0.24);
+    --kui-color-diff-change: #93b3dd;
+    --kui-color-diff-change-subtle: rgba(74, 111, 165, 0.24);
+    --kui-color-diff-remove: #e08a77;
+    --kui-color-diff-remove-subtle: rgba(194, 84, 63, 0.24);
+
+    --kui-color-me: #93b3dd;
+    --kui-color-partner: #e59a7d;
+  }
+}
+
+:root {
+  /*
+   * 演出の基準（§7.2）。
+   * アニメーションは 400ms 以内に収め、1画面で同時に動くものは1つまでにする。
+   * 音とバイブは使わない。
+   */
+  --kui-duration-fast: 150ms;
+  --kui-duration-base: 250ms;
+  --kui-duration-slow: 400ms;
+
+  --kui-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --kui-ease-decelerate: cubic-bezier(0, 0, 0, 1);
+  --kui-ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
+}
+
+/*
+ * 動きを減らす設定のときは、移動や拡大をやめてフェードだけにする。
+ * アニメーションの実体（keyframes）はそのままでも、名前をフェードへ差し替えるため
+ * 画面から動きが消える。
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --kui-duration-fast: 120ms;
+    --kui-duration-base: 180ms;
+    --kui-duration-slow: 200ms;
+
+    --animate-kui-fade-in: kui-fade-in var(--kui-duration-base) linear;
+    --animate-kui-slide-down: kui-fade-in var(--kui-duration-base) linear;
+    --animate-kui-slide-up: kui-fade-in var(--kui-duration-base) linear;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--kui-duration-base) !important;
+    animation-iteration-count: 1 !important;
+    animation-timing-function: linear !important;
+    transition-duration: var(--kui-duration-base) !important;
+    transition-property:
+      opacity, color, background-color, border-color, fill, stroke !important;
+    transition-timing-function: linear !important;
+    scroll-behavior: auto !important;
+  }
 }

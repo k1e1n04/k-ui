@@ -21,4 +21,18 @@ describe("Tabs", () => {
     await user.keyboard("{ArrowRight}");
     expect(onChange).toHaveBeenCalledWith("two");
   });
+
+  it("タブにバッジを表示する", () => {
+    render(
+      <Tabs
+        value="one"
+        onChange={() => {}}
+        items={[
+          { value: "one", label: "候補", content: "内容", badge: 3 },
+          { value: "two", label: "準備", content: "内容" },
+        ]}
+      />,
+    );
+    expect(screen.getByRole("tab", { name: /候補/ })).toHaveTextContent("3");
+  });
 });

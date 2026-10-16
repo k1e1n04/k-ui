@@ -22,10 +22,42 @@
   --color-warning-subtle: var(--kui-color-warning-subtle);
   --color-accent-main: var(--kui-color-accent);
   --color-accent-subtle: var(--kui-color-accent-subtle);
+  --color-cat-move: var(--kui-color-cat-move);
+  --color-cat-move-subtle: var(--kui-color-cat-move-subtle);
+  --color-cat-meal: var(--kui-color-cat-meal);
+  --color-cat-meal-subtle: var(--kui-color-cat-meal-subtle);
+  --color-cat-sight: var(--kui-color-cat-sight);
+  --color-cat-sight-subtle: var(--kui-color-cat-sight-subtle);
+  --color-cat-activity: var(--kui-color-cat-activity);
+  --color-cat-activity-subtle: var(--kui-color-cat-activity-subtle);
+  --color-cat-shopping: var(--kui-color-cat-shopping);
+  --color-cat-shopping-subtle: var(--kui-color-cat-shopping-subtle);
+  --color-cat-stay: var(--kui-color-cat-stay);
+  --color-cat-stay-subtle: var(--kui-color-cat-stay-subtle);
+  --color-cat-free: var(--kui-color-cat-free);
+  --color-cat-free-subtle: var(--kui-color-cat-free-subtle);
+  --color-diff-add: var(--kui-color-diff-add);
+  --color-diff-add-subtle: var(--kui-color-diff-add-subtle);
+  --color-diff-change: var(--kui-color-diff-change);
+  --color-diff-change-subtle: var(--kui-color-diff-change-subtle);
+  --color-diff-remove: var(--kui-color-diff-remove);
+  --color-diff-remove-subtle: var(--kui-color-diff-remove-subtle);
+  --color-me: var(--kui-color-me);
+  --color-partner: var(--kui-color-partner);
+
+  /* フォントサイズ（大きい見出し・カウントダウン用） */
+  --text-3xl: var(--kui-font-size-3xl);
+  --text-4xl: var(--kui-font-size-4xl);
+  --text-5xl: var(--kui-font-size-5xl);
 
   /* アニメーション */
   --animate-kui-fade-in: kui-fade-in 0.3s ease-in-out;
   --animate-kui-slide-down: kui-slide-down 0.3s ease-in-out;
   --animate-kui-slide-up: kui-slide-up 0.3s ease-in-out;
   --animate-kui-spin: kui-spin 1s linear infinite;
+
+  /* イージング（§7.2 の演出基準） */
+  --ease-standard: var(--kui-ease-standard);
+  --ease-decelerate: var(--kui-ease-decelerate);
+  --ease-accelerate: var(--kui-ease-accelerate);
 }

@@ -1,0 +1,44 @@
+:root {
+  /*
+   * 演出の基準（§7.2）。
+   * アニメーションは 400ms 以内に収め、1画面で同時に動くものは1つまでにする。
+   * 音とバイブは使わない。
+   */
+  --kui-duration-fast: 150ms;
+  --kui-duration-base: 250ms;
+  --kui-duration-slow: 400ms;
+
+  --kui-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --kui-ease-decelerate: cubic-bezier(0, 0, 0, 1);
+  --kui-ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
+}
+
+/*
+ * 動きを減らす設定のときは、移動や拡大をやめてフェードだけにする。
+ * アニメーションの実体（keyframes）はそのままでも、名前をフェードへ差し替えるため
+ * 画面から動きが消える。
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --kui-duration-fast: 120ms;
+    --kui-duration-base: 180ms;
+    --kui-duration-slow: 200ms;
+
+    --animate-kui-fade-in: kui-fade-in var(--kui-duration-base) linear;
+    --animate-kui-slide-down: kui-fade-in var(--kui-duration-base) linear;
+    --animate-kui-slide-up: kui-fade-in var(--kui-duration-base) linear;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--kui-duration-base) !important;
+    animation-iteration-count: 1 !important;
+    animation-timing-function: linear !important;
+    transition-duration: var(--kui-duration-base) !important;
+    transition-property:
+      opacity, color, background-color, border-color, fill, stroke !important;
+    transition-timing-function: linear !important;
+    scroll-behavior: auto !important;
+  }
+}

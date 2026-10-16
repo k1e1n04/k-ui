@@ -47,4 +47,28 @@ describe("public exports", () => {
     expect(kui.project).toBeTypeOf("function");
     expect(kui.unproject).toBeTypeOf("function");
   });
+
+  it("旅行機能のコンポーネントをエクスポートする", () => {
+    expect(kui.Countdown).toBeTypeOf("function");
+    expect(kui.ChoiceCard).toBeTypeOf("function");
+    expect(kui.Carousel).toBeTypeOf("function");
+    expect(kui.SortableList).toBeTypeOf("function");
+    expect(kui.DiffList).toBeTypeOf("function");
+    expect(kui.ReactionButton).toBeTypeOf("function");
+    expect(kui.ActivityFeed).toBeTypeOf("function");
+    expect(kui.GenerationLog).toBeTypeOf("function");
+    expect(kui.FloatingActionButton).toBeTypeOf("function");
+    expect(kui.StickyActionBar).toBeTypeOf("function");
+    expect(kui.CopyButton).toBeTypeOf("function");
+    expect(kui.WeatherBadge).toBeTypeOf("function");
+    expect(kui.OfflineBanner).toBeTypeOf("function");
+    expect(kui.Celebration).toBeTypeOf("function");
+  });
+
+  it("旅行機能のユーティリティとフックをエクスポートする", () => {
+    expect(kui.useReducedMotion).toBeTypeOf("function");
+    expect(kui.TIMELINE_SLOTS).toBeDefined();
+    expect(kui.DIFF_KIND_META).toBeDefined();
+    expect(kui.TRAVEL_CATEGORY_LABELS).toBeDefined();
+  });
 });

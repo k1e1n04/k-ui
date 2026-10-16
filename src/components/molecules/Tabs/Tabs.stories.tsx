@@ -21,3 +21,20 @@ export const Default: StoryObj<typeof meta> = {
     );
   },
 };
+
+export const WithBadge: StoryObj<typeof meta> = {
+  render: () => {
+    const [value, setValue] = useState("shiori");
+    return (
+      <Tabs
+        value={value}
+        onChange={setValue}
+        items={[
+          { value: "shiori", label: "しおり", content: "予定の一覧" },
+          { value: "koho", label: "候補", content: "候補の一覧", badge: 5 },
+          { value: "junbi", label: "準備", content: "準備の一覧", badge: 2 },
+        ]}
+      />
+    );
+  },
+};

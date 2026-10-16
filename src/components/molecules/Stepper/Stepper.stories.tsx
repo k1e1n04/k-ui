@@ -31,3 +31,7 @@ export const Clickable: StoryObj<typeof meta> = {
     );
   },
 };
+
+export const Compact: StoryObj<typeof meta> = {
+  args: { steps, activeStep: 1, compact: true },
+};

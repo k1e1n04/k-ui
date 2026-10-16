@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Timeline } from "./Timeline";
 
 describe("Timeline", () => {
@@ -45,5 +45,41 @@ describe("Timeline", () => {
     expect(secondMarkers).toHaveLength(1);
     expect(secondMarkers?.[0]).toHaveClass("-right-2");
     expect(secondMarkers?.[0]).toHaveTextContent("✓");
+  });
+
+  it("時間帯ごとにグループ化して見出しを付ける", () => {
+    render(
+      <Timeline
+        groupBySlot
+        items={[
+          { title: "朝の散歩", slot: "morning" },
+          { title: "夕食", slot: "evening" },
+          { title: "予約", timestamp: "10:00" },
+        ]}
+      />,
+    );
+    expect(
+      screen.getByRole("region", { name: "タイムライン" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("朝（〜11時）")).toBeInTheDocument();
+    expect(screen.getByText("夕方（17〜20時）")).toBeInTheDocument();
+    expect(screen.getByText("時間帯未定")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem")).toHaveLength(3);
+  });
+
+  it("ハンドルを押すと対象の位置を通知する", () => {
+    const onHandlePointerDown = vi.fn();
+    render(
+      <Timeline
+        showHandles
+        onHandlePointerDown={onHandlePointerDown}
+        items={[{ title: "朝の散歩" }, { title: "夕食" }]}
+      />,
+    );
+    const handles = screen.getAllByRole("button", {
+      name: "ドラッグして並べ替え",
+    });
+    fireEvent.pointerDown(handles[1]);
+    expect(onHandlePointerDown).toHaveBeenCalledWith(1, expect.anything());
   });
 });

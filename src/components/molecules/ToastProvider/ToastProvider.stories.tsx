@@ -21,3 +21,20 @@ export const Default: Story = {
     </ToastProvider>
   ),
 };
+
+const UndoTrigger = () => {
+  const toast = useToast();
+  return (
+    <Button onClick={() => toast.undo("並べ替えました", () => {})}>
+      元に戻す例
+    </Button>
+  );
+};
+
+export const Undo: Story = {
+  render: () => (
+    <ToastProvider undoDuration={8000}>
+      <UndoTrigger />
+    </ToastProvider>
+  ),
+};

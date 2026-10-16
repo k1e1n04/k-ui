@@ -5,6 +5,8 @@ export type {
   AccordionSingleProps,
 } from "./Accordion";
 export { Accordion } from "./Accordion";
+export type { ActivityFeedItem, ActivityFeedProps } from "./ActivityFeed";
+export { ActivityFeed } from "./ActivityFeed";
 export type { AppBarColor, AppBarPosition, AppBarProps } from "./AppBar";
 export { AppBar } from "./AppBar";
 export type { AvatarGroupProps } from "./AvatarGroup";
@@ -19,6 +21,10 @@ export type {
 export { Breadcrumb } from "./Breadcrumb";
 export type { CalendarProps } from "./Calendar";
 export { Calendar } from "./Calendar";
+export type { CarouselItem, CarouselProps } from "./Carousel";
+export { Carousel } from "./Carousel";
+export type { CelebrationProps, CelebrationVariant } from "./Celebration";
+export { Celebration } from "./Celebration";
 export type { ComboboxOption, ComboboxProps } from "./Combobox";
 export { Combobox } from "./Combobox";
 export type { ConfirmDialogProps, ConfirmDialogVariant } from "./ConfirmDialog";
@@ -37,6 +43,8 @@ export type { DatePickerProps } from "./DatePicker";
 export { DatePicker } from "./DatePicker";
 export type { DialogMaxWidth, DialogProps } from "./Dialog";
 export { Dialog } from "./Dialog";
+export type { DiffListItem, DiffListProps } from "./DiffList";
+export { DiffList } from "./DiffList";
 export type { DrawerPlacement, DrawerProps } from "./Drawer";
 export { Drawer } from "./Drawer";
 export type {
@@ -65,6 +73,12 @@ export type {
   FilterToggleField,
 } from "./FilterPanel";
 export { FilterPanel } from "./FilterPanel";
+export type {
+  GenerationLogItem,
+  GenerationLogProps,
+  GenerationLogStatus,
+} from "./GenerationLog";
+export { GenerationLog } from "./GenerationLog";
 export type { ImageGalleryImage, ImageGalleryProps } from "./ImageGallery";
 export { ImageGallery } from "./ImageGallery";
 export type { InfoTooltipProps, InfoTooltipSize } from "./InfoTooltip";
@@ -116,15 +130,24 @@ export type { PopconfirmProps } from "./Popconfirm";
 export { Popconfirm } from "./Popconfirm";
 export type { PopoverProps } from "./Popover";
 export { Popover } from "./Popover";
+export type { ReactionButtonProps } from "./ReactionButton";
+export { ReactionButton } from "./ReactionButton";
 export type {
   SelectionTrayItem,
   SelectionTrayProps,
 } from "./SelectionTray";
 export { SelectionTray } from "./SelectionTray";
+export type { SortableListItem, SortableListProps } from "./SortableList";
+export { SortableList } from "./SortableList";
 export type { StatCardColor, StatCardItem, StatCardsProps } from "./StatCards";
 export { StatCards } from "./StatCards";
 export type { StepperProps, StepperStep } from "./Stepper";
 export { Stepper } from "./Stepper";
+export type {
+  StickyActionBarPosition,
+  StickyActionBarProps,
+} from "./StickyActionBar";
+export { StickyActionBar } from "./StickyActionBar";
 export type { TabItem, TabsProps } from "./Tabs";
 export { Tabs } from "./Tabs";
 export type { TimelineAlign, TimelineItem, TimelineProps } from "./Timeline";

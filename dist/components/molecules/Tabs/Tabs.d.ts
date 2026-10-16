@@ -7,6 +7,8 @@ export interface TabItem {
     label: React.ReactNode;
     /** タブパネルの内容。 @default undefined */
     content: React.ReactNode;
+    /** タブ名の横に出すバッジ（件数など）。 @default undefined */
+    badge?: React.ReactNode;
     /** 無効状態。 @default false */
     disabled?: boolean;
 }

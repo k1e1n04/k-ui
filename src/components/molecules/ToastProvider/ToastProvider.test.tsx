@@ -61,6 +61,29 @@ describe("ToastProvider", () => {
     await userEvent.click(screen.getByRole("button", { name: "Show" }));
     expect(screen.queryByText("Saved")).not.toBeInTheDocument();
   });
+  it("元に戻す操作を指定時間だけ表示する", async () => {
+    const onUndo = vi.fn();
+    const Undo = () => {
+      const toast = useToast();
+      return (
+        <button
+          type="button"
+          onClick={() => toast.undo("削除しました", onUndo)}
+        >
+          Show
+        </button>
+      );
+    };
+    render(
+      <ToastProvider undoDuration={8000}>
+        <Undo />
+      </ToastProvider>,
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Show" }));
+    expect(screen.getByText("削除しました")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "元に戻す" }));
+    expect(onUndo).toHaveBeenCalled();
+  });
   it("自動で閉じる", () => {
     vi.useFakeTimers();
     render(

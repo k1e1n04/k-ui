@@ -11,6 +11,8 @@ export interface TabItem {
   label: React.ReactNode;
   /** タブパネルの内容。 @default undefined */
   content: React.ReactNode;
+  /** タブ名の横に出すバッジ（件数など）。 @default undefined */
+  badge?: React.ReactNode;
   /** 無効状態。 @default false */
   disabled?: boolean;
 }
@@ -74,7 +76,7 @@ export const Tabs: React.FC<TabsProps> = ({
               }
             }}
             className={cn(
-              "border-b-2 px-4 py-2 text-sm font-medium",
+              "inline-flex items-center gap-2 border-b-2 px-4 py-2 text-sm font-medium",
               item.value === value
                 ? "border-primary-main text-primary-main"
                 : "border-transparent text-muted hover:text-foreground",
@@ -82,6 +84,11 @@ export const Tabs: React.FC<TabsProps> = ({
             )}
           >
             {item.label}
+            {item.badge !== undefined && (
+              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-surface-sunken px-1.5 text-xs text-muted">
+                {item.badge}
+              </span>
+            )}
           </button>
         ))}
       </div>

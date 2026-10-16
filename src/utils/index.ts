@@ -22,3 +22,10 @@ export {
   GSI_STANDARD_TILE_URL,
   GSI_TILE_BASE_URL,
 } from "./tiles";
+export type { DiffKind, TimelineSlot, TravelCategory } from "./travel";
+export {
+  DIFF_KIND_META,
+  TIMELINE_SLOT_LABELS,
+  TIMELINE_SLOTS,
+  TRAVEL_CATEGORY_LABELS,
+} from "./travel";

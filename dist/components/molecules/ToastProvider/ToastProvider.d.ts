@@ -23,6 +23,8 @@ export interface ToastContextValue {
     info: (message: string, options?: Omit<ToastOptions, "variant">) => string;
     /** 警告トーストを表示する。 @default undefined */
     warning: (message: string, options?: Omit<ToastOptions, "variant">) => string;
+    /** 元に戻す操作付きのトーストを表示する。 @default undefined */
+    undo: (message: string, onUndo: () => void, options?: Omit<ToastOptions, "action" | "variant">) => string;
     /** 指定したトーストを削除する。 @default undefined */
     dismiss: (id: string) => void;
     /** すべてのトーストを削除する。 @default undefined */
@@ -36,6 +38,8 @@ export interface ToastProviderProps {
     position?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
     /** 標準表示時間。 @default 5000 */
     defaultDuration?: number;
+    /** 元に戻す操作を表示しておく時間。 @default 8000 */
+    undoDuration?: number;
     /** 最大表示数。 @default 5 */
     maxToasts?: number;
     /** ポータル先。 @default undefined */
@@ -44,5 +48,5 @@ export interface ToastProviderProps {
 /** トースト操作 API を利用するフック。 @default undefined */
 export declare function useToast(): ToastContextValue;
 /** トーストを管理・表示するプロバイダー。 @default undefined */
-export declare function ToastProvider({ children, position, defaultDuration, maxToasts, portalContainer, }: ToastProviderProps): React.JSX.Element;
+export declare function ToastProvider({ children, position, defaultDuration, undoDuration, maxToasts, portalContainer, }: ToastProviderProps): React.JSX.Element;
 //# sourceMappingURL=ToastProvider.d.ts.map

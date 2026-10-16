@@ -37,6 +37,12 @@ export interface ToastContextValue {
   info: (message: string, options?: Omit<ToastOptions, "variant">) => string;
   /** 警告トーストを表示する。 @default undefined */
   warning: (message: string, options?: Omit<ToastOptions, "variant">) => string;
+  /** 元に戻す操作付きのトーストを表示する。 @default undefined */
+  undo: (
+    message: string,
+    onUndo: () => void,
+    options?: Omit<ToastOptions, "action" | "variant">,
+  ) => string;
   /** 指定したトーストを削除する。 @default undefined */
   dismiss: (id: string) => void;
   /** すべてのトーストを削除する。 @default undefined */
@@ -50,6 +56,8 @@ export interface ToastProviderProps {
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
   /** 標準表示時間。 @default 5000 */
   defaultDuration?: number;
+  /** 元に戻す操作を表示しておく時間。 @default 8000 */
+  undoDuration?: number;
   /** 最大表示数。 @default 5 */
   maxToasts?: number;
   /** ポータル先。 @default undefined */
@@ -87,6 +95,7 @@ export function ToastProvider({
   children,
   position = "bottom-right",
   defaultDuration = 5000,
+  undoDuration = 8000,
   maxToasts = 5,
   portalContainer,
 }: ToastProviderProps) {
@@ -188,6 +197,13 @@ export function ToastProvider({
         show(message, { ...options, variant: "info" }),
       warning: (message, options) =>
         show(message, { ...options, variant: "warning" }),
+      undo: (message, onUndo, options) =>
+        show(message, {
+          ...options,
+          variant: "info",
+          duration: options?.duration ?? undoDuration,
+          action: { label: "元に戻す", onClick: onUndo },
+        }),
       dismiss,
       dismissAll: () => {
         timers.current.forEach(clearTimeout);
@@ -195,7 +211,7 @@ export function ToastProvider({
         setToasts([]);
       },
     }),
-    [dismiss, show],
+    [dismiss, show, undoDuration],
   );
   const notices = (
     <div

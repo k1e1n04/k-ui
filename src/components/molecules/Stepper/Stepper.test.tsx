@@ -31,4 +31,10 @@ describe("Stepper", () => {
     await user.click(screen.getByRole("button", { name: /確認/ }));
     expect(onStepClick).toHaveBeenCalledWith(1);
   });
+
+  it("compact では説明を省く", () => {
+    render(<Stepper steps={steps} activeStep={0} compact />);
+    expect(screen.queryByText("情報を入力")).not.toBeInTheDocument();
+    expect(screen.getByText("入力")).toBeInTheDocument();
+  });
 });

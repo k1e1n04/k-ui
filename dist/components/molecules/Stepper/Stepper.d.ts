@@ -18,6 +18,8 @@ export interface StepperProps {
     activeStep: number;
     /** 手順クリック時の処理。 @default undefined */
     onStepClick?: (step: number) => void;
+    /** 説明を省いた小さい表示にする。 @default false */
+    compact?: boolean;
     /** 追加のクラス名。 @default undefined */
     className?: string;
 }
