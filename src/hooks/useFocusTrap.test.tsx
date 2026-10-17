@@ -3,7 +3,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useRef } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { useFocusTrap } from "./useFocusTrap";
 
@@ -100,5 +100,19 @@ describe("useFocusTrap", () => {
 
     await user.tab({ shift: true });
     expect(container).toHaveFocus();
+  });
+
+  it("フォーカス移動でページをスクロールさせない（preventScroll）", () => {
+    const focusSpy = vi.spyOn(HTMLElement.prototype, "focus");
+
+    render(<FocusTrapFixture active />);
+
+    expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
+    expect(
+      focusSpy.mock.calls.every(
+        ([options]) => (options as FocusOptions | undefined)?.preventScroll,
+      ),
+    ).toBe(true);
+    focusSpy.mockRestore();
   });
 });
