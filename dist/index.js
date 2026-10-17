@@ -3227,6 +3227,7 @@ function useFloatingElement(options = {}) {
 
 // src/hooks/useFocusTrap.ts
 import { useEffect as useEffect5, useRef as useRef7 } from "react";
+var PREVENT_SCROLL = { preventScroll: true };
 var focusableSelector = [
   "a[href]",
   "button:not([disabled])",
@@ -3248,14 +3249,14 @@ function useFocusTrap(containerRef, active, options = {}) {
     const initialFocusElement = initialFocusRef?.current;
     const focusableElements = container ? getFocusableElements(container) : [];
     if (initialFocusElement && container?.contains(initialFocusElement)) {
-      initialFocusElement.focus();
+      initialFocusElement.focus(PREVENT_SCROLL);
     } else {
       const firstFocusableElement = focusableElements[0];
       if (firstFocusableElement) {
-        firstFocusableElement.focus();
+        firstFocusableElement.focus(PREVENT_SCROLL);
       } else if (container) {
         container.tabIndex = -1;
-        container.focus();
+        container.focus(PREVENT_SCROLL);
       }
     }
     const handleKeyDown = (event) => {
@@ -3264,7 +3265,7 @@ function useFocusTrap(containerRef, active, options = {}) {
       if (elements.length === 0) {
         event.preventDefault();
         containerRef.current.tabIndex = -1;
-        containerRef.current.focus();
+        containerRef.current.focus(PREVENT_SCROLL);
         return;
       }
       const firstElement = elements[0];
@@ -3272,17 +3273,17 @@ function useFocusTrap(containerRef, active, options = {}) {
       const activeElement = document.activeElement;
       if (event.shiftKey && (activeElement === firstElement || !containerRef.current.contains(activeElement))) {
         event.preventDefault();
-        lastElement.focus();
+        lastElement.focus(PREVENT_SCROLL);
       } else if (!event.shiftKey && (activeElement === lastElement || !containerRef.current.contains(activeElement))) {
         event.preventDefault();
-        firstElement.focus();
+        firstElement.focus(PREVENT_SCROLL);
       }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       if (returnFocusOnDeactivate) {
-        previouslyFocusedElementRef.current?.focus();
+        previouslyFocusedElementRef.current?.focus(PREVENT_SCROLL);
       }
     };
   }, [active, containerRef, initialFocusRef, returnFocusOnDeactivate]);

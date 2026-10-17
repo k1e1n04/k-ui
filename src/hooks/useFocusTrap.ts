@@ -10,6 +10,13 @@ export interface UseFocusTrapOptions {
   returnFocusOnDeactivate?: boolean;
 }
 
+/**
+ * フォーカス移動でスクロールさせない。
+ * Popover のように位置計算前（左上）に描画される要素へフォーカスすると、
+ * ブラウザがその要素を表示しようとしてページ先頭へ飛んでしまうため。
+ */
+const PREVENT_SCROLL: FocusOptions = { preventScroll: true };
+
 const focusableSelector = [
   "a[href]",
   "button:not([disabled])",
@@ -53,14 +60,14 @@ export function useFocusTrap(
     const focusableElements = container ? getFocusableElements(container) : [];
 
     if (initialFocusElement && container?.contains(initialFocusElement)) {
-      initialFocusElement.focus();
+      initialFocusElement.focus(PREVENT_SCROLL);
     } else {
       const firstFocusableElement = focusableElements[0];
       if (firstFocusableElement) {
-        firstFocusableElement.focus();
+        firstFocusableElement.focus(PREVENT_SCROLL);
       } else if (container) {
         container.tabIndex = -1;
-        container.focus();
+        container.focus(PREVENT_SCROLL);
       }
     }
 
@@ -71,7 +78,7 @@ export function useFocusTrap(
       if (elements.length === 0) {
         event.preventDefault();
         containerRef.current.tabIndex = -1;
-        containerRef.current.focus();
+        containerRef.current.focus(PREVENT_SCROLL);
         return;
       }
 
@@ -85,14 +92,14 @@ export function useFocusTrap(
           !containerRef.current.contains(activeElement))
       ) {
         event.preventDefault();
-        lastElement.focus();
+        lastElement.focus(PREVENT_SCROLL);
       } else if (
         !event.shiftKey &&
         (activeElement === lastElement ||
           !containerRef.current.contains(activeElement))
       ) {
         event.preventDefault();
-        firstElement.focus();
+        firstElement.focus(PREVENT_SCROLL);
       }
     };
 
@@ -101,7 +108,7 @@ export function useFocusTrap(
       document.removeEventListener("keydown", handleKeyDown);
 
       if (returnFocusOnDeactivate) {
-        previouslyFocusedElementRef.current?.focus();
+        previouslyFocusedElementRef.current?.focus(PREVENT_SCROLL);
       }
     };
   }, [active, containerRef, initialFocusRef, returnFocusOnDeactivate]);
