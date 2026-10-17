@@ -142,7 +142,9 @@ export const Timeline: React.FC<TimelineProps> = ({
     return (
       <section
         aria-label="タイムライン"
-        className={cn("flex flex-col gap-6", className)}
+        // 接続線上のマーカーが左へはみ出すため、左に余白を確保して
+        // 親の overflow コンテナでクリップされないようにする
+        className={cn("flex flex-col gap-6 pl-2", className)}
       >
         {groups.map((group) => {
           const heading = group.slot
@@ -171,7 +173,9 @@ export const Timeline: React.FC<TimelineProps> = ({
       className={cn(
         "flex flex-col",
         align === "alternate" && "items-center",
-        align === "right" && "items-end",
+        align === "right" && "items-end pr-2",
+        // 接続線上のマーカーがはみ出す分の余白を確保する（親の overflow 対策）
+        align === "left" && "pl-2",
         className,
       )}
     >
