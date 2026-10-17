@@ -8010,7 +8010,7 @@ var Timeline = ({
       "section",
       {
         "aria-label": "\u30BF\u30A4\u30E0\u30E9\u30A4\u30F3",
-        className: cn("flex flex-col gap-6", className),
+        className: cn("flex flex-col gap-6 pl-2", className),
         children: groups.map((group) => {
           const heading = group.slot ? TIMELINE_SLOT_LABELS[group.slot] : "\u6642\u9593\u5E2F\u672A\u5B9A";
           return /* @__PURE__ */ jsxs66("section", { "aria-label": heading, children: [
@@ -8030,7 +8030,9 @@ var Timeline = ({
       className: cn(
         "flex flex-col",
         align === "alternate" && "items-center",
-        align === "right" && "items-end",
+        align === "right" && "items-end pr-2",
+        // 接続線上のマーカーがはみ出す分の余白を確保する（親の overflow 対策）
+        align === "left" && "pl-2",
         className
       ),
       children: items.map((item, index) => {
