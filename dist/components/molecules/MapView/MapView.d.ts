@@ -3,6 +3,12 @@ import { type LatLng } from "../../../utils/geo";
 import { type TileUrlBuilder } from "../../../utils/tiles";
 /** 地図の中心座標の初期値（東京駅） */
 export declare const DEFAULT_MAP_CENTER: LatLng;
+/**
+ * ホイールイベントから、今回動かすズーム量を求める。
+ * トラックパッドは1回のスクロールで大量のイベントが出るため、
+ * 1イベント1段階ではなくスクロール量に比例させて暴走を防ぐ。
+ */
+export declare const wheelZoomDelta: (event: WheelEvent) => number;
 export interface MapViewProps {
     /** 中心座標（制御用） */
     center?: LatLng;

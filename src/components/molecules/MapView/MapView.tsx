@@ -25,6 +25,33 @@ export const DEFAULT_MAP_CENTER: LatLng = { lat: 35.681236, lng: 139.767125 };
 /** タップ判定の移動許容ピクセル */
 const TAP_THRESHOLD = 5;
 
+/** ホイール1pxあたりのズーム量（マウスの1ノッチ≒100pxで約0.4段階） */
+const WHEEL_ZOOM_PER_PX = 1 / 240;
+
+/** トラックパッドのピンチ（ctrlKey 付き wheel）1pxあたりのズーム量 */
+const PINCH_ZOOM_PER_PX = 1 / 60;
+
+/** 1回のホイールイベントで動かすズームの上限（段階） */
+const MAX_WHEEL_ZOOM_STEP = 0.75;
+
+/** ホイールの deltaY をピクセル相当に正規化する（行・ページ単位の環境がある） */
+const normalizeWheelDelta = (event: WheelEvent): number => {
+  if (event.deltaMode === 1) return event.deltaY * 16;
+  if (event.deltaMode === 2) return event.deltaY * 400;
+  return event.deltaY;
+};
+
+/**
+ * ホイールイベントから、今回動かすズーム量を求める。
+ * トラックパッドは1回のスクロールで大量のイベントが出るため、
+ * 1イベント1段階ではなくスクロール量に比例させて暴走を防ぐ。
+ */
+export const wheelZoomDelta = (event: WheelEvent): number => {
+  const perPx = event.ctrlKey ? PINCH_ZOOM_PER_PX : WHEEL_ZOOM_PER_PX;
+  const delta = -normalizeWheelDelta(event) * perPx;
+  return Math.max(-MAX_WHEEL_ZOOM_STEP, Math.min(MAX_WHEEL_ZOOM_STEP, delta));
+};
+
 export interface MapViewProps {
   /** 中心座標（制御用） */
   center?: LatLng;
@@ -411,7 +438,7 @@ export const MapView: React.FC<MapViewProps> = ({
         y: event.clientY - rect.top,
       };
       const { zoom: z } = viewRef.current;
-      zoomAt(anchor, z + (event.deltaY < 0 ? 1 : -1));
+      zoomAt(anchor, z + wheelZoomDelta(event));
     };
     element.addEventListener("wheel", handleWheel, { passive: false });
     return () => element.removeEventListener("wheel", handleWheel);

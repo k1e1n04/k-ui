@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MapControls } from "../MapControls";
 import { MapMarker } from "../MapMarker";
 import { useMap } from "./MapContext";
-import { MapView } from "./MapView";
+import { MapView, wheelZoomDelta } from "./MapView";
 
 const rect = {
   width: 800,
@@ -378,5 +378,49 @@ describe("MapView", () => {
     expect(after.y - before.y).toBeCloseTo(-20, 5);
     expect(after.x - before.x).toBeCloseTo(Number(layer?.[1]), 5);
     expect(after.y - before.y).toBeCloseTo(Number(layer?.[2]), 5);
+  });
+
+  describe("ホイールズーム", () => {
+    const wheel = (init: WheelEventInit) => new WheelEvent("wheel", init);
+
+    it("スクロール量に比例し、1イベントで1段階も動かない", () => {
+      expect(Math.abs(wheelZoomDelta(wheel({ deltaY: 100 })))).toBeLessThan(1);
+      expect(Math.abs(wheelZoomDelta(wheel({ deltaY: 4 })))).toBeLessThan(0.05);
+    });
+
+    it("上スクロールで拡大、下スクロールで縮小する", () => {
+      expect(wheelZoomDelta(wheel({ deltaY: -100 }))).toBeGreaterThan(0);
+      expect(wheelZoomDelta(wheel({ deltaY: 100 }))).toBeLessThan(0);
+    });
+
+    it("大きな deltaY でも上限を超えない", () => {
+      expect(wheelZoomDelta(wheel({ deltaY: -100000 }))).toBeLessThanOrEqual(
+        0.75,
+      );
+    });
+
+    it("トラックパッドのピンチ（ctrlKey）は感度が高い", () => {
+      const make = (ctrlKey: boolean) =>
+        ({ deltaY: -5, deltaMode: 0, ctrlKey }) as WheelEvent;
+      const pinch = wheelZoomDelta(make(true));
+      const scroll = wheelZoomDelta(make(false));
+      expect(pinch).toBeGreaterThan(scroll);
+    });
+
+    it("細かいホイールイベントを連打しても1段階以内に収まる", () => {
+      const onZoomChange = vi.fn();
+      render(
+        <MapView
+          defaultCenter={{ lat: 35, lng: 139 }}
+          defaultZoom={10}
+          onZoomChange={onZoomChange}
+        />,
+      );
+      const map = screen.getByTestId("map-view");
+      for (let i = 0; i < 5; i += 1) fireEvent.wheel(map, { deltaY: -4 });
+      const last = onZoomChange.mock.calls.at(-1)?.[0] as number;
+      expect(last).toBeGreaterThan(10);
+      expect(last).toBeLessThan(11);
+    });
   });
 });

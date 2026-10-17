@@ -6312,6 +6312,19 @@ var GSI_PHOTO_TILE_URL = (x, y, z) => `${GSI_TILE_BASE_URL}/ort/${z}/${x}/${y}.p
 import { Fragment as Fragment8, jsx as jsx71, jsxs as jsxs52 } from "react/jsx-runtime";
 var DEFAULT_MAP_CENTER = { lat: 35.681236, lng: 139.767125 };
 var TAP_THRESHOLD = 5;
+var WHEEL_ZOOM_PER_PX = 1 / 240;
+var PINCH_ZOOM_PER_PX = 1 / 60;
+var MAX_WHEEL_ZOOM_STEP = 0.75;
+var normalizeWheelDelta = (event) => {
+  if (event.deltaMode === 1) return event.deltaY * 16;
+  if (event.deltaMode === 2) return event.deltaY * 400;
+  return event.deltaY;
+};
+var wheelZoomDelta = (event) => {
+  const perPx = event.ctrlKey ? PINCH_ZOOM_PER_PX : WHEEL_ZOOM_PER_PX;
+  const delta = -normalizeWheelDelta(event) * perPx;
+  return Math.max(-MAX_WHEEL_ZOOM_STEP, Math.min(MAX_WHEEL_ZOOM_STEP, delta));
+};
 var resolveDimension = (value) => typeof value === "number" ? `${value}px` : value;
 var MapChildren = memo(function MapChildren2({
   children
@@ -6557,7 +6570,7 @@ var MapView = ({
         y: event.clientY - rect.top
       };
       const { zoom: z } = viewRef.current;
-      zoomAt(anchor, z + (event.deltaY < 0 ? 1 : -1));
+      zoomAt(anchor, z + wheelZoomDelta(event));
     };
     element.addEventListener("wheel", handleWheel, { passive: false });
     return () => element.removeEventListener("wheel", handleWheel);
