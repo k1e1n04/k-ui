@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { useEscapeKey } from "../../../hooks/useEscapeKey";
 import { useFocusTrap } from "../../../hooks/useFocusTrap";
 import { cn } from "../../../utils/cn";
+import { sanitizeHref } from "../../../utils/href";
 import { DrawerHeader } from "../../atoms/DrawerHeader";
 
 /** ドロワーのアイテム。 @default undefined */
@@ -153,24 +154,34 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
               <div className="text-sm text-muted px-4 pt-2">
                 {section.title}
               </div>
-              {section.items.map((item) => (
-                <div key={item.name} className="px-2">
-                  {renderLink({
-                    href: item.path,
-                    className:
-                      "flex items-center px-3 py-2 rounded-md hover:bg-surface-sunken text-foreground",
-                    onClick: onClose,
-                    children: (
-                      <>
-                        {item.icon && (
-                          <span className="text-muted mr-3">{item.icon}</span>
-                        )}
-                        <span>{item.name}</span>
-                      </>
-                    ),
-                  })}
-                </div>
-              ))}
+              {section.items.map((item) => {
+                const href = sanitizeHref(item.path);
+                const content = (
+                  <>
+                    {item.icon && (
+                      <span className="text-muted mr-3">{item.icon}</span>
+                    )}
+                    <span>{item.name}</span>
+                  </>
+                );
+                return (
+                  <div key={item.name} className="px-2">
+                    {href ? (
+                      renderLink({
+                        href,
+                        className:
+                          "flex items-center px-3 py-2 rounded-md hover:bg-surface-sunken text-foreground",
+                        onClick: onClose,
+                        children: content,
+                      })
+                    ) : (
+                      <span className="flex items-center px-3 py-2 rounded-md text-foreground">
+                        {content}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           ))}
 

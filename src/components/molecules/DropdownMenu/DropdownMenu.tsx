@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { cn } from "../../../utils/cn";
+import { sanitizeHref } from "../../../utils/href";
 import { Popover } from "../Popover";
 
 /** ドロップダウンメニュー項目。 @default undefined */
@@ -137,9 +138,10 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             tabIndex: index === activeIndex ? 0 : -1,
           };
 
-          if (item.href && renderLink) {
+          const href = sanitizeHref(item.href);
+          if (href && renderLink) {
             const renderedLink = renderLink({
-              href: item.href,
+              href,
               children: item.label,
               className: itemClassName,
             });

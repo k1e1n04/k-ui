@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { cn } from "../../../utils/cn";
+import { sanitizeHref } from "../../../utils/href";
 import { AppBar } from "../../molecules/AppBar";
 import {
   type DrawerSection,
@@ -65,6 +66,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
     <span className="text-xl font-bold text-primary-main">{appTitle}</span>
   );
 
+  const safeTitleHref = sanitizeHref(titleHref);
+
   const defaultRenderLink = ({
     href,
     children: linkChildren,
@@ -78,11 +81,13 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       <AppBar position="fixed" color={appBarColor} className="shadow-none">
         <div className="flex items-center justify-between px-4 py-2">
           <h6 className="text-xl font-bold grow">
-            {linkRenderer({
-              href: titleHref,
-              children: titleContent,
-              className: "no-underline",
-            })}
+            {safeTitleHref
+              ? linkRenderer({
+                  href: safeTitleHref,
+                  children: titleContent,
+                  className: "no-underline",
+                })
+              : titleContent}
             {titleSuffix}
           </h6>
           <button

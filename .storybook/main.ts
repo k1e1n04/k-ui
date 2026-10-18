@@ -10,6 +10,8 @@ const config: StorybookConfig = {
     const tailwindcss = await import("@tailwindcss/vite");
     config.plugins = config.plugins || [];
     config.plugins.push(tailwindcss.default());
+    // 開発サーバーをローカルホストに限定し、外部ネットワークへ公開しない
+    config.server = { ...config.server, host: "127.0.0.1" };
     return config;
   },
 };

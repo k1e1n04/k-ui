@@ -24,7 +24,7 @@
     "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit -p tsconfig.build.json",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 --host 127.0.0.1",
     "build-storybook": "storybook build",
     "lint": "biome check src/",
     "lint:fix": "biome check --write src/",
@@ -61,11 +61,16 @@
     "tailwindcss": "4.3.3",
     "tsup": "8.5.1",
     "typescript": "7.0.2",
+    "vite": "7.3.7",
     "vitest": "5.0.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
-    ]
+    ],
+    "overrides": {
+      "esbuild": "0.28.2",
+      "source-map-js": "1.2.2"
+    }
   }
 }

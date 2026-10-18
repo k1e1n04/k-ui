@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { sanitizeHref } from "../../../utils/href";
 import { DropdownMenu } from "../DropdownMenu";
 /** パンくず項目。 @default undefined */
 export interface BreadcrumbItem {
@@ -56,26 +57,29 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   const visible = collapsed.length
     ? [items[0], ...items.slice(items.length - (resolvedMaxItems - 1))]
     : items;
-  const renderItem = (item: BreadcrumbItem, index: number, total: number) => (
-    <span key={`${String(item.label)}-${index}`}>
-      {index > 0 && (
-        <span aria-hidden="true" className="px-2 text-muted">
-          {separator}
-        </span>
-      )}
-      {item.href && index < total - 1 ? (
-        renderLink({
-          href: item.href,
-          className: "text-muted hover:text-foreground",
-          children: item.label,
-        })
-      ) : (
-        <span aria-current={index === total - 1 ? "page" : undefined}>
-          {item.label}
-        </span>
-      )}
-    </span>
-  );
+  const renderItem = (item: BreadcrumbItem, index: number, total: number) => {
+    const href = sanitizeHref(item.href);
+    return (
+      <span key={`${String(item.label)}-${index}`}>
+        {index > 0 && (
+          <span aria-hidden="true" className="px-2 text-muted">
+            {separator}
+          </span>
+        )}
+        {href && index < total - 1 ? (
+          renderLink({
+            href,
+            className: "text-muted hover:text-foreground",
+            children: item.label,
+          })
+        ) : (
+          <span aria-current={index === total - 1 ? "page" : undefined}>
+            {item.label}
+          </span>
+        )}
+      </span>
+    );
+  };
   return (
     <nav aria-label="パンくず" className={className}>
       <ol className="flex items-center text-sm">
@@ -97,7 +101,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
                   </button>
                 }
                 items={collapsed.map((item, index) => ({
-                  href: item.href,
+                  href: sanitizeHref(item.href),
                   label: item.label,
                   value: String(index),
                 }))}
