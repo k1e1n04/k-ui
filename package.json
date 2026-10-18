@@ -4,7 +4,7 @@
   "engines": {
     "node": "24"
   },
-  "version": "0.14.3",
+  "version": "0.14.4",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
